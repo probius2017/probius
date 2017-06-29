@@ -45,14 +45,6 @@ class importExportController extends Controller
 	        		  ->setAutoSize(true);
 
 
-				/*$sheet->cells('A1:P1', function($cells) {
-
-				    $cells->setAlignment('center');
-					$cells->setValignment('center');
-
-				});*/
-
-
 				
 	        });
 
