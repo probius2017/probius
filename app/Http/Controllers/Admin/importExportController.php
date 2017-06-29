@@ -43,8 +43,6 @@ class importExportController extends Controller
 	        		  ->setAutoFilter('A1:E1')
 	        		  ->freezeFirstRowAndColumn()
 	        		  ->setAutoSize(true);
-
-
 				
 	        });
 
