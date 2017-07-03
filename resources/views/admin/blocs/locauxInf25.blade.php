@@ -7,8 +7,7 @@
 <h1 class="page-header"><i class="fa fa-building"></i> Locaux <small>&lt;25RI</small></h1>
 
 <div class="row">
-	
-	<form action="{{ route('filterCity') }}" method="POST">
+	<form action="{{ route('filters') }}" method="GET">
 	{{csrf_field()}}
         <div class="col-md-3 form-group">
 	        <select class="form-control btn-info search-typeStructure" name="structure_id">
@@ -49,7 +48,7 @@
         <button id="choixExport" type="button" class="btn btn-extia" data-toggle="modal" data-target="#export-locaux">Exporter <span class="glyphicon glyphicon-export" aria-hidden="true"></span></span></button>
     </div>
     <div class="col-md-2 form-group">
-        <a href="" class="btn btn-extia">Créer un local <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+        <a href="{{ route('locauxInf25RI.create') }}" class="btn btn-extia">Créer un local <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
     </div>
 </div>
 

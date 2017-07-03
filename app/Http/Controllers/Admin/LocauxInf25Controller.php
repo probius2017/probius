@@ -14,142 +14,37 @@ use App\Http\Requests\LocauxRequest;
 use App\Http\Controllers\Controller;
 
 class LocauxInf25Controller extends Controller
-{
+{   
+    //fonction pour regrouper les données à utiliser dans le controller
+    public function dataLocauxInf25(){
+ 
+        $local = Local::LocauxStructures()->where('RI', '<=25')->get();
+        $structures = Structure::where('RI', '<=25')->get();
+
+        $array = ['local' => $local, 'structures' => $structures];
+
+        return $array;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $page = 'locauxInf25';
+        
+        $data = (new LocauxInf25Controller)->dataLocauxInf25();
 
-        //scope "LocauxStructures" défini dans le model Local : tout les locaux avec leurs structures 
-        $locauxStructures = Local::LocauxStructures()->where('RI', '<=25')->get();
-
-        $structures = Structure::where('RI', '<=25')->get();
-
+        $locauxStructures = $data['local'];
+        $structures = $data['structures'];
+        
         $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->get();
 
-        //permet de soit avoir les 4 colonnes désirés par default, soit un tableau customisé par l'utilisateur
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie'];
-            ;
-
-        $champsFinal = DB::table('champsUpdate')
-                ->select('new_name', 'old_name')
-                ->whereIn('old_name', $colonnes)
-                ->get();
+        $champsFinal = session('champsFinal');
      
-        return view('admin.blocs.locauxInf25', compact('page', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes'));
-    }
-
-    public function filterByCityAd(Request $request)
-    {
-        $page = 'locauxInf25'; 
-
-        $query = Local::LocauxStructures()->where('RI', '<=25')->get();
-
-        $structures = Structure::where('RI', '<=25')->get();
-
-        if($request->has('ville_local') && $request->has('structure_id') && $request->has('numero_ad')){
-
-            $locauxStructures = $query->where('ville_local', $request->ville_local)->where('structure_id', $request->structure_id)->where('numero_ad', $request->numero_ad)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('ville_local', $request->ville_local)->where('structure_id', $request->structure_id)->where('numero_ad', $request->numero_ad);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else if ($request->has('ville_local') && $request->has('structure_id')){
-
-            $locauxStructures = $query->where('ville_local', $request->ville_local)->where('structure_id', $request->structure_id)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('ville_local', $request->ville_local)->where('structure_id', $request->structure_id);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else if($request->has('ville_local') && $request->has('numero_ad')){
-
-            $locauxStructures = $query->where('ville_local', $request->ville_local)->where('numero_ad', $request->numero_ad)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('ville_local', $request->ville_local)->where('numero_ad', $request->numero_ad);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else if($request->has('structure_id') && $request->has('numero_ad')){
-
-            $locauxStructures = $query->where('numero_ad', $request->numero_ad)->where('structure_id', $request->structure_id)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('numero_ad', $request->numero_ad)->where('structure_id', $request->structure_id);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else if ($request->has('ville_local')){
-
-            $locauxStructures = $query->where('ville_local', $request->ville_local)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('ville_local', $request->ville_local);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else if ($request->has('structure_id')){
-
-            $locauxStructures = $query->where('structure_id', $request->structure_id)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('structure_id', $request->structure_id);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else if($request->has('numero_ad')){
-
-            $locauxStructures = $query->where('numero_ad', $request->numero_ad)->toArray();
-
-            if (!empty($locauxStructures)) {
-                
-                $locauxStructures = $query->where('numero_ad', $request->numero_ad);
-            }else{
-
-                return back()->withErrors('La recherche n\'existe pas');
-            }
-
-        }else{
-            $locauxStructures = $query;
-        }
-
-        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->get();
-
-        //si non null, $colonnes = valeurs de session, sinon $colonnes = colonnes par défault 
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'colonnes'];
-            ;
-
-        $champsFinal = DB::table('champsUpdate')
-                ->select('new_name', 'old_name')
-                ->whereIn('old_name', $colonnes)
-                ->get();
-
         return view('admin.blocs.locauxInf25', compact('page', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes'));
     }
 
@@ -157,18 +52,15 @@ class LocauxInf25Controller extends Controller
     {   
         $page = 'locauxInf25'; 
 
+        $data = (new LocauxInf25Controller)->dataLocauxInf25();
+
         $colonnes = $request->columns;
-
-       /* $index = array_search('ad_id', $colonnes); 
-        array_splice($colonnes, $index, 1, array('test'));
-
-        dump($colonnes); die;*/
-
         $request->session()->put('columns', $colonnes);
-       
-        $locauxStructures = Local::LocauxStructures()->where('RI', '<=25')->get();
+       /* $index = array_search('ad_id', $colonnes); 
+        array_splice($colonnes, $index, 1, array('test'));*/
 
-        $structures = Structure::where('RI', '<=25')->get();
+        $locauxStructures = $data['local'];
+        $structures = $data['structures'];
 
         DB::table('champsUpdate')
                 ->whereIn('old_name', $colonnes)
@@ -182,11 +74,13 @@ class LocauxInf25Controller extends Controller
 
         session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie'];
             ;
-        
+
         $champsFinal = DB::table('champsUpdate')
                 ->select('new_name', 'old_name')
                 ->whereIn('old_name', $colonnes)
                 ->get();
+
+        $request->session()->put('champsFinal', $champsFinal);
 
         return view('admin.blocs.locauxInf25', compact('page', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes'));
     }
@@ -197,8 +91,17 @@ class LocauxInf25Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    {   
+        $page = 'locauxInf25';
+
+        $data = (new LocauxInf25Controller)->dataLocauxInf25();
+
+        $local = new Local;
+        $bail = new Bail;
+
+        $structures = $data['structures'];
+
+        return view('admin.blocs.locauxInf25-edit-create', compact('page', 'local', 'structures', 'bail'));
     }
 
     /**
@@ -207,9 +110,9 @@ class LocauxInf25Controller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LocauxRequest $request)
     {
-        //
+        dump($request->all()); die;
     }
 
     /**
@@ -233,6 +136,8 @@ class LocauxInf25Controller extends Controller
     {   
         $page = 'locauxInf25';
 
+        $data = (new LocauxInf25Controller)->dataLocauxInf25();
+
         $local = Local::find($id);
 
         switch ($local->info_bailleur) {
@@ -251,11 +156,11 @@ class LocauxInf25Controller extends Controller
         
         $local->save();
 
-        $structures = Structure::where('RI', '<=25')->get();
+        $structures = $data['structures'];
 
         $bail = Bail::findOrFail($local->bail_id);
 
-        return view('admin.blocs.locauxInf25-edit', compact('page', 'local', 'structures', 'bail'));
+        return view('admin.blocs.locauxInf25-edit-create', compact('page', 'local', 'structures', 'bail'));
     }
 
     /**
@@ -392,21 +297,21 @@ class LocauxInf25Controller extends Controller
 
         //Insertion des données dans la table historiqueLocaux
         $historiqueLocal = DB::table('historiqueLocaux')->insert([
-                                [   
-                                    'ad' => $local->ad->numero_ad, 
-                                    'ville_local' => $local->ville_local, 
-                                    'cp_local' => $local->cp_local, 
-                                    'adresse_local'=> $local->adresse_local, 
-                                    'apptEscalier'=> $local->apptEscalier, 
-                                    'complementGeographique'=> $local->complementGeographique, 
-                                    'superficie'=> $local->superficie, 
-                                    'structure'=> $structures,
-                                    'date_fin'=> $local->bail->date_fin ,
-                                    'date_resiliation'=> $request->date_resiliation, 
-                                    'motif'=> $request->motif
-                                ] 
+                            [   
+                                'ad' => $local->ad->numero_ad, 
+                                'ville_local' => $local->ville_local, 
+                                'cp_local' => $local->cp_local, 
+                                'adresse_local'=> $local->adresse_local, 
+                                'apptEscalier'=> $local->apptEscalier, 
+                                'complementGeographique'=> $local->complementGeographique, 
+                                'superficie'=> $local->superficie, 
+                                'structure'=> $structures,
+                                'date_fin'=> $local->bail->date_fin ,
+                                'date_resiliation'=> $request->date_resiliation, 
+                                'motif'=> $request->motif
+                            ] 
 
-                                ]); 
+                            ]); 
  
         //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
         $contrats = Contrat::where('local_id', $id)->delete();

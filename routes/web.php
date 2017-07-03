@@ -33,12 +33,16 @@ Route::get('/auth/logout', 'AuthController@logout')->name('logout');
   |--------------------------------------------------------------------------
  */
 
+// Route::pattern('structure', '[0-9]+');
+// Route::pattern('ville', '[0-9]+');
+// Route::pattern('ad', '[0-9]+');
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('/accueil', 'Admin\AdminController@adminIndex')->name('home');
 
   //route pour le blocs contrat socle
-  Route::resource('locauxInf25RI', 'Admin\LocauxInf25Controller'); //, ['except' => ['create', 'destroy']]);
+  Route::resource('locauxInf25RI', 'Admin\LocauxInf25Controller');
 
   //route pour l'autocomplétion/recherche
   Route::get('recherche-ville', 'Admin\SearchController@autocomplete')->name('rechercheVille');
@@ -46,9 +50,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('recherche-ad', 'Admin\SearchController@autocomplete')->name('rechercheAd');
 
   //Route pour les filtres
-  Route::post('locauxInf25RI', 'Admin\LocauxInf25Controller@filterByCityAd')->name('filterCity');
+  Route::get('filters', 'Admin\SearchController@filters')->name('filters');
 
-  Route::post('locauxInf25RI/updateColonnes', 'Admin\LocauxInf25Controller@updateColumns')->name('updateColumns');
+  Route::post('updateColonnes', 'Admin\LocauxInf25Controller@updateColumns')->name('updateColumns');
 
   Route::resource('locauxInf25RI/bail', 'Admin\BauxController');
 
