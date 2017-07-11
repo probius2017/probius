@@ -9,15 +9,15 @@ class CreateContratsTable extends Migration {
 	{
 		Schema::create('contrats', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('num_contrat', 50)->nullable();
-			$table->string('name_contrat', 50)->nullable();
+			$table->string('num_contrat', 50);
+			$table->string('name_contrat', 50);
 			$table->string('intercalaire', 30)->nullable();
-			$table->integer('local_id')->unsigned()->nullable();
+			$table->integer('local_id_FK')->unsigned()->nullable();
 			$table->integer('algeco_id')->unsigned()->nullable();
 			$table->timestamps();
 
 			#foreign keys
-            $table->foreign('local_id')->references('id')->on('locaux')->onDelete('SET NULL');
+            $table->foreign('local_id_FK')->references('id')->on('locaux')->onDelete('SET NULL');
             $table->foreign('algeco_id')->references('id')->on('algecos')->onDelete('SET NULL');
 		});
 	}

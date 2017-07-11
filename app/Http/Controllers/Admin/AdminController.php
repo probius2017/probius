@@ -9,6 +9,7 @@ use App\Models\Local;
 use App\Models\Algeco;
 use App\Models\Vehicule;
 use App\Models\Evenement;
+use App\Models\Structures;
 use App\Models\Logement;
 use App\Models\Sinistre;
 use Illuminate\Http\Request;
@@ -19,17 +20,9 @@ class AdminController extends Controller
     public function adminIndex()
     {
     	$page = "home";
-
-        //On récupère tout les ACI avec RI >=50
-        /*$aci50RI = Local::whereHas('structures', function($query){
-        	$query->where('RI', '>=50');
-        })->get();*/
-
-        //on récupère tout les locaux avec leurs structures
-        $locauxStructures = Local::LocauxStructures()->get();
-        //$locauxStructures = Local::LocauxWithStructures();
-
-        //dump($locauxStructures); die; 
+        
+        //on récupère tout les locaux avec leurs structures (sans doublons liés aux structures/contrats)
+        $locauxStructures = Local::LocauxStructures()->distinct()->select('locaux.id', 'RI', 'type_structure')->get();
 
         $algecos = Algeco::count();
         $vehicules = Vehicule::count();
@@ -37,7 +30,7 @@ class AdminController extends Controller
         $sinistres = Sinistre::all();
 
         //on retourne la vue avec les données qu'elle intègre
-        return view('admin.home', compact('page', 'locauxStructures', 'algecos', 'vehicules', 'evenements', 'sinistres'));
+        return view('admin.home', compact('page', 'locauxStructures', 'locauxSocle', 'algecos', 'vehicules', 'evenements', 'sinistres'));
     }
 
     public function RechercheAD(Request $request, $id)

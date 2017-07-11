@@ -42,22 +42,31 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('/accueil', 'Admin\AdminController@adminIndex')->name('home');
 
   //route pour le blocs contrat socle
-  Route::resource('locauxInf25RI', 'Admin\LocauxInf25Controller');
+  Route::resource('{page}/{info}/listeLocaux', 'Admin\LocauxInf25Controller');
+
+  //route pour le blocs aci >=50
+  Route::resource('{page}/{info}/listeACI', 'Admin\AciSup50Controller');
 
   //route pour l'autocomplétion/recherche
-  Route::get('recherche-ville', 'Admin\SearchController@autocomplete')->name('rechercheVille');
+  Route::get('{page}/{info}/recherche-ville', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheVille');
 
-  Route::get('recherche-ad', 'Admin\SearchController@autocomplete')->name('rechercheAd');
+  Route::get('{page}/{info}/recherche-ad', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheAd');
 
   //Route pour les filtres
-  Route::get('filters', 'Admin\SearchController@filters')->name('filters');
+  Route::get('{page}/{info}/filters', 'Admin\FonctionsLocauxController@filters')->name('filters');
 
-  Route::post('updateColonnes', 'Admin\LocauxInf25Controller@updateColumns')->name('updateColumns');
 
-  Route::resource('locauxInf25RI/bail', 'Admin\BauxController');
+  Route::post('{page}/{info}/updateColonnes', 'Admin\FonctionsLocauxController@updateColumns')->name('updateColumns');
+
+
+  Route::resource('locaux/bail', 'Admin\BauxController');
 
   //Export import Excel 
   Route::any('downloadExcel/{type}', 'Admin\importExportController@downloadExcel');
+
+  //Création nouveau local
+  Route::get('createLocal', 'Admin\CreateLocalController@create')->name('createLocal');
+  Route::post('storeLocal', 'Admin\CreateLocalController@store')->name('storeLocal');
   
 
   /*-------------------------------------------------------------*/

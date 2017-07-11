@@ -22,7 +22,7 @@ class CreateLocauxTable extends Migration {
 			$table->boolean('precaire');
 			$table->enum('etat_ini', array('parfait état', 'remise en état fin de bail'));
 			$table->string('nom_bailleur', 20);
-			$table->enum('info_bailleur', array('publique', 'privé', 'AN'));
+			$table->enum('info_bailleur', array('0', '1', '2'));
 			$table->decimal('loyer');
 			$table->enum('detail_loyer', array('TVA', 'NET'));
 			$table->decimal('prix_m2');

@@ -1,18 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use DB;
-use Date;
-use Response;
-use App\Models\Bail;
-use App\Models\Local;
-use App\Http\Requests;
 use Illuminate\Http\Request;
-use App\Http\Requests\LocauxRequest;
-use App\Http\Controllers\Controller;
 
-class BauxController extends Controller
+class AciRCPROController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +13,7 @@ class BauxController extends Controller
      */
     public function index()
     {
-        //return view('admin.blocs.test');
+        //
     }
 
     /**
@@ -53,9 +45,7 @@ class BauxController extends Controller
      */
     public function show($id)
     {
-        $bail = Bail::find($id);
-
-        return Response::json($bail);
+        //
     }
 
     /**
@@ -64,21 +54,9 @@ class BauxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
-        $bail = Bail::find($id)->update( $request->all() );
-
-        $routeName = Route::currentRouteName();
-
-        if ($routeName == 'aciSup50RI.store') {
-            return redirect()
-                ->route('aciSup50RI.index')
-                ->withSuccess('Le bail à bien été modifié');
-        }
-        
-        return redirect()
-                ->route('locauxInf25RI.index')
-                ->withSuccess('Le bail à bien été modifié');
+        //
     }
 
     /**
@@ -90,7 +68,7 @@ class BauxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**
@@ -101,6 +79,6 @@ class BauxController extends Controller
      */
     public function destroy($id)
     {
-
+        //
     }
 }

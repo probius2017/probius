@@ -19,7 +19,25 @@ class ChampsUpdateTableSeeder extends Seeder
         		'table_name' => 'locaux',
                 'status' => 1
         	],
-
+            [
+                'old_name' => 'num_contrat',
+                'new_name' => 'Numéro de contrat',
+                'table_name' => 'contrats',
+                'status' => 0
+            ],
+            
+            [
+                'old_name' => 'intercalaire',
+                'new_name' => 'Intercalaire',
+                'table_name' => 'contrats',
+                'status' => 1
+            ],
+            /*[
+                'old_name' => 'name_contrat',
+                'new_name' => 'nom du contrat',
+                'table_name' => 'contrats',
+                'status' => 0
+            ],*/
         	[
         		'old_name' => 'cp_local',
         		'new_name' => 'Code postal',
@@ -227,7 +245,7 @@ class ChampsUpdateTableSeeder extends Seeder
                 'table_name' => 'baux',
                 'status' => 0
             ]
-
+            
         ]);
     }
 }

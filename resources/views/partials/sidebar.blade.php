@@ -5,14 +5,14 @@
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li{!! isset($page) && $page == 'locauxInf25' ? ' class="active"' : '' !!}>
-        <a href="{{ route('locauxInf25RI.index') }}" data-toggle="collapse" data-target="#loc1"><i class="fa fa-building"></i> Locaux <span class="small">(&lt;25RI)</span><!-- <i class="fa fa-fw fa-caret-down"></i> --></a>
+    <li{!! isset($page) && $page == 'Locaux' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeLocaux.index', ['Locaux', '&lt;25RI']) }}" data-toggle="collapse" data-target="#loc1"><i class="fa fa-building"></i> Locaux <span class="small">(&lt;25RI)</span><!-- <i class="fa fa-fw fa-caret-down"></i> --></a>
         	<!-- <ul id="loc1" class="collapse">
         		<li><a href="#"><i class="fa fa-share" aria-hidden="true"></i> Exporter</a></li>
         	</ul> -->
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-building"></i> ACI <span class="small">(&gt;50RI)</span></a>
+    <li{!! isset($page) && $page == 'ACI' && $pageSmall == '>50RI' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeACI.index', ['ACI', '&gt;50RI']) }}"><i class="fa fa-building"></i> ACI <span class="small">(&gt;50RI)</span></a>
     </li>
     <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
         <a href="#"><i class="fa fa-building"></i> ACI <span class="small">(RC PRO)</span></a>

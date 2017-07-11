@@ -45,7 +45,7 @@ $factory->define(App\Models\Local::class, function (Faker\Generator $faker) {
     $erp = [true, false];
     $precaire = [true, false];
     $etatIni = ['Parfait état', 'Remise en état fin de bail'];
-    $infoBailleur = ['Publique', 'Privé', 'AN'];
+    $infoBailleur = ['0', '1', '2'];
     $loyer = ['TVA', 'NET'];
     $prixM2 = 800;
     $partage = [true, false];
@@ -119,6 +119,6 @@ $factory->define(App\Models\Evenement::class, function (Faker\Generator $faker) 
                 'date_demande'     => $faker->date,
                 'date_reponse'     => $faker->date,
                 'remarque'         => $faker->text(100),
-                'contrat_id'       => rand(122, 123)
+                'contrat_id'       => 1
             ];
 });

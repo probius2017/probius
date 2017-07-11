@@ -64,8 +64,9 @@ class Local extends Model
         return $query
             ->join('local_structure', 'locaux.id', '=', 'local_structure.local_id')
             ->join('structures', 'structures.id', '=', 'local_structure.structure_id')
-            ->join('baux', 'baux.id', '=', 'locaux.bail_id')
             ->join('assodep', 'assodep.id', '=', 'locaux.ad_id')
+            ->leftJoin('contrats', 'locaux.id', '=', 'contrats.local_id_FK')
+            ->leftJoin('baux', 'baux.id', '=', 'locaux.bail_id')
             ->orderBy('ville_local', 'ASC');
     }
 

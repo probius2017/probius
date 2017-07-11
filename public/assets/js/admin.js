@@ -36,7 +36,7 @@ $( document ).ready(function() {
         var id = $(this).data('id');
         var lien = $(this).data('url');
 
-        $('#bail_update').attr('action', 'http://probius.intra.restosducoeur.asso.fr/admin/locauxInf25RI/bail/'+id+'/edit');
+        $('#bail_update').attr('action', 'http://probius.intra.restosducoeur.asso.fr/admin/locaux/bail/'+id+'/edit');
 
           $.ajax({
               url: lien,
@@ -53,8 +53,14 @@ $( document ).ready(function() {
                 $('.add-data-bail').append(
                 '<div class="col-md-4 supsup">'+
                   '<div class="form-group">'+
-                    '<label for="type_doc">Type de document</label>'+
-                    '<input id="type_doc" type="text" size="200" name="type_document" class="form-control" value="'+data['type_document']+'">'+
+                    '<label for="type_document">Type de document</label>'+
+                    '<select id="type_document" class="form-control" name="type_document">'+
+                      '<option id="type-opt1" value="Bail Civil">Bail Civil</option>'+
+                      '<option id="type-opt2" value="Bail Commercial">Bail Commercial</option>'+
+                      '<option id="type-opt3" value="Bail amphytheotique">Bail amphytheotique</option>'+
+                      '<option id="type-opt4" value="Conventions">Conventions</option>'+
+                      '<option id="type-opt5" value="Autres">Autres</option>'+
+                    '</select>'+
                   '</div>'+
                 '</div>'+
                 '<div class="col-md-4 supsup">'+
@@ -106,8 +112,8 @@ $( document ).ready(function() {
                   '<div class="form-group">'+
                     '<label for="clause">Clause</label>'+
                     '<select id="clause" class="form-control" name="clause">'+
-                      '<option id="cl1" value="0">Résolutoire</option>'+
-                      '<option id="cl2" value="1">Résiliation</option>'+
+                      '<option id="cl1" value="0">Résiliation</option>'+
+                      '<option id="cl2" value="1">Résolutoire</option>'+
                     '</select>'+
                   '</div>'+
                 '</div>'+
@@ -123,7 +129,16 @@ $( document ).ready(function() {
                 data['tacite_reconduction'] == 0 ? $('#opt1').attr('selected', 'selected') : $('#opt2').attr('selected', 'selected');
 
                 //Test pour selectionné la valeur de clause
-                data['clause'] == 0 ? $('#cl1').attr('selected', 'selected') : $('#cl2').attr('selected', 'selected');
+                data['clause'] == 'résiliation' ? $('#cl1').attr('selected', 'selected') : $('#cl2').attr('selected', 'selected');
+
+                //Test pour selectionné la valeur de type_document
+                $('#type_document option').each(function(){
+
+                    if ($(this).attr('value') == data['type_document']) {
+
+                      $(this).attr('selected', 'selected');
+                    }
+                });
 
                 $('#close-bail, .close').on('click', function(){
                     $('.supsup').remove();

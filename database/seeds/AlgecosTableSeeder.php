@@ -18,7 +18,7 @@ class AlgecosTableSeeder extends Seeder
                     'num_contrat'        => '9453755',
                     'name_contrat'       => 'Algeco',
                     'intercalaire'       => 'A00'.rand(1,100),
-                    'local_id'           => null,
+                    'local_id_FK'           => null,
                     'algeco_id'          =>  null
                 ]);
 

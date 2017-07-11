@@ -23,17 +23,17 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 	    <div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="{{ route('locauxInf25RI.index') }}">Locaux <span class=""> (&lt;25ri) </span></a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeLocaux.index', ['Locaux', '&lt;25RI']) }}">Locaux <span class=""> (&lt;25ri) </span></a></h4>
 	        	<p class="text-center">Contrat n° <span>3411862</span></p>
 	        </div>
-	        <a href="{{ route('locauxInf25RI.index') }}">
+	        <a href="{{ route('listeLocaux.index', ['Locaux', '&lt;25RI']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->where('RI', '<=25')->count() }}</div>
+		                    <div class="huge">{{ $locauxStructures->where('RI', '!=', null)->count() }}</div>
 		                    <div>locaux &lt;25ri</div>
 		                </div>
 		            </div>
@@ -49,10 +49,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 	    <div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">ACI <span class=""> (&gt;50ri) </span></a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeACI.index', ['ACI', '&gt;50RI']) }}">ACI <span class=""> (&gt;50ri) </span></a></h4>
 	        	<p class="text-center">Contrat n° <span>9322933</span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeACI.index', ['ACI', '&gt;50RI']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">

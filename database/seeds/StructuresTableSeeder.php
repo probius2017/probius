@@ -13,48 +13,6 @@ class StructuresTableSeeder extends Seeder
     {
         DB::table('structures')->insert([
 
-            /*['type_structure' => 'Centre activité'
-            ],
-
-            ['type_structure' => 'Stockage'
-            ],
-
-            ['type_structure' => 'Entrepot'
-            ],
-
-            ['type_structure' => 'Entrepot (>=25RI)'
-            ],
-
-            ['type_structure' => 'ACI'
-            ],
-
-            ['type_structure' => 'ACI (>=50RI)'
-            ],
-
-            ['type_structure' => 'ACI (jardin)'
-            ],
-
-            ['type_structure' => 'Chambre froide'
-            ],
-
-            ['type_structure' => 'Biens AN'
-            ],
-
-            ['type_structure' => 'Siège AD'
-            ],
-
-            ['type_structure' => 'Petite ruche DREUX'
-            ],
-
-            ['type_structure' => 'Petite ruche BLOIS'
-            ],
-
-            ['type_structure' => 'Petite ruche AGENT AIRCA'
-            ],
-
-            ['type_structure' => 'Péniche'
-            ]*/
-
         	['type_structure' => 'Centre activité',
              'RI' => '<=25'
             ],
@@ -83,8 +41,8 @@ class StructuresTableSeeder extends Seeder
             'RI' => '<=25'
             ],
 
-        	['type_structure' => 'Chambre froide',
-            'RI' => null
+        	['type_structure' => 'ACI (jardin)',
+            'RI' => '>=50'
             ],
 
             ['type_structure' => 'Bien AN',
@@ -95,7 +53,11 @@ class StructuresTableSeeder extends Seeder
             'RI' => '<=25'
             ],
 
-        	['type_structure' => 'Petite ruche DREUX',
+            ['type_structure' => 'Chambre froide',
+            'RI' => null
+            ]
+
+        	/*['type_structure' => 'Petite ruche DREUX',
             'RI' => null
             ],
 
@@ -109,7 +71,7 @@ class StructuresTableSeeder extends Seeder
 
         	['type_structure' => 'Péniche',
              'RI' => null
-            ]
+            ]*/
 
         ]);
     }
