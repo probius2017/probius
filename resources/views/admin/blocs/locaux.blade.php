@@ -59,6 +59,7 @@
 	        	<th>{{ $c->new_name}}</th>
 	        	@empty
                 @endforelse
+                <th>Structures (test)</th>
 	        	<th>Bail</th>
 	        	<th>Actions</th>
 	        </tr>	
@@ -70,17 +71,36 @@
 	        	<td>{{ $local[$c->old_name] }}</td>
 				@empty
                 @endforelse
+                <td>
+                    @foreach($local->structures as $struc)
+                        <span class="badge btn-cat">
+                          {{ $struc->type_structure }}
+                        </span>
+                    @endforeach
+                </td>
 	            <td>
 	            	<button id="bail-{{$local->bail_id}}" type="button" class="btn btn-extia bail" data-toggle="modal" data-target="#bail" data-id="{{ $local->bail_id }}" data-tok="{{ csrf_token() }}" data-url="{{ route('bail.show', $local->bail_id) }}">Bail <i class="fa fa-eye"></i></button>
 	            </td>
 	            <td>
                     @if($page == 'Locaux')
-	                <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeLocaux.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+	                <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeLocaux.edit', [$page, $pageSmall, $local->local_id_FK])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
                     <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeLocaux.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
-                    @if($page == 'ACI')
+                    @if($page == 'ACI' && $pageSmall == '>50RI')
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeACI.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
                     <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeACI.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    @endif
+                    @if($page == 'ACI' && $pageSmall == 'RCPRO')
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeAciRCPRO.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeAciRCPRO.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    @endif
+                    @if($page == 'Entrepots')
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeEntrepots.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeEntrepots.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    @endif
+                    @if($page == 'AN')
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeBiensAN.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeBiensAN.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
 	            </td>
 	        </tr>
@@ -96,7 +116,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
     
-    <form action="{{ route('updateColumns', [$page, $pageSmall]) }}" method="POST">
+    <form id="form-colonnes" action="{{ route('updateColumns', [$page, $pageSmall]) }}" method="POST">
 	{{csrf_field()}}
       
       <div class="modal-header">
@@ -104,13 +124,13 @@
         <h2 class="modal-title" id="myModalLabel"><i class="fa fa-table" aria-hidden="true"></i> Ajouter/supprimer des colonnes</h2>
       </div>
       <div class="modal-body">
-			<div class="row">
+			<div id="" class="row choix-colonnes">
                 @forelse($champs->chunk(10) as $chunk)
                 <div class="col-md-3">
-					<table id="choix-colonnes">
+					<table>
                         @forelse($chunk as $champ)
 						<tr>
-							<td id="">{{ $champ->new_name}} </td>
+							<td>{{ $champ->new_name}} </td>
 							<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td>
                                 <input id="{{ $champ->new_name }}" type="checkbox" name="columns[]" value="{{ $champ->old_name }}" {{ $champ->status == 1 ? 'checked' : ''}}/>
@@ -124,6 +144,15 @@
                 @empty
                 @endforelse
 			</div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group checkAllCol">
+                      {!! Form::label('checkAllCol', 'Ajouter toutes les colonnes au tableau ?', array('class' => 'control_label')) !!}
+                      {!! Form::checkbox('checkAllCol') !!}
+                    </div>
+                </div>
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
@@ -148,10 +177,10 @@
         <h2 class="modal-title" id="myModalLabel"><i class="fa fa-table" aria-hidden="true"></i> Choix des colonnes pour l'export</h2>
       </div>
       <div class="modal-body">
-            <div class="row">
+            <div class="row choix-colonnes2">
                 @forelse($champs->chunk(10) as $chunk)
                 <div class="col-md-3">
-                    <table id="choix-colonnes">
+                    <table>
                         @forelse($chunk as $champ)
                         <tr>
                             <td id="">{{ $champ->new_name}} </td>
@@ -167,6 +196,15 @@
                 </div>
                 @empty
                 @endforelse
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group checkAllExp">
+                      {!! Form::label('checkAllExp', 'Exporter toutes les colonnes ?', array('class' => 'control_label')) !!}
+                      {!! Form::checkbox('checkAllExp') !!}
+                    </div>
+                </div>
             </div>
       </div>
       <div class="modal-footer">

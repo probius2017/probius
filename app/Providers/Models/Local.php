@@ -39,7 +39,7 @@ class Local extends Model
         return $this->belongsTo(Bail::class);
     }
 
-    public function isStruc($strucId)
+    public function isStruc($strucType)
     {
       
       foreach($this->structures as $structure)
@@ -49,7 +49,7 @@ class Local extends Model
           
           foreach ($this->structures as $structure) {
           
-            if($structure->id == $strucId) return true;
+            if($structure->type_structure == $strucType) return true;
           }
         } 
 
@@ -67,6 +67,7 @@ class Local extends Model
             ->join('assodep', 'assodep.id', '=', 'locaux.ad_id')
             ->leftJoin('contrats', 'locaux.id', '=', 'contrats.local_id_FK')
             ->leftJoin('baux', 'baux.id', '=', 'locaux.bail_id')
+            //->join('baux', 'baux.id', '=', 'locaux.bail_id')
             ->orderBy('ville_local', 'ASC');
     }
 

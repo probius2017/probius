@@ -14,16 +14,22 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LocauxRequest;
 use App\Http\Controllers\Controller;
 
-class LocauxInf25Controller extends Controller
-{   
-    //fonction pour regrouper les données à utiliser dans le controller
-    public function dataLocauxInf25(){
+class EntrepotsController extends Controller
+{
+    public function dataEntrepots(){
 
-        $structures = Structure::where('RI', '<=25')->get();
-        $page = 'Locaux';
-        $pageSmall = '&lt;25RI';
+        $locaux = Local::LocauxStructures()
+                    ->where('type_structure', 'Entrepot' )
+                    ->where('num_contrat', '9453148')
+                    ->get();
 
-        $array = ['structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
+        $structures = Structure::where('type_structure', 'Entrepot')
+                        ->where('RI', '>=25')
+                        ->get();
+        $page = 'Entrepots';
+        $pageSmall = '>25RI';
+
+        $array = ['locaux' => $locaux, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -33,10 +39,9 @@ class LocauxInf25Controller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index(Request $request)
     {
-        $data = (new LocauxInf25Controller)->dataLocauxInf25();
+        $data = (new EntrepotsController)->dataEntrepots();
 
         $request->session()->forget('columns');
         $request->session()->forget('champsFinal');
@@ -46,17 +51,11 @@ class LocauxInf25Controller extends Controller
         $page = $data['page'];
         $pageSmall = $data['pageSmall'];
 
+        $locauxStructures = $data['locaux'];
+
         $structures = $data['structures'];
 
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'local_id_FK', 'bail_id'];
-        /*session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'local_id', 'bail_id', 'type_structure'];*/
-
-        $locauxStructures = Local::LocauxStructures()
-                            //->distinct()
-                            //->select($colonnes)
-                            //->where('RI', '!=', null) //A supprimer 
-                            ->get();
-        //dump($locauxStructures); die;
+        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
 
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -66,8 +65,7 @@ class LocauxInf25Controller extends Controller
             ->whereNotIn('old_name', $colonnes)
             ->update(['status' => 0]);
 
-        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'baux')->get();
-        /*$champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->get();*/
+        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
 
         session('champsFinal') != null ? $champsFinal = session('champsFinal') : $champsFinal = DB::table('champsUpdate')->select('new_name', 'old_name')->whereIn('old_name', $colonnes)->get();
 
@@ -80,7 +78,7 @@ class LocauxInf25Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         //
     }
 
@@ -90,95 +88,9 @@ class LocauxInf25Controller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LocauxRequest $request)
+    public function store(Request $request)
     {
-        /*dump($request->all()); die;
-
-        $updateLocal = [
-            'ville_local' => $request->ville_local,
-            'cp_local' => $request->cp_local,
-            'adresse_local' => $request->adresse_local,
-            'superficie' => $request->superficie,
-            'ERP' => $request->ERP,
-            'precaire' => $request->precaire,
-            'nom_bailleur' => $request->nom_bailleur,
-            'info_bailleur' => $request->info_bailleur,
-            'loyer' => $request->loyer,
-            'detail_loyer' => $request->detail_loyer,
-            'pret' => $request->pret,
-            'local_partage' => $request->local_partage,
-            'precision_partage' => $request->precision_partage,
-            'contenu' => $request->contenu,
-            'accessibilite' => $request->accessibilite,
-            'observation_generale' => $request->observation_generale,
-            'charge_bailleur' => $request->charge_bailleur,
-            'charge_rdc' => $request->charge_rdc,
-            'detail_charge' => $request->detail_charge,
-            'apptEscalier' => $request->apptEscalier,
-            'complementGeographique' => $request->complementGeographique,
-        ];
-
-        $local = Local::create( $updateLocal );
-
-        $request->etat_ini == 0 ? $local->etat_ini = 'parfait état' : $local->etat_ini = 'remise en état fin de bail';
-
-        switch ($local->info_bailleur) {
-            case '0':
-                $local->info_bailleur = 'AN';
-                break;
-            
-            case '1' :
-                $local->info_bailleur = 'privé';
-                break;
-
-            case '2' :
-                $local->info_bailleur = 'publique';
-                break;
-        }
-
-        $request->detail_loyer == 0 ? $local->detail_loyer = 'TVA' : $local->detail_loyer = 'NET';
-
-        $local->save();
-        //-------------------------------------//
-
-        $structures = $request->type_structure? $request->type_structure : [];
-        $local->structures()->attach($structures);
-
-        //-------------------------------------//
-
-        if ((strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox') !== FALSE) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== FALSE)) {
-            
-            $date_debut = date('Y-d-m', strtotime($request->date_debut));
-            $date_signature = date('Y-d-m', strtotime($request->date_signature));
-            $date_fin = date('Y-d-m', strtotime($request->date_fin));
-
-        }else{
-            $date_debut = $request->date_debut;
-            $date_signature = $request->date_signature;
-            $date_fin = $request->date_fin;
-        }
-
-        $createBail = [
-            'type_document' => $request->type_document,
-            'duree_ini' => $request->duree_ini,
-            'tacite_reconduction' => $request->tacite_reconduction,
-            'reconduction_description' => $request->reconduction_description,
-            'description_clause' => $request->description_clause,
-            'quantite_site' => $request->quantite_site,
-            'date_debut' => $date_debut,
-            'date_signature' => $date_signature,
-            'date_fin' => $date_fin,
-        ];
-
-        $bail = Bail::create( $createBail );
-
-        $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
-
-        $bail->save();
-
-        return redirect()
-                ->route('locauxInf25RI.index')
-                ->withSuccess('Le local a bien été modifié.');*/
+        //
     }
 
     /**
@@ -187,7 +99,7 @@ class LocauxInf25Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($p, $ps, $id)
     {
         //
     }
@@ -200,8 +112,7 @@ class LocauxInf25Controller extends Controller
      */
     public function edit($p, $ps, $id)
     {   
-        
-        $data = (new LocauxInf25Controller)->dataLocauxInf25();
+        $data = (new EntrepotsController)->dataEntrepots();
 
         $routeName = Route::currentRouteName();
 
@@ -249,7 +160,7 @@ class LocauxInf25Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(LocauxRequest $request, $p, $ps, $id)
-    {   
+    {
         $page = $p;
         $pageSmall = $ps;
 
@@ -289,8 +200,7 @@ class LocauxInf25Controller extends Controller
         //-------------------------------------//
 
             //On ne doit pas pouvoir modifier les structures d'un local
-        /*$newStructures = $request->type_structure? $request->type_structure : [];
-
+        /*$structures = $request->type_structure? $request->type_structure : [];
         $local->structures()->sync($structures);*/
 
         //-------------------------------------//
@@ -351,7 +261,7 @@ class LocauxInf25Controller extends Controller
         $bail->save();
 
         return redirect()
-                ->route('listeLocaux.index', [$page, $pageSmall])
+                ->route('listeEntrepots.index', [$page, $pageSmall])
                 ->withSuccess('Le local a bien été modifié.');
     }
 
@@ -362,7 +272,7 @@ class LocauxInf25Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $p, $ps, $id)
-    {     
+    {
         $page = $p;
         $pageSmall = $ps;
 
@@ -412,8 +322,7 @@ class LocauxInf25Controller extends Controller
         //On supprime le local 
         $local = Local::destroy($id);
 
-        return redirect()
-                ->route('listeLocaux.index', [$page, $pageSmall])
+        return redirect(route('listeEntrepots.index', [$page, $pageSmall]))
                 ->withSuccess('Le local à bien été supprimé.');
     }
 }

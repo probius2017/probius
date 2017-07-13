@@ -158,14 +158,14 @@ $( document ).ready(function() {
         $(this).each(function(){
 
             var url = $(this).data('url');
-            console.log(url);
             $("#delete-form").attr('action', url);
         });
     });
 
     let tab = [];
     let val = 0;
-    //Suppression multiple
+    
+    //Suppression multiple (A finir)
     $(".locauxDestAll").on('click', 'input:checkbox', function(){
 
       val = $(this).attr('value');
@@ -194,5 +194,86 @@ $( document ).ready(function() {
       $('#export-locaux').modal('hide');
   })
 
+/*----------------------------------------------------------*/
+  
+  //cocher/décocher toutes les checkbox boutton paramètrage/export
+  $(".checkAllCol, .checkAllExp").on('click', 'input:checkbox', function(){
+
+    var colonnesIdDefault = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie'];
+
+    if ($(this).is(':checked')){
+        
+        if ($(this).attr('id') == 'checkAllCol') {
+
+            $('.choix-colonnes input:checkbox').each(function(){
+              $(this).prop('checked', 'checked');
+            });
+
+        }else{
+
+            $('.choix-colonnes2 input:checkbox').each(function(){
+              $(this).prop('checked', 'checked');
+            });
+        }
+
+    }else{
+
+        if ($(this).attr('id') == 'checkAllCol') {
+
+            $('.choix-colonnes input:checkbox').each(function(){
+
+                var val = $(this).attr('value');
+
+                if ($.inArray(val, colonnesIdDefault) == -1) {
+
+                    $(this).prop('checked', '');
+                }
+            });
+        }else{
+
+            $('.choix-colonnes2 input:checkbox').each(function(){
+
+                var val = $(this).attr('value');
+
+                if ($.inArray(val, colonnesIdDefault) == -1) {
+
+                    $(this).prop('checked', '');
+                }
+            });
+        }
+    }
+        
+  });
+
+  $('#choixExport').on('click', function(){
+      if ($('#checkAllCol').is(':checked')) {
+        $('#checkAllExp').prop('checked', 'checked');
+      }
+  });
+
+  /*$('#addColumns').on('click', function(e){
+
+      e.preventDefault();
+      var url = $('#form-colonnes').attr('action');
+      var page = '';
+      var pageSmall = '';
+
+      $.ajax({
+              url: url,
+              method: 'POST',
+              data: {
+                  //'_token': token,
+                  '_method': 'POST'
+              },
+              success: function() {
+                  if ($('#checkAllCol').is(':checked')) {
+                    $('#checkAllExp').prop('checked', 'checked');
+                  }
+              },
+              error: function() {
+                 alert('La requête n\'a pas abouti');
+              } 
+      });
+  });*/
 
 });

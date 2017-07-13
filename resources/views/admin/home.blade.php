@@ -76,10 +76,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 	    <div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">ACI <span class=""> (RC PRO) </span></a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeAciRCPRO.index', ['ACI', 'RCPRO']) }}">ACI <span class=""> (RC PRO) </span></a></h4>
 	        	<p class="text-center">Contrat n° <span>971000094067F50</span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeAciRCPRO.index', ['ACI', 'RCPRO']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
@@ -102,10 +102,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 	    <div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">Entrepots <span class=""> (&gt;25ri) </span></a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeEntrepots.index', ['Entrepots', '>25RI']) }}">Entrepots <span class=""> (&gt;25ri) </span></a></h4>
 	        	<p class="text-center">Contrat n° <span>9453148</span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeEntrepots.index', ['Entrepots', '>25RI']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
@@ -243,10 +243,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 		<div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">Biens AN</a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeBiensAN.index', ['AN', 'Biens']) }}">Biens AN</a></h4>
 	        	<p class="text-center">Contrat n° <span>6665737</span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeBiensAN.index', ['AN', 'Biens']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">

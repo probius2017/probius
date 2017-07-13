@@ -47,6 +47,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   //route pour le blocs aci >=50
   Route::resource('{page}/{info}/listeACI', 'Admin\AciSup50Controller');
 
+  //route pour le blocs aci RCPRO
+  Route::resource('{page}/{info}/listeAciRCPRO', 'Admin\AciRCPROController');
+
+  //route pour le blocs entrepots >25RI
+  Route::resource('{page}/{info}/listeEntrepots', 'Admin\EntrepotsController');
+
+  //route pour le blocs entrepots >25RI
+  Route::resource('{page}/{info}/listeBiensAN', 'Admin\BiensANController');
+
   //route pour l'autocomplétion/recherche
   Route::get('{page}/{info}/recherche-ville', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheVille');
 

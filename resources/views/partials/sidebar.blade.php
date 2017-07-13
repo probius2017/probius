@@ -14,11 +14,11 @@
     <li{!! isset($page) && $page == 'ACI' && $pageSmall == '>50RI' ? ' class="active"' : '' !!}>
         <a href="{{ route('listeACI.index', ['ACI', '&gt;50RI']) }}"><i class="fa fa-building"></i> ACI <span class="small">(&gt;50RI)</span></a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-building"></i> ACI <span class="small">(RC PRO)</span></a>
+    <li{!! isset($page) && $page == 'ACI' && $pageSmall == 'RCPRO' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeAciRCPRO.index', ['ACI', 'RCPRO']) }}"><i class="fa fa-building"></i> ACI <span class="small">(RC PRO)</span></a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-building"></i> Entrepots <span class="small">(&gt;25RI)</span></a>
+    <li{!! isset($page) && $page == 'Entrepots' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeEntrepots.index', ['Entrepots', '>25RI']) }}"><i class="fa fa-building"></i> Entrepots <span class="small">(&gt;25RI)</span></a>
     </li>
     <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
         <a href="#"><i class="fa fa-building"></i> Algécos</a>
@@ -29,8 +29,8 @@
     <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
         <a href="#"><i class="fa fa-bed"></i> Logements</a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-building-o"></i> Biens AN</a>
+    <li{!! isset($page) && $page == 'AN' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeBiensAN.index', ['AN', 'Biens']) }}"><i class="fa fa-building-o"></i> Biens AN</a>
     </li>
     <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
         <a href="#"><i class="fa fa-car"></i> Véhicules</a>

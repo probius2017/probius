@@ -13,8 +13,14 @@
 
 @if($page == 'Locaux')
 {{ Form::open(array('url' => $local->id ? URL::route('listeLocaux.update', [$page, $pageSmall, $local->id]) : URL::route('listeLocaux.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
-@elseif($page == 'ACI')
+@elseif($page == 'ACI' && $pageSmall == '>50RI')
 {{ Form::open(array('url' => $local->id ? URL::route('listeACI.update', [$page, $pageSmall, $local->id]) : URL::route('listeACI.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
+@elseif($page == 'ACI' && $pageSmall == 'RCPRO')
+{{ Form::open(array('url' => $local->id ? URL::route('listeAciRCPRO.update', [$page, $pageSmall, $local->id]) : URL::route('listeAciRCPRO.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
+@elseif($page == 'Entrepots')
+{{ Form::open(array('url' => $local->id ? URL::route('listeEntrepots.update', [$page, $pageSmall, $local->id]) : URL::route('listeEntrepots.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
+@elseif($page == 'AN')
+{{ Form::open(array('url' => $local->id ? URL::route('listeBiensAN.update', [$page, $pageSmall, $local->id]) : URL::route('listeBiensAN.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
 @endif
     <fieldset>
         <legend><i class="fa fa-info-circle" aria-hidden="true"></i> Informations principales du local</legend>
@@ -101,7 +107,7 @@
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td>
-                                    {!! Form::checkbox('type_structure[]', $structure->id, $local->isStruc($structure->id) ? true : false) !!}
+                                    {!! Form::checkbox('type_structure[]', $structure->type_structure, $local->isStruc($structure->type_structure) ? true : false) !!}
                                 </td>
                             </tr>
                             @empty
@@ -182,10 +188,10 @@
 
         <div class="col-md-6">
             <div class="form-group {!! $errors->has('local_partage') ? 'has-error' : '' !!} has-feedback">
-                    {!! Form::label('local_partage', 'Local partagé', array('class' => 'control_label')) !!}
-                    {{ Form::select('local_partage', ['Non', 'Oui'], $local->local_partage,  ['class' => 'form-control', 'aria-describedby' => 'error-updt']) }}
-                    {!! $errors->first('local_partage', '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                    <span id="error-updt" class="sr-only">(error)</span><small class="help-block">:message</small>') !!}
+                {!! Form::label('local_partage', 'Local partagé', array('class' => 'control_label')) !!}
+                {{ Form::select('local_partage', ['Non', 'Oui'], $local->local_partage,  ['class' => 'form-control', 'aria-describedby' => 'error-updt']) }}
+                {!! $errors->first('local_partage', '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                <span id="error-updt" class="sr-only">(error)</span><small class="help-block">:message</small>') !!}
             </div>
 
             <div class="form-group {!! $errors->has('precision_partage') ? 'has-error' : '' !!} has-feedback">
@@ -342,8 +348,14 @@
     <div class="footer pull-right">
         @if($page == 'Locaux')
         <a href="{{ route('listeLocaux.index', [$page, $pageSmall]) }}" class="btn btn-default ">Annuler</a>
-        @elseif($page == 'ACI')
+        @elseif($page == 'ACI' && $pageSmall == '>50RI')
         <a href="{{ route('listeACI.index', [$page, $pageSmall]) }}" class="btn btn-default ">Annuler</a>
+        @elseif($page == 'ACI' && $pageSmall == 'RCPRO')
+        <a href="{{ route('listeAciRCPRO.index', [$page, $pageSmall]) }}" class="btn btn-default ">Annuler</a>
+        @elseif($page == 'Entrepots')
+        <a href="{{ route('listeEntrepots.index', [$page, $pageSmall]) }}" class="btn btn-default ">Annuler</a>
+        @elseif($page == 'AN')
+        <a href="{{ route('listeBiensAN.index', [$page, $pageSmall]) }}" class="btn btn-default ">Annuler</a>
         @endif
 
         @if($local->id)

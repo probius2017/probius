@@ -14,7 +14,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
 
-
 class FonctionsLocauxController extends Controller
 {
     public function autocomplete(){
@@ -77,7 +76,7 @@ class FonctionsLocauxController extends Controller
             $locaux = Local::LocauxStructures()
                         ->distinct()
                         ->select($colonnes)
-                        ->where('RI', '!=', null)
+                        ->where('RI', '!=', null) //A supprimer
                         ->get();
 
             $structures = Structure::where('RI', '<=25')->get();
@@ -90,6 +89,46 @@ class FonctionsLocauxController extends Controller
             $locaux = Local::LocauxStructures()->where('RI', '>=50')->where('num_contrat', '9322933')->get();
             $structures = Structure::where('RI', '>=50')->get();
             $routeName = 'listeACI.index';
+            $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
+
+        }else if($routePage['page'] == 'ACI' && $routePage['info'] == 'RCPRO'){
+            
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
+            $locaux = Local::LocauxStructures()
+                    ->whereIn('type_structure', ['ACI', 'ACI (jardin)'] )
+                    ->where('num_contrat', '971 0000 94067 F 50')
+                    ->get();
+
+            $structures = Structure::where('RI', '>=50')->get();
+            $routeName = 'listeAciRCPRO.index';
+            $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
+
+        }elseif ($routePage['page'] == 'Entrepots') {
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
+
+            $locaux = Local::LocauxStructures()
+                    ->where('type_structure', 'Entrepot' )
+                    ->where('num_contrat', '9453148')
+                    ->get();
+
+            $structures = Structure::where('type_structure', 'Entrepot')
+                        ->where('RI', '>=25')
+                        ->get();
+
+            $routeName = 'listeEntrepots.index';
+            $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
+
+        }elseif ($routePage['page'] == 'AN') {
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
+
+            $locaux = Local::LocauxStructures()
+                    ->where('type_structure', 'Bien AN' )
+                    ->where('num_contrat', '6665737')
+                    ->get();
+
+            $structures = Structure::where('type_structure', 'Bien AN')->get();
+
+            $routeName = 'listeBiensAN.index';
             $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
         }
 
@@ -137,8 +176,8 @@ class FonctionsLocauxController extends Controller
 
             $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->get();
 
-        }else{  
-
+        }elseif ($page == 'ACI' || $page == 'Entrepots' || $page == 'AN') {
+         
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
 
             $locauxStructures = $data['locaux'];
@@ -274,13 +313,6 @@ class FonctionsLocauxController extends Controller
         $structures = $data['structures'];
         $champs = $data['champs'];
         $colonnes = $data['colonnes'];
-        /*if ($page == 'Locaux') {
-
-            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'local_id', 'bail_id'];
-        }else{  
-
-            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie'];
-        }*/
 
         $champsFinal = DB::table('champsUpdate')
                 ->select('new_name', 'old_name')

@@ -199,8 +199,8 @@ class AciSup50Controller extends Controller
         //-------------------------------------//
 
             //On ne doit pas pouvoir modifier les structures d'un local
-        $structures = $request->type_structure? $request->type_structure : [];
-        $local->structures()->sync($structures);
+        /*$structures = $request->type_structure? $request->type_structure : [];
+        $local->structures()->sync($structures);*/
 
         //-------------------------------------//
 
@@ -316,7 +316,7 @@ class AciSup50Controller extends Controller
                             ]); 
  
         //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
-        $contrats = Contrat::where('local_id', $id)->delete();
+        $contrats = Contrat::where('local_id_FK', $id)->delete();
 
         //On supprime le local 
         $local = Local::destroy($id);
