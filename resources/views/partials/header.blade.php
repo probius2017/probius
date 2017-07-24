@@ -19,8 +19,17 @@
                     </li>
 
                     <li{!! isset($page) && $page == 'createLocal' ? ' class="active"' : '' !!}>
-                        <a href="{{ route('createLocal') }}"><i class="fa fa-plus"></i> Créer un nouveau local</a>
+                        <a href="{{ route('createLocal') }}"><i class="fa fa-plus"></i> Ajouter un Local</a>
                     </li>
+                    <!-- <li{!! isset($page) && $page == 'createChambreF' ? ' class="active"' : '' !!}>
+                        <a href=""><i class="fa fa-plus"></i> Ajouter une Chambre froide</a>
+                    </li>
+                    <li{!! isset($page) && $page == 'createAlgeco' ? ' class="active"' : '' !!}>
+                        <a href=""><i class="fa fa-plus"></i> Ajouter un Algéco</a>
+                    </li>
+                    <li{!! isset($page) && $page == 'createLogement' ? ' class="active"' : '' !!}>
+                        <a href=""><i class="fa fa-plus"></i> Ajouter un Logement</a>
+                    </li> -->
                 </ul>
 
                 <div class="collapse navbar-collapse navbar-right">

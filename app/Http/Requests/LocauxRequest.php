@@ -39,14 +39,14 @@ class LocauxRequest extends FormRequest
             'ville_local' => 'required | string',
             'cp_local' => 'required | alpha_num',
             'adresse_local' => 'required | string',
-            'apptEscalier' => 'required | alpha_num',
-            'complementGeographique' => 'required | alpha_num',
+            'apptEscalier' => 'required | string',
+            'complementGeographique' => 'required | string',
             'superficie' => 'required | numeric',
             'ERP' => 'required | boolean',
             'precaire' => 'required | boolean',
             'nom_bailleur' => 'required | alpha',
             'info_bailleur' => 'required', 
-            'loyer' => 'required |numeric', //
+            'loyer' => 'required | numeric', //
             'detail_loyer' => 'required | boolean',
             'pret' => 'required | numeric', //
             'local_partage' => 'required | boolean',

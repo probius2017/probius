@@ -33,7 +33,7 @@
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->where('RI', '!=', null)->count() }}</div>
+		                    <div class="huge">{{ $locaux->count() }}</div>
 		                    <div>locaux &lt;25ri</div>
 		                </div>
 		            </div>
@@ -59,7 +59,7 @@
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->where('RI', '>=50')->count() }}</div>
+		                    <div class="huge">{{ $contrats->where('num_contrat', '9322933')->count() }}</div>
 		                    <div>ACI &gt;50ri</div>
 		                </div>
 		            </div>
@@ -86,7 +86,7 @@
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->whereIn('type_structure', ['ACI', 'ACI (jardin)'] )->count() }}</div>
+		                    <div class="huge">{{ $contrats->where('num_contrat', '971 0000 94067 F 50')->count() }}</div>
 		                    <div>RC PRO</div>
 		                </div>
 		            </div>
@@ -112,7 +112,7 @@
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->where('type_structure', 'Entrepot')->where('RI', '>=25')->count() }}</div>
+		                    <div class="huge">{{ $contrats->where('num_contrat', '9453148')->count() }}</div>
 		                    <div>entrepots &gt;25ri</div>
 		                </div>
 		            </div>
@@ -132,17 +132,17 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 		<div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">Algécos</a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeAlgecos.index', ['Algecos', ' ']) }}">Algécos</a></h4>
 	        	<p class="text-center">Contrat n° <span>9453755</span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeAlgecos.index', ['Algecos', ' ']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $algecos }}</div>
+		                    <div class="huge">{{ $algecos->count() }}</div>
 		                    <div>algécos</div>
 		                </div>
 		            </div>
@@ -159,17 +159,17 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 	    <div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">Chambres Froides</a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeChambresFroides.index', ['Chambres-froides', ' ']) }}">Chambres Froides</a></h4>
 	        	<p class="text-center">Contrat n° <span>9453062</span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeChambresFroides.index', ['Chambres-froides', ' ']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
 		                    <i class="fa fa-building fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->where('type_structure', 'Chambre froide')->count() }}</div>
+		                    <div class="huge">{{ $contrats->where('num_contrat', '9453062')->count() }}</div>
 		                    <div>Ch. froides</div>
 		                </div>
 		            </div>
@@ -196,7 +196,7 @@
 		                    <i class="fa fa-car fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $vehicules }}</div>
+		                    <div class="huge">{{ $vehicules->count() }}</div>
 		                    <div>véhicules</div>
 		                </div>
 		            </div>
@@ -223,7 +223,7 @@
 		                    <i class="fa fa-calendar fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $evenements }}</div>
+		                    <div class="huge">{{ $evenements->count() }}</div>
 		                    <div>évènements</div>
 		                </div>
 		            </div>
@@ -253,7 +253,7 @@
 		                    <i class="fa fa-building-o fa-4x" aria-hidden="true"></i>
 		                </div>
 		                <div class="col-xs-9 text-right">
-		                    <div class="huge">{{ $locauxStructures->where('type_structure', 'Bien AN')->count() }}</div>
+		                    <div class="huge">{{ $contrats->where('num_contrat', '6665737')->count() }}</div>
 		                    <div>Biens AN</div>
 		                </div>
 		            </div>

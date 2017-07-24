@@ -15,7 +15,7 @@ class LocauxTableSeeder extends Seeder
             
         factory(App\Models\Local::class, 20)->create()->each(function ($local){ 
 
-        	$structures = [1,2,3,4,5,6,7,8,9,10,11];
+        	$structures = [1,2,3,4,5,6,7,8,9,10];
             $rand = array_rand($structures, 1);
         	$local->structures()->attach([$structures[$rand]]);
 
@@ -23,14 +23,14 @@ class LocauxTableSeeder extends Seeder
 
             foreach ($local->structures as $struc) {
 
-                if ($struc->type_structure == 'ACI' && $struc->RI == '>=50') {
+                if ($struc->type_structure == 'ACI (>=50)' || $struc->type_structure == 'ACI (jardin - >=50)') {
 
                     $contratACI = \App\Models\Contrat::create(
                     [
                         'num_contrat'        => '9322933',
                         'name_contrat'       => 'Dommages mobilier sup à 50RI',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           =>  $local->id,
+                        'local_id'           =>  $local->id,
                         'algeco_id'          =>  null
                     ]);
 
@@ -39,69 +39,34 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '971 0000 94067 F 50',
                         'name_contrat'       => 'RC PRO (ACI)',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           =>  $local->id,
+                        'local_id'           =>  $local->id,
                         'algeco_id'          =>  null
                     ]);
 
                 }
 
-                elseif ($struc->type_structure == 'ACI (jardin)' && $struc->RI == '>=50') {
-                    
-                    $contratACI = \App\Models\Contrat::create(
-                    [
-                        'num_contrat'        => '9322933',
-                        'name_contrat'       => 'Dommages mobilier sup à 50RI',
-                        'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           =>  $local->id,
-                        'algeco_id'          =>  null
-                    ]);
-
-                    $contratRCPRO = \App\Models\Contrat::create(
-                    [
-                        'num_contrat'        => '971 0000 94067 F 50',
-                        'name_contrat'       => 'RC PRO (ACI)',
-                        'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           =>  $local->id,
-                        'algeco_id'          =>  null
-                    ]);
-
-                }
-
-                elseif ($struc->type_structure == 'ACI (jardin)' || $struc->type_structure == 'ACI') {
+                elseif ($struc->type_structure == 'ACI (jardin - <=25)' || $struc->type_structure == 'ACI (<=25)') {
                     
                     $contratRCPRO = \App\Models\Contrat::create(
                     [
                         'num_contrat'        => '971 0000 94067 F 50',
                         'name_contrat'       => 'RC PRO (ACI)',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           =>  $local->id,
+                        'local_id'           =>  $local->id,
                         'algeco_id'          =>  null
                     ]);
 
                 }
 
-                elseif ($struc->type_structure == 'Entrepot' && $struc->RI == '>=25') {
+                elseif ($struc->type_structure == 'Entrepot (>25)') {
 
                     $contratEntrepot = \App\Models\Contrat::create(
                     [
                         'num_contrat'        => '9453148',
                         'name_contrat'       => 'Entrepot >25RI',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           => $local->id,
+                        'local_id'           => $local->id,
                         'algeco_id'          =>  null
-                    ]);
-
-                }
-
-                elseif ($struc->type_structure == 'Chambre froide') {
-
-                    $contratCF = \App\Models\Contrat::create(
-                    [
-                        'num_contrat'        => '9453062',
-                        'name_contrat'       => 'Chambre froide',
-                        'intercalaire'       => null,
-                        'local_id_FK'           => $local->id,
-                        'algeco_id'          => null
                     ]);
 
                 }
@@ -114,7 +79,7 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '6665737',
                         'name_contrat'       => 'Bien AN legs',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id_FK'           => $local->id,
+                        'local_id'           => $local->id,
                         'algeco_id'          =>  null
                     ]);
                 }

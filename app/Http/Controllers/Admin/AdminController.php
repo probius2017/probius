@@ -11,6 +11,7 @@ use App\Models\Vehicule;
 use App\Models\Evenement;
 use App\Models\Structures;
 use App\Models\Logement;
+use App\Models\Contrat;
 use App\Models\Sinistre;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,16 +22,15 @@ class AdminController extends Controller
     {
     	$page = "home";
         
-        //on récupère tout les locaux avec leurs structures (sans doublons liés aux structures/contrats)
-        $locauxStructures = Local::LocauxStructures()->distinct()->select('locaux.id', 'RI', 'type_structure')->get();
-
-        $algecos = Algeco::count();
-        $vehicules = Vehicule::count();
-        $evenements = Evenement::count();
+        $locaux = Local::all();
+        $contrats = Contrat::all();
+        $algecos = Algeco::all();
+        $vehicules = Vehicule::all();
+        $evenements = Evenement::all();
         $sinistres = Sinistre::all();
 
         //on retourne la vue avec les données qu'elle intègre
-        return view('admin.home', compact('page', 'locauxStructures', 'locauxSocle', 'algecos', 'vehicules', 'evenements', 'sinistres'));
+        return view('admin.home', compact('page', 'locaux', 'contrats', 'algecos', 'vehicules', 'evenements', 'sinistres'));
     }
 
     public function RechercheAD(Request $request, $id)

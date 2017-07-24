@@ -21,27 +21,27 @@ class StructuresTableSeeder extends Seeder
             'RI' => '<=25'
             ],
 
-        	['type_structure' => 'Entrepot',
+        	['type_structure' => 'Entrepot (<=25)',
             'RI' => '<=25'
             ],
 
-            ['type_structure' => 'Entrepot',
+            ['type_structure' => 'Entrepot (>25)',
              'RI' => '>=25'
             ],
 
-        	['type_structure' => 'ACI',
+        	['type_structure' => 'ACI (<=25)',
             'RI' => '<=25'
             ],
 
-            ['type_structure' => 'ACI',
+            ['type_structure' => 'ACI (>=50)',
              'RI' => '>=50'
             ],
 
-        	['type_structure' => 'ACI (jardin)',
+        	['type_structure' => 'ACI (jardin - <=25)',
             'RI' => '<=25'
             ],
 
-        	['type_structure' => 'ACI (jardin)',
+        	['type_structure' => 'ACI (jardin - >=50)',
             'RI' => '>=50'
             ],
 
@@ -51,11 +51,11 @@ class StructuresTableSeeder extends Seeder
 
         	['type_structure' => 'Siège AD',
             'RI' => '<=25'
-            ],
-
-            ['type_structure' => 'Chambre froide',
-            'RI' => null
             ]
+
+            /*['type_structure' => 'Chambre froide',
+            'RI' => null
+            ]*/
 
         	/*['type_structure' => 'Petite ruche DREUX',
             'RI' => null

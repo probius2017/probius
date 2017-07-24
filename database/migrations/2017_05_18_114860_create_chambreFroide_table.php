@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHistoriqueVehiculesTable extends Migration
+class CreateChambreFroideTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateHistoriqueVehiculesTable extends Migration
      */
     public function up()
     {
-        Schema::create('historiqueVehicules', function (Blueprint $table) {
-
+        Schema::create('chambresFroides', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('ad', 15);
-            $table->string('marque', 50);
-            $table->string('model', 50);
-            $table->string('immat', 15);
-            $table->date('date_resiliation');
-            $table->text('motif');
+            $table->integer('local_id')->unsigned();
+            $table->string('volume', 15);
             $table->timestamps();
+
+            #foreigne keys
+            $table->foreign('local_id')->references('id')->on('locaux');
         });
     }
 
@@ -33,6 +31,6 @@ class CreateHistoriqueVehiculesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historiqueVehicules');
+        Schema::dropIfExists('chambresFroides');
     }
 }

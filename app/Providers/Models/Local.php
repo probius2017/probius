@@ -24,6 +24,11 @@ class Local extends Model
         return $this->hasMany(Contrat::class);
     }
 
+    public function chambresFroides()
+    {
+        return $this->hasMany(ChambreFroide::class);
+    }
+
     public function structures()
     {
         return $this->belongsToMany(Structure::class);
@@ -39,7 +44,7 @@ class Local extends Model
         return $this->belongsTo(Bail::class);
     }
 
-    public function isStruc($strucType)
+    public function isStruc($strucId)
     {
       
       foreach($this->structures as $structure)
@@ -49,7 +54,7 @@ class Local extends Model
           
           foreach ($this->structures as $structure) {
           
-            if($structure->type_structure == $strucType) return true;
+            if($structure->id == $strucId) return true;
           }
         } 
 
@@ -62,11 +67,11 @@ class Local extends Model
     public function scopeLocauxStructures($query)
     {
         return $query
-            ->join('local_structure', 'locaux.id', '=', 'local_structure.local_id')
-            ->join('structures', 'structures.id', '=', 'local_structure.structure_id')
+            //->join('local_structure', 'locaux.id', '=', 'local_structure.local_id')
+            //->join('structures', 'structures.id', '=', 'local_structure.structure_id')
             ->join('assodep', 'assodep.id', '=', 'locaux.ad_id')
-            ->leftJoin('contrats', 'locaux.id', '=', 'contrats.local_id_FK')
-            ->leftJoin('baux', 'baux.id', '=', 'locaux.bail_id')
+            //->leftJoin('contrats', 'locaux.id', '=', 'contrats.local_id')
+            //->leftJoin('baux', 'baux.id', '=', 'locaux.bail_id')
             //->join('baux', 'baux.id', '=', 'locaux.bail_id')
             ->orderBy('ville_local', 'ASC');
     }

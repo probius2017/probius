@@ -166,7 +166,7 @@ $( document ).ready(function() {
     let val = 0;
     
     //Suppression multiple (A finir)
-    $(".locauxDestAll").on('click', 'input:checkbox', function(){
+    /*$(".locauxDestAll").on('click', 'input:checkbox', function(){
 
       val = $(this).attr('value');
 
@@ -184,9 +184,22 @@ $( document ).ready(function() {
         console.log(tab);
       }
       console.log(tab);
+    });*/
+    
+    //Edition Chambre froide
+    $(".edit-cf").on('click', function () {
+
+      $(this).each(function(){
+
+            var url = $(this).data('url');
+            var volume = $(this).data('volume');
+
+            $('.volume').attr('value', volume);
+            $("#edit-form-cf").attr('action', url);
+      });
+
     });
-    
-    
+
 /*----------------------------------------------------------*/
 
   //Fermer la modal après export

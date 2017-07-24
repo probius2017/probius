@@ -18,18 +18,20 @@ class EntrepotsController extends Controller
 {
     public function dataEntrepots(){
 
-        $locaux = Local::LocauxStructures()
-                    ->where('type_structure', 'Entrepot' )
-                    ->where('num_contrat', '9453148')
-                    ->get();
+        $structures = Structure::where('type_structure', 'Entrepot (>25)')->get();
+        $contrats = Contrat::where('num_contrat', '9453148')->get();
+                       
+        foreach ($contrats as $contrat) {
 
-        $structures = Structure::where('type_structure', 'Entrepot')
-                        ->where('RI', '>=25')
-                        ->get();
+            $contratLocauxID[] = $contrat->local_id;
+        }
+
+        isset($contratLocauxID) ? $locaux = Local::whereIn('id', $contratLocauxID)->get() : $locaux = [];
+
         $page = 'Entrepots';
         $pageSmall = '>25RI';
 
-        $array = ['locaux' => $locaux, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['locaux' => $locaux, 'structures' => $structures, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -51,11 +53,10 @@ class EntrepotsController extends Controller
         $page = $data['page'];
         $pageSmall = $data['pageSmall'];
 
-        $locauxStructures = $data['locaux'];
-
         $structures = $data['structures'];
+        $locaux = $data['locaux']; 
 
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
+        $colonnes = ['ad_id', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -65,11 +66,20 @@ class EntrepotsController extends Controller
             ->whereNotIn('old_name', $colonnes)
             ->update(['status' => 0]);
 
-        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
+        $champs = DB::table('champsUpdate')
+                ->where('table_name', 'locaux')
+                ->orWhere('table_name', 'baux')
+                ->orWhere('table_name', 'contrats')
+                ->get();
 
-        session('champsFinal') != null ? $champsFinal = session('champsFinal') : $champsFinal = DB::table('champsUpdate')->select('new_name', 'old_name')->whereIn('old_name', $colonnes)->get();
+        $champsFinal = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'table_name')
+                    ->whereIn('old_name', $colonnes)
+                    ->get();
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        $request->session()->put('champsFinal', $champsFinal);
+
+        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**
@@ -124,30 +134,6 @@ class EntrepotsController extends Controller
         $structures = $data['structures'];
 
         $bail = Bail::findOrFail($local->bail_id);
-
-        switch ($bail->type_document) {
-            case 'Bail Civil':
-                $bail->type_document = '0';
-                break;
-            
-            case 'Bail Commercial' :
-                $bail->type_document = '1';
-                break;
-
-            case 'Bail amphytheotique' :
-                $bail->type_document = '2';
-                break;
-
-            case 'Conventions' :
-                $bail->type_document = '3';
-                break;
-
-            case 'Autres' :
-                $bail->type_document = '4';
-                break;
-        }
-
-        $bail->save();
 
         return view('admin.blocs.locaux-edit-create', compact('page', 'pageSmall', 'local', 'structures', 'bail', 'routeName'));
     }
@@ -228,35 +214,13 @@ class EntrepotsController extends Controller
             'date_debut' => $date_debut,
             'date_signature' => $date_signature,
             'date_fin' => $date_fin,
-            'clause' => $request->clause
+            'clause' => $request->clause,
+            'type_document' => $request->type_document
         ];
 
         $bail->update( $updateBail );
 
         $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
-
-        switch ($bail->type_document) {
-            case '0':
-                $bail->type_document = 'Bail Civil';
-                
-                break;
-            
-            case '1' :
-                $bail->type_document = 'Bail Commercial';
-                break;
-
-            case '2' :
-                $bail->type_document = 'Bail amphytheotique';
-                break;
-
-            case '3' :
-                $bail->type_document = 'Conventions';
-                break;
-
-            case '4' :
-                $bail->type_document = 'Autres';
-                break;
-        }
 
         $bail->save();
 
@@ -317,12 +281,12 @@ class EntrepotsController extends Controller
                             ]); 
  
         //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
-        $contrats = Contrat::where('local_id_FK', $id)->delete();
+        $contrats = Contrat::where('local_id', $id)->delete();
 
         //On supprime le local 
         $local = Local::destroy($id);
 
         return redirect(route('listeEntrepots.index', [$page, $pageSmall]))
-                ->withSuccess('Le local à bien été supprimé.');
+                ->withSuccess('Le local a bien été supprimé.');
     }
 }

@@ -107,7 +107,7 @@
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td>
-                                    {!! Form::checkbox('type_structure[]', $structure->type_structure, $local->isStruc($structure->type_structure) ? true : false) !!}
+                                    {!! Form::checkbox('type_structure[]', $structure->id, $local->isStruc($structure->id) ? true : false) !!}
                                 </td>
                             </tr>
                             @empty
@@ -239,8 +239,14 @@
 
         <div class="col-md-6">
             <div class="form-group {!! $errors->has('type_document') ? 'has-error' : '' !!} has-feedback">
-                {!! Form::label('type_document', 'Type de document', array('class' => 'control_label')) !!}
-                {{ Form::select('type_document', ['Bail Civil', 'Bail Commercial', 'Bail amphytheotique', 'Conventions', 'Autre'], $bail->type_document,  ['class' => 'form-control', 'aria-describedby' => 'error-updt']) }}
+                <label for="type_document" class="control_label">Type de document</label>
+                <select name="type_document" class="form-control" aria-describedby="error-updt">
+                  <option value="Bail Civil" {{ $bail->type_document == 'Bail Civil' ? 'selected' : ''}}>Bail Civil</option>
+                  <option value="Bail Commercial" {{ $bail->type_document == 'Bail Commercial' ? 'selected' : ''}}>Bail Commercial</option>
+                  <option value="Bail amphytheotique" {{ $bail->type_document == 'Bail amphytheotique' ? 'selected' : ''}}>Bail amphytheotique</option>
+                  <option value="Conventions" {{ $bail->type_document == 'Conventions' ? 'selected' : ''}}>Conventions</option>
+                  <option value="Autres" {{ $bail->type_document == 'Autres' ? 'selected' : ''}}>Autres</option>
+                </select>
                 {!! $errors->first('type_document', '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 <span id="error-updt" class="sr-only">(error)</span><small class="help-block">:message</small>') !!}
             </div>

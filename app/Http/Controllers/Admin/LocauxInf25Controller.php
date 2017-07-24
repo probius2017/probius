@@ -19,11 +19,13 @@ class LocauxInf25Controller extends Controller
     //fonction pour regrouper les données à utiliser dans le controller
     public function dataLocauxInf25(){
 
-        $structures = Structure::where('RI', '<=25')->get();
+        $structures = Structure::all();
+        //$structures = Structure::where('RI', '<=25')->get();
+        $locaux = Local::all();
         $page = 'Locaux';
         $pageSmall = '&lt;25RI';
 
-        $array = ['structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['locaux' => $locaux, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -48,16 +50,10 @@ class LocauxInf25Controller extends Controller
 
         $structures = $data['structures'];
 
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'local_id_FK', 'bail_id'];
-        /*session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'local_id', 'bail_id', 'type_structure'];*/
+        $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
-        $locauxStructures = Local::LocauxStructures()
-                            //->distinct()
-                            //->select($colonnes)
-                            //->where('RI', '!=', null) //A supprimer 
-                            ->get();
-        //dump($locauxStructures); die;
-
+        $locaux = $data['locaux'];
+        
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
             ->update(['status' => 1]);
@@ -66,12 +62,20 @@ class LocauxInf25Controller extends Controller
             ->whereNotIn('old_name', $colonnes)
             ->update(['status' => 0]);
 
-        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'baux')->get();
-        /*$champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->get();*/
+        $champs = DB::table('champsUpdate')
+                ->where('table_name', 'locaux')
+                ->orWhere('table_name', 'baux')
+                //->orWhere('table_name', 'contrats')
+                ->get();
 
-        session('champsFinal') != null ? $champsFinal = session('champsFinal') : $champsFinal = DB::table('champsUpdate')->select('new_name', 'old_name')->whereIn('old_name', $colonnes)->get();
+        $champsFinal = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'table_name')
+                    ->whereIn('old_name', $colonnes)
+                    ->get();
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        $request->session()->put('champsFinal', $champsFinal);
+
+        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**
@@ -214,7 +218,7 @@ class LocauxInf25Controller extends Controller
 
         $bail = Bail::findOrFail($local->bail_id);
 
-        switch ($bail->type_document) {
+        /*switch ($bail->type_document) {
             case 'Bail Civil':
                 $bail->type_document = '0';
                 break;
@@ -234,9 +238,9 @@ class LocauxInf25Controller extends Controller
             case 'Autres' :
                 $bail->type_document = '4';
                 break;
-        }
+        }*/
 
-        $bail->save();
+        //$bail->save();
 
         return view('admin.blocs.locaux-edit-create', compact('page', 'pageSmall', 'local', 'structures', 'bail', 'routeName'));
     }
@@ -289,9 +293,9 @@ class LocauxInf25Controller extends Controller
         //-------------------------------------//
 
             //On ne doit pas pouvoir modifier les structures d'un local
-        /*$newStructures = $request->type_structure? $request->type_structure : [];
+        $newStructures = $request->type_structure? $request->type_structure : [];
 
-        $local->structures()->sync($structures);*/
+        $local->structures()->sync($newStructures);
 
         //-------------------------------------//
 
@@ -318,14 +322,15 @@ class LocauxInf25Controller extends Controller
             'date_debut' => $date_debut,
             'date_signature' => $date_signature,
             'date_fin' => $date_fin,
-            'clause' => $request->clause
+            'clause' => $request->clause,
+            'type_document' => $request->type_document
         ];
 
         $bail->update( $updateBail );
 
         $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
 
-        switch ($bail->type_document) {
+        /*switch ($bail->type_document) {
             case '0':
                 $bail->type_document = 'Bail Civil';
                 
@@ -346,7 +351,7 @@ class LocauxInf25Controller extends Controller
             case '4' :
                 $bail->type_document = 'Autres';
                 break;
-        }
+        }*/
 
         $bail->save();
 
@@ -405,9 +410,9 @@ class LocauxInf25Controller extends Controller
                             ] 
 
                             ]); 
- 
+    
         //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
-        $contrats = Contrat::where('local_id_FK', $id)->delete();
+        $contrats = Contrat::where('local_id', $id)->delete();
 
         //On supprime le local 
         $local = Local::destroy($id);

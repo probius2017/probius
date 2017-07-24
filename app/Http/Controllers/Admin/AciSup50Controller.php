@@ -19,17 +19,17 @@ class AciSup50Controller extends Controller
     //fonction pour regrouper les données à utiliser dans le controller
     public function dataAciSup50(){
        
-        //On récupère tout les ACI avec RI >=50
-        /*$aci50RI = Local::whereHas('structures', function($query){
-            $query->where('RI', '>=50');
-        })->get();*/
-
-        $locaux = Local::LocauxStructures()->where('RI', '>=50')->where('num_contrat', '9322933')->get();
         $structures = Structure::where('RI', '>=50')->get();
+        $contrats = Contrat::where('num_contrat', '9322933')->get();
+        foreach ($contrats as $contrat) {
+
+            $contratLocauxID[] = $contrat->local_id;
+        }
+        isset($contratLocauxID) ? $locaux = Local::whereIn('id', $contratLocauxID)->get() : $locaux = [];
         $page = 'ACI';
         $pageSmall = '>50RI';
 
-        $array = ['locaux' => $locaux, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['locaux' => $locaux, 'structures' => $structures, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -50,11 +50,10 @@ class AciSup50Controller extends Controller
         $page = $data['page'];
         $pageSmall = $data['pageSmall'];
 
-        $locauxStructures = $data['locaux'];
-
         $structures = $data['structures'];
+        $locaux = $data['locaux'];
 
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
+        $colonnes = ['ad_id', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -64,11 +63,19 @@ class AciSup50Controller extends Controller
             ->whereNotIn('old_name', $colonnes)
             ->update(['status' => 0]);
 
-        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
+        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->orWhere('table_name', 'locaux')
+            ->orWhere('table_name', 'baux')
+            ->orWhere('table_name', 'contrats')
+            ->get();
 
-        session('champsFinal') != null ? $champsFinal = session('champsFinal') : $champsFinal = DB::table('champsUpdate')->select('new_name', 'old_name')->whereIn('old_name', $colonnes)->get();
+        $champsFinal = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'table_name')
+                    ->whereIn('old_name', $colonnes)
+                    ->get();
+       
+        $request->session()->put('champsFinal', $champsFinal);
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**
@@ -123,30 +130,6 @@ class AciSup50Controller extends Controller
         $structures = $data['structures'];
 
         $bail = Bail::findOrFail($local->bail_id);
-
-        switch ($bail->type_document) {
-            case 'Bail Civil':
-                $bail->type_document = '0';
-                break;
-            
-            case 'Bail Commercial' :
-                $bail->type_document = '1';
-                break;
-
-            case 'Bail amphytheotique' :
-                $bail->type_document = '2';
-                break;
-
-            case 'Conventions' :
-                $bail->type_document = '3';
-                break;
-
-            case 'Autres' :
-                $bail->type_document = '4';
-                break;
-        }
-
-        $bail->save();
 
         return view('admin.blocs.locaux-edit-create', compact('page', 'pageSmall', 'local', 'structures', 'bail', 'routeName'));
     }
@@ -227,35 +210,13 @@ class AciSup50Controller extends Controller
             'date_debut' => $date_debut,
             'date_signature' => $date_signature,
             'date_fin' => $date_fin,
-            'clause' => $request->clause
+            'clause' => $request->clause,
+            'type_document' => $request->type_document
         ];
 
         $bail->update( $updateBail );
 
         $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
-
-        switch ($bail->type_document) {
-            case '0':
-                $bail->type_document = 'Bail Civil';
-                
-                break;
-            
-            case '1' :
-                $bail->type_document = 'Bail Commercial';
-                break;
-
-            case '2' :
-                $bail->type_document = 'Bail amphytheotique';
-                break;
-
-            case '3' :
-                $bail->type_document = 'Conventions';
-                break;
-
-            case '4' :
-                $bail->type_document = 'Autres';
-                break;
-        }
 
         $bail->save();
 

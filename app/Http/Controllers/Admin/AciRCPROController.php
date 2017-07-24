@@ -18,16 +18,18 @@ class AciRCPROController extends Controller
 {
     public function dataAciRCPRO(){
 
-        $locaux = Local::LocauxStructures()
-                    ->whereIn('type_structure', ['ACI', 'ACI (jardin)'] )
-                    ->where('num_contrat', '971 0000 94067 F 50')
-                    ->get();
+        $structures = Structure::whereIn('type_structure', ['ACI (<=25)', 'ACI (>=50)', 'ACI (jardin - <=25)', 'ACI (jardin - >=50)'] )->get();
+        $contrats = Contrat::where('num_contrat', '971 0000 94067 F 50')->get();
+        foreach ($contrats as $contrat) {
 
-        $structures = Structure::where('RI', '>=50')->get();
+            $contratLocauxID[] = $contrat->local_id;
+        }
+
+        isset($contratLocauxID) ? $locaux = Local::whereIn('id', $contratLocauxID)->get() : $locaux = [];
         $page = 'ACI';
         $pageSmall = 'RCPRO';
 
-        $array = ['locaux' => $locaux, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['locaux' => $locaux, 'structures' => $structures, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -49,11 +51,10 @@ class AciRCPROController extends Controller
         $page = $data['page'];
         $pageSmall = $data['pageSmall'];
 
-        $locauxStructures = $data['locaux'];
-
         $structures = $data['structures'];
+        $locaux = $data['locaux']; 
 
-        session('columns') != null ? $colonnes = session('columns') : $colonnes = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
+        $colonnes = ['ad_id', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -63,11 +64,20 @@ class AciRCPROController extends Controller
             ->whereNotIn('old_name', $colonnes)
             ->update(['status' => 0]);
 
-        $champs = DB::table('champsUpdate')->select('champsUpdate.*')->where('table_name', 'locaux')->orWhere('table_name', 'structures')->orWhere('table_name', 'baux')->orWhere('table_name', 'contrats')->get();
+        $champs = DB::table('champsUpdate')
+                ->where('table_name', 'locaux')
+                ->orWhere('table_name', 'baux')
+                ->orWhere('table_name', 'contrats')
+                ->get();
 
-        session('champsFinal') != null ? $champsFinal = session('champsFinal') : $champsFinal = DB::table('champsUpdate')->select('new_name', 'old_name')->whereIn('old_name', $colonnes)->get();
+        $champsFinal = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'table_name')
+                    ->whereIn('old_name', $colonnes)
+                    ->get();
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locauxStructures', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        $request->session()->put('champsFinal', $champsFinal);
+
+        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**
@@ -122,30 +132,6 @@ class AciRCPROController extends Controller
         $structures = $data['structures'];
 
         $bail = Bail::findOrFail($local->bail_id);
-
-        switch ($bail->type_document) {
-            case 'Bail Civil':
-                $bail->type_document = '0';
-                break;
-            
-            case 'Bail Commercial' :
-                $bail->type_document = '1';
-                break;
-
-            case 'Bail amphytheotique' :
-                $bail->type_document = '2';
-                break;
-
-            case 'Conventions' :
-                $bail->type_document = '3';
-                break;
-
-            case 'Autres' :
-                $bail->type_document = '4';
-                break;
-        }
-
-        $bail->save();
 
         return view('admin.blocs.locaux-edit-create', compact('page', 'pageSmall', 'local', 'structures', 'bail', 'routeName'));
     }
@@ -226,35 +212,13 @@ class AciRCPROController extends Controller
             'date_debut' => $date_debut,
             'date_signature' => $date_signature,
             'date_fin' => $date_fin,
-            'clause' => $request->clause
+            'clause' => $request->clause,
+            'type_document' => $request->type_document
         ];
 
         $bail->update( $updateBail );
 
         $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
-
-        switch ($bail->type_document) {
-            case '0':
-                $bail->type_document = 'Bail Civil';
-                
-                break;
-            
-            case '1' :
-                $bail->type_document = 'Bail Commercial';
-                break;
-
-            case '2' :
-                $bail->type_document = 'Bail amphytheotique';
-                break;
-
-            case '3' :
-                $bail->type_document = 'Conventions';
-                break;
-
-            case '4' :
-                $bail->type_document = 'Autres';
-                break;
-        }
 
         $bail->save();
 
@@ -315,7 +279,7 @@ class AciRCPROController extends Controller
                             ]); 
  
         //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
-        $contrats = Contrat::where('local_id_FK', $id)->delete();
+        $contrats = Contrat::where('local_id', $id)->delete();
 
         //On supprime le local 
         $local = Local::destroy($id);

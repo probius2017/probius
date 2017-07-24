@@ -156,7 +156,7 @@ h1 > i{
 }
 
 .main {
-  padding: 20px 40px; }
+  padding: 20px 0px; }
   .main .page-header {
     margin-top: 0; }
 
@@ -328,9 +328,9 @@ h1 > i{
   overflow-x: hidden;}
 
 .overflow{
-    max-width: 100% !important;
-    overflow-x: auto;
-    }
+  max-width: 100% !important;
+  overflow-x: auto;
+}
 
 /*
   Page edition des locaux etc
@@ -338,3 +338,16 @@ h1 > i{
 .info-important{
   background-color: #d9edf7;
 }
+
+.CF-dlt{
+
+  padding: .2rem .2rem;
+  margin-left: 1rem;
+}
+
+/*.test-fixe{
+  position: fixed;
+}
+#locauxInf25{
+  margin-top: 180px;
+}*/

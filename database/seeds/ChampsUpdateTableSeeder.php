@@ -13,12 +13,6 @@ class ChampsUpdateTableSeeder extends Seeder
     {
         DB::table('champsUpdate')->insert([
 
-        	[
-        		'old_name' => 'numero_ad',
-        		'new_name' => 'Ad',
-        		'table_name' => 'locaux',
-                'status' => 1
-        	],
             [
                 'old_name' => 'num_contrat',
                 'new_name' => 'Numéro de contrat',
@@ -32,12 +26,6 @@ class ChampsUpdateTableSeeder extends Seeder
                 'table_name' => 'contrats',
                 'status' => 1
             ],
-            /*[
-                'old_name' => 'name_contrat',
-                'new_name' => 'nom du contrat',
-                'table_name' => 'contrats',
-                'status' => 0
-            ],*/
         	[
         		'old_name' => 'cp_local',
         		'new_name' => 'Code postal',
@@ -59,6 +47,25 @@ class ChampsUpdateTableSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'old_name' => 'cp_algeco',
+                'new_name' => 'Code postal',
+                'table_name' => 'algecos',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'ville_algeco',
+                'new_name' => 'Ville',
+                'table_name' => 'algecos',
+                'status' => 1
+
+            ],
+            [
+                'old_name' => 'adresse_algeco',
+                'new_name' => 'Adresse',
+                'table_name' => 'algecos',
+                'status' => 1
+            ],
+            [
                 'old_name' => 'complementGeographique',
                 'new_name' => 'Complément adresse',
                 'table_name' => 'locaux',
@@ -72,7 +79,7 @@ class ChampsUpdateTableSeeder extends Seeder
             ],
         	[
         		'old_name' => 'superficie',
-        		'new_name' => 'Superficie',
+        		'new_name' => 'Superficie (m²)',
         		'table_name' => 'locaux',
                 'status' => 1
 
@@ -244,7 +251,34 @@ class ChampsUpdateTableSeeder extends Seeder
                 'new_name' => 'Quantité de site',
                 'table_name' => 'baux',
                 'status' => 0
+            ],
+            [
+                'old_name' => 'volume',
+                'new_name' => 'Volume (m3)',
+                'table_name' => 'chambresFroides',
+                'status' => 1
+            ],
+            
+            /*[
+                'old_name' => 'complementGeographique',
+                'new_name' => 'Complément adresse',
+                'table_name' => 'algecos',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'apptEscalier',
+                'new_name' => 'Mentions complémentaires',
+                'table_name' => 'algecos',
+                'status' => 0
+            ],*/
+            [
+                'old_name' => 'type_algeco',
+                'new_name' => 'Type algeco',
+                'table_name' => 'algecos',
+                'status' => 1
+
             ]
+
             
         ]);
     }

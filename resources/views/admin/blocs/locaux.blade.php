@@ -6,48 +6,7 @@
 
 <h1 class="page-header"><i class="fa fa-building"></i> {{$page}} <small>{{$pageSmall}}</small></h1>
 
-<div class="row">
-	<form action="{{ route('filters', [$page, $pageSmall]) }}" method="GET">
-
-        <div class="col-md-3 form-group">
-	        <select class="form-control btn-info search-typeStructure" name="type_structure">
-	            <option selected class="filtre" value="">Filtrer par Structure</option>
-	          @forelse( $structures as $structure )
-	            <option value="{{ $structure->type_structure }}">{{ $structure->type_structure }}</option>
-	          @empty
-              @endforelse
-	        </select>
-	    </div>
-	
-	    <div class="col-md-3">
-	    	<input id="search-ville" type="text" name="ville_local" class="form-control btn-info search-ville" placeholder="Rechercher par ville" value="">
-	    </div>
-
-        <div class="col-md-2">
-            <input id="search-ad" type="text" name="numero_ad" class="form-control btn-info searchAd" placeholder="Rechercher par AD" value="">
-        </div>
-	   
-	    <div class="col-md-2 form-group">
-	        <button type="submit" class="btn btn-extia">Filtrer <i class="fa fa-search" aria-hidden="true"></i></button>
-	    </div>
-	</form> 
-   
-
-    <div id="eraseFiltre" class="col-md-2 form-group">
-        <a href="{{ route($routeName, [$page, $pageSmall]) }}" class="btn btn-extia">Effacer <i class="fa fa-eraser" aria-hidden="true"></i></a>
-    </div>
-</div>
-
-<br>
-
-<div class="row">
-    <div class="col-md-3 form-group">
-        <button id="addColumn" type="button" class="btn btn-extia" data-toggle="modal" data-target="#myModalColumn">Paramétrage du tableau <span class="glyphicon glyphicon-flash" aria-hidden="true"></span></button>
-    </div>
-    <div class="col-md-2 form-group">
-        <button id="choixExport" type="button" class="btn btn-extia" data-toggle="modal" data-target="#export-locaux">Exporter <span class="glyphicon glyphicon-export" aria-hidden="true"></span></span></button>
-    </div>
-</div>
+@include('partials.config-onglets')
 
 <br>
 
@@ -55,62 +14,170 @@
 	<table id="locauxInf25" class="table table-striped table-hover locauxDestAll">
 	    <thead>
 	        <tr>
+                <th>Ad</th>
+
 	        	@forelse($champsFinal as $c)
 	        	<th>{{ $c->new_name}}</th>
 	        	@empty
                 @endforelse
-                <th>Structures (test)</th>
-	        	<th>Bail</th>
+                
+                @if($page == 'Chambres-froides')
+                <th>Nb Chambre froide</th>
+                <th>Volume (m3)</th>
+                @elseif($page == 'Algecos')
+                <th>Bail</th>
+                @else
+                <th>Structure(s)</th>
+                <th>Bail</th>
+                @endif
+  
 	        	<th>Actions</th>
 	        </tr>	
 	    </thead>
 	    <tbody>
-            @forelse($locauxStructures as $local)
-	        <tr>
-	        	@forelse($champsFinal as $c)
-	        	<td>{{ $local[$c->old_name] }}</td>
-				@empty
-                @endforelse
+        @forelse($locaux as $local)
+
+            @if($page == 'Chambres-froides')
+            <tr>
+                <td>{{ $local->ad->numero_ad }}</td>
+
+                @forelse($champsFinal as $c)
+                    @if($c->table_name == 'locaux')
+                        <td>{{ $local[$c->old_name] }}</td>
+                    @elseif($c->table_name == 'contrats')
+                        <td>
+                            @foreach($local->contrats->where('num_contrat', '9453062') as $contrat)
+                            <p>{{ $contrat[$c->old_name] }}</p>
+                            @endforeach
+                        </td>
+                    @endif
+                @empty
+                @endforelse  
+                <td>{{ $local->chambresFroides->count() }}</td>
                 <td>
-                    @foreach($local->structures as $struc)
+                    @forelse($local->chambresFroides as $cf)
+                    <span>{{ $cf->volume }}</span><br><br>
+                    @empty
+                    @endforelse
+                </td>
+                <td>
+                    @forelse($local->chambresFroides as $cf)
+                    <a class="question-badge edition-badge edit-cf" href="" data-url="{{ route('listeChambresFroides.update', [$page, $pageSmall, $cf->id]) }}" data-volume="{{ $cf->volume }}" data-toggle="modal" data-target="#editCF"><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn-extia delete-data CF-dlt" data-url="{!! route('listeChambresFroides.destroy', [$page, $pageSmall, $cf->id]) !!}" data-toggle="modal" data-target="#supLocal"><i class="fa fa-trash-o" aria-hidden="true"></i></a><br><br>
+                    @empty
+                    @endforelse
+                </td> 
+	        </tr>
+            @elseif($page == 'Algecos')
+            <tr>
+                <td>{{ $local->ad->numero_ad }}</td>
+
+                @forelse($champsFinal as $c)
+                    @if($c->table_name == 'algecos')
+                        <td>{{ $local[$c->old_name] }}</td>
+                    @elseif($c->table_name == 'locaux')
+                        <td>{{ $local[$c->old_name] }}</td>
+                    @elseif($c->table_name == 'contrats')
+                        <td>
+                            @foreach($local->contrats->where('num_contrat', '9453755') as $contrat)
+                            <p>{{ $contrat[$c->old_name] }}</p>
+                            @endforeach
+                        </td>
+                    @endif
+                @empty
+                @endforelse  
+                
+                <td>
+                    <button id="bail-{{$local->bail_id}}" type="button" class="btn btn-extia bail" data-toggle="modal" data-target="#bail" data-id="{{ $local->bail_id }}" data-tok="{{ csrf_token() }}" data-url="{{ route('bail.show', $local->bail_id) }}">Bail <i class="fa fa-eye"></i></button>
+                </td>
+                <td>
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeAlgecos.edit', [$page, $pageSmall, $local->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeAlgecos.destroy', [$page, $pageSmall, $local->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            @else
+            <tr>
+                <td>{{ $local->ad->numero_ad }}</td>
+                @forelse($champsFinal as $c)
+                    @if($c->table_name == 'locaux')
+                      <td>{{ $local[$c->old_name] }}</td>
+                    @elseif($c->table_name == 'baux')
+                      @if($c->old_name == 'date_debut' || $c->old_name == 'date_signature' || $c->old_name == 'date_fin')
+                      <td>{{ $local->bail[$c->old_name]->format('d/m/Y') }}</td>
+                      @else
+                      <td>{{ $local->bail[$c->old_name] }}</td>
+                      @endif
+                    @elseif($c->table_name == 'contrats')
+                        @if($pageSmall == '>50RI')
+                            <td>
+                                @foreach($local->contrats->where('num_contrat', '9322933') as $contrat)
+                                <p>{{ $contrat[$c->old_name] }}</p>
+                                @endforeach
+                            </td>
+                        @elseif($pageSmall == 'RCPRO')
+                            <td>
+                                @foreach($local->contrats->where('num_contrat', '971 0000 94067 F 50') as $contrat)
+                                <p>{{ $contrat[$c->old_name] }}</p>
+                                @endforeach
+                            </td>
+                        @elseif($page == 'Entrepots')
+                            <td>
+                                @foreach($local->contrats->where('num_contrat', '9453148') as $contrat)
+                                <p>{{ $contrat[$c->old_name] }}</p>
+                                @endforeach
+                            </td>
+                        @elseif($page == 'AN')
+                            <td>
+                                @foreach($local->contrats->where('num_contrat', '6665737') as $contrat)
+                                <p>{{ $contrat[$c->old_name] }}</p>
+                                @endforeach
+                            </td>
+                        @endif
+                    @endif
+                @empty
+                @endforelse  
+                <td>
+                    @forelse($local->structures as $struc)
                         <span class="badge btn-cat">
                           {{ $struc->type_structure }}
                         </span>
-                    @endforeach
+                    @empty
+                    @endforelse
                 </td>
-	            <td>
-	            	<button id="bail-{{$local->bail_id}}" type="button" class="btn btn-extia bail" data-toggle="modal" data-target="#bail" data-id="{{ $local->bail_id }}" data-tok="{{ csrf_token() }}" data-url="{{ route('bail.show', $local->bail_id) }}">Bail <i class="fa fa-eye"></i></button>
-	            </td>
-	            <td>
+                <td>
+                    <button id="bail-{{$local->bail_id}}" type="button" class="btn btn-extia bail" data-toggle="modal" data-target="#bail" data-id="{{ $local->bail_id }}" data-tok="{{ csrf_token() }}" data-url="{{ route('bail.show', $local->bail_id) }}">Bail <i class="fa fa-eye"></i></button>
+                </td>
+                <td>
                     @if($page == 'Locaux')
-	                <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeLocaux.edit', [$page, $pageSmall, $local->local_id_FK])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeLocaux.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeLocaux.edit', [$page, $pageSmall, $local->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeLocaux.destroy', [$page, $pageSmall, $local->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'ACI' && $pageSmall == '>50RI')
-                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeACI.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeACI.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeACI.edit', [$page, $pageSmall, $local->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeACI.destroy', [$page, $pageSmall, $local->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'ACI' && $pageSmall == 'RCPRO')
-                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeAciRCPRO.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeAciRCPRO.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeAciRCPRO.edit', [$page, $pageSmall, $local->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeAciRCPRO.destroy', [$page, $pageSmall, $local->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'Entrepots')
-                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeEntrepots.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeEntrepots.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeEntrepots.edit', [$page, $pageSmall, $local->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeEntrepots.destroy', [$page, $pageSmall, $local->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'AN')
-                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeBiensAN.edit', [$page, $pageSmall, $local->local_id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeBiensAN.destroy', [$page, $pageSmall, $local->local_id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeBiensAN.edit', [$page, $pageSmall, $local->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeBiensAN.destroy', [$page, $pageSmall, $local->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
-	            </td>
-	        </tr>
-            @empty
-	        @endforelse
+                </td>
+            </tr>
+            @endif
+
+        @empty
+        @endforelse
 	    </tbody>
 	</table>
 </div>
 
-@isset($local)
 <!-- Modal pour ajout/suppression des colonnes du tableau -->
 <div class="modal fade" id="myModalColumn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -124,7 +191,7 @@
         <h2 class="modal-title" id="myModalLabel"><i class="fa fa-table" aria-hidden="true"></i> Ajouter/supprimer des colonnes</h2>
       </div>
       <div class="modal-body">
-			<div id="" class="row choix-colonnes">
+			<div class="row choix-colonnes">
                 @forelse($champs->chunk(10) as $chunk)
                 <div class="col-md-3">
 					<table>
@@ -134,7 +201,6 @@
 							<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td>
                                 <input id="{{ $champ->new_name }}" type="checkbox" name="columns[]" value="{{ $champ->old_name }}" {{ $champ->status == 1 ? 'checked' : ''}}/>
-                                <input type="hidden" name="status[]" value="{{ $champ->status}}">
 							</td>
 						</tr>
     					@empty
@@ -183,7 +249,7 @@
                     <table>
                         @forelse($chunk as $champ)
                         <tr>
-                            <td id="">{{ $champ->new_name}} </td>
+                            <td>{{ $champ->new_name}} </td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td>
                                 <input id="{{ $champ->new_name }}" type="checkbox" name="columns[]" value="{{ $champ->old_name }}" {{ $champ->status == 1 ? 'checked' : ''}}/>
@@ -216,6 +282,7 @@
   </div>
 </div>
 
+@isset($local)
 <!-- Modal pour vue/edition des baux -->
 <div class="modal fade" id="bail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -226,7 +293,11 @@
     {{ method_field('PUT') }}
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title" id="myModalLabel"><i class="fa fa-table" aria-hidden="true"></i> Bail associé au local</h2>
+        @if($page != 'Algecos' )
+        <h2 class="modal-title" id="myModalLabel"><i class="fa fa-table" aria-hidden="true"></i> Bail associé à ce Local</h2>
+        @else
+        <h2 class="modal-title" id="myModalLabel"><i class="fa fa-table" aria-hidden="true"></i> Bail associé à cet Algéco</h2>
+        @endif
       </div>
       <div class="modal-body">
 	      <div class="row add-data-bail">
@@ -243,7 +314,7 @@
   </div>
 </div>
 
-<!-- Modal surpression local -->
+<!-- Modal surpression local / Algéco / chambre froide -->
 <div class="modal fade" id="supLocal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -259,6 +330,15 @@
 
                 <input id="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
 
+                @if($page == 'Algecos')
+                <div class="modal-body">
+                    <p class="huge2"> <b>Etes vous sure de vouloir supprimer cet algéco ?</b> </p>
+                </div>
+                @elseif($page == 'Chambres-froides')
+                <div class="modal-body">
+                    <p class="huge2"> <b>Etes vous sure de vouloir supprimer cette chambre froide ?</b> </p>
+                </div>
+                @else
                 <div class="modal-body">
                     <p class="huge2"> <b>Etes vous sure de vouloir supprimer ce local?</b> </p>
 
@@ -269,9 +349,42 @@
                         <p><b>Motif de la résiliation</b> : <textarea name="motif" class="form-control" rows="3"></textarea></p>
                     </div>
                 </div>
+                @endif
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default " data-dismiss="modal">Annuler</button>
                     <button id="delete-btn" type="submit" class="btn btn-extia">Supprimer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edition chambre froide -->
+<div class="modal fade" id="editCF" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">
+                    <i class="fa fa-pencil-square-o"></i>
+                    Edition de la chambre froide
+                </h4>
+            </div>
+            <form id="edit-form-cf" action="" method="POST">
+                {{ csrf_field() }} 
+                {{ method_field('PUT') }}
+
+                <div class="modal-body">
+
+                    <div class="form-inline">
+                        <p>Modifier la valeur du <b>Volume</b> de la chambre froide : <input type="text" name="volume" class="form-control volume"></p>
+                    </div>
+                </div>
+          
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Annuler</button>
+                    <button id="" type="submit" class="btn btn-extia">Sauvegarder</button>
                 </div>
             </form>
         </div>

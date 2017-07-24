@@ -41,6 +41,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('/accueil', 'Admin\AdminController@adminIndex')->name('home');
 
+
+
+
+
+  Route::get('test', 'Admin\FonctionsLocauxController@autocomplete');
+
+
+
+
+
   //route pour le blocs contrat socle
   Route::resource('{page}/{info}/listeLocaux', 'Admin\LocauxInf25Controller');
 
@@ -55,6 +65,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   //route pour le blocs entrepots >25RI
   Route::resource('{page}/{info}/listeBiensAN', 'Admin\BiensANController');
+
+  //route pour le blocs Chambres froides
+  Route::resource('{page}/{info}/listeChambresFroides', 'Admin\ChambreFController');
+
+  //route pour le blocs Algécos
+  Route::resource('{page}/{info}/listeAlgecos', 'Admin\AlgecosController');
+
+  
 
   //route pour l'autocomplétion/recherche
   Route::get('{page}/{info}/recherche-ville', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheVille');
