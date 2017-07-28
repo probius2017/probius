@@ -29,12 +29,12 @@ class AlgecosController extends Controller
             $contratAlgecosID[] = $contrat->algeco_id;
         }
 
-        isset($contratAlgecosID) ? $locaux = Algeco::whereIn('id', $contratAlgecosID)->get() : $locaux = [];
+        isset($contratAlgecosID) ? $entities = Algeco::whereIn('id', $contratAlgecosID)->get() : $entities = [];
 
         $page = 'Algecos';
         $pageSmall = ' ';
 
-        $array = ['locaux' => $locaux, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['entities' => $entities, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -58,7 +58,7 @@ class AlgecosController extends Controller
 
         $colonnes = ['ad_id', 'intercalaire', 'cp_algeco', 'ville_algeco', 'adresse_algeco', 'type_algeco', 'id', 'bail_id'];
 
-        $locaux = $data['locaux'];
+        $entities = $data['entities'];
 
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -80,7 +80,7 @@ class AlgecosController extends Controller
 
         $request->session()->put('champsFinal', $champsFinal);
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        return view('admin.blocs.entities', compact('page', 'pageSmall', 'entities', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**

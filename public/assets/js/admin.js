@@ -28,6 +28,16 @@ $( document ).ready(function() {
           $('.searchAd').val(ui.item.value);
         }
     });
+
+    $('.search-immat').autocomplete({
+        source: "recherche-immat",
+        minLength: 1,
+        autoFocus: true,
+        select: function(e,ui)
+        {
+          $('.search-immat').val(ui.item.value);
+        }
+    });
 /*----------------------------------------------------------*/
     //Afficher les données du bail d'un local
     $('.bail').on('click', function(){
@@ -152,18 +162,27 @@ $( document ).ready(function() {
       });
 
 /*----------------------------------------------------------*/
-    //Suppression local .... 
+    //Suppression local, CF, véhicules .... 
     $(".delete-data").on('click', function () {
         
         $(this).each(function(){
 
             var url = $(this).data('url');
             $("#delete-form").attr('action', url);
-        });
+
+            //Alertes pour les sinistres lors de la suppression
+            var sinistres = $(this).data('sinistres');
+
+            if (sinistres  >  0) {
+                $('.countSinistres').text(sinistres);
+            }else{
+              $('.alertSinistres').remove();
+            }
+        }); 
     });
 
-    let tab = [];
-    let val = 0;
+    /*let tab = [];
+    let val = 0;*/
     
     //Suppression multiple (A finir)
     /*$(".locauxDestAll").on('click', 'input:checkbox', function(){
@@ -264,29 +283,18 @@ $( document ).ready(function() {
       }
   });
 
-  /*$('#addColumns').on('click', function(e){
+/*----------------------------------------------------------*/
 
-      e.preventDefault();
-      var url = $('#form-colonnes').attr('action');
-      var page = '';
-      var pageSmall = '';
+  // Fonction pour cloturer les sinistres et mettre la ligne en coloré
+  $(".cloture").on('click', function () {
 
-      $.ajax({
-              url: url,
-              method: 'POST',
-              data: {
-                  //'_token': token,
-                  '_method': 'POST'
-              },
-              success: function() {
-                  if ($('#checkAllCol').is(':checked')) {
-                    $('#checkAllExp').prop('checked', 'checked');
-                  }
-              },
-              error: function() {
-                 alert('La requête n\'a pas abouti');
-              } 
+      $(this).each(function(){
+
+            var url = $(this).data('url');
+            console.log(url);
+            $("#cloture-sinistre").attr('action', url);
       });
-  });*/
+
+  });
 
 });

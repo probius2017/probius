@@ -10,7 +10,7 @@ class CreateEvenementsTable extends Migration {
 		Schema::create('evenements', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('contrat_id')->unsigned()->nullable();
-			$table->enum('statut_event', array('validé', 'non validé'))->default('non validé');
+			$table->boolean('statut_event')->default(0);
 			$table->string('nom_salle', 50);
 			$table->string('nom_event', 50);
 			$table->date('date_demande');

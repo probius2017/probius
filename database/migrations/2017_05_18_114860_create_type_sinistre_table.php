@@ -9,7 +9,7 @@ class CreateTypeSinistreTable extends Migration {
 	{
 		Schema::create('type_sinistre', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('reference', 50);
+			$table->string('ref', 50);
 		});
 	}
 

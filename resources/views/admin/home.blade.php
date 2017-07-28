@@ -186,10 +186,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 	    <div class="panel panel-info panel-accueil">
 		    <div class="panel-heading">
-		    	<h4 class="text-center"><a href="#">Véhicules</a></h4>
+		    	<h4 class="text-center"><a href="{{ route('listeVehicules.index', ['Vehicules', ' ']) }}">Véhicules</a></h4>
 		    	<p class="text-center">Contrat n° <span>1000 16 919 </span></p>
 		    </div>
-		    <a href="#">
+		    <a href="{{ route('listeVehicules.index', ['Vehicules', ' ']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
@@ -296,10 +296,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 		<div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">Sinistres masse</a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeSinistresMasse.index', ['Sinistres', 'Masse']) }}">Sinistres masse</a></h4>
 	        	<p class="text-center"><span></span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeSinistresMasse.index', ['Sinistres', 'Masse']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">
@@ -322,10 +322,10 @@
 	<div class="col-lg-3 col-md-3 col-sm-6">
 		<div class="panel panel-info panel-accueil">
 	        <div class="panel-heading">
-	        	<h4 class="text-center"><a href="#">Sinistres véhicules</a></h4>
+	        	<h4 class="text-center"><a href="{{ route('listeSinistresVehicules.index', ['Sinistres', 'Véhicules']) }}">Sinistres véhicules</a></h4>
 	        	<p class="text-center"><span></span></p>
 	        </div>
-	        <a href="#">
+	        <a href="{{ route('listeSinistresVehicules.index', ['Sinistres', 'Véhicules']) }}">
 		        <div class="panel-body">
 		            <div class="row">
 		                <div class="col-xs-3">

@@ -258,27 +258,147 @@ class ChampsUpdateTableSeeder extends Seeder
                 'table_name' => 'chambresFroides',
                 'status' => 1
             ],
-            
-            /*[
-                'old_name' => 'complementGeographique',
-                'new_name' => 'Complément adresse',
-                'table_name' => 'algecos',
-                'status' => 0
-            ],
-            [
-                'old_name' => 'apptEscalier',
-                'new_name' => 'Mentions complémentaires',
-                'table_name' => 'algecos',
-                'status' => 0
-            ],*/
             [
                 'old_name' => 'type_algeco',
                 'new_name' => 'Type algeco',
                 'table_name' => 'algecos',
                 'status' => 1
+            ],
+            [
+                'old_name' => 'numero_contratV',
+                'new_name' => 'Numéro de contrat',
+                'table_name' => 'contratV',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'ref_macif',
+                'new_name' => 'Ref MACIF',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'ref_rdc',
+                'new_name' => 'Ref RDC',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'date_reception',
+                'new_name' => 'Date réception',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'date_ouverture',
+                'new_name' => 'Date ouverture',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'date_sinistre',
+                'new_name' => 'Date sinistre',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'ville_sinistre',
+                'new_name' => 'Ville',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'ref',
+                'new_name' => 'Type sinistre',
+                'table_name' => 'type_sinistre',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'name_marque',
+                'new_name' => 'Véhicule',
+                'table_name' => 'marques',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'name_modele',
+                'new_name' => 'Modele',
+                'table_name' => 'modeles',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'type',
+                'new_name' => 'Type',
+                'table_name' => 'categories',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'immat',
+                'new_name' => 'Immat',
+                'table_name' => 'vehicules',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'old_immat',
+                'new_name' => 'Ancienne Immat',
+                'table_name' => 'vehicules',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'pmc',
+                'new_name' => 'Date PMC',
+                'table_name' => 'vehicules',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'atp',
+                'new_name' => 'Date ATP',
+                'table_name' => 'vehicules',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'reference',
+                'new_name' => 'Garantie(s)',
+                'table_name' => 'garanties',
+                'status' => 1
+            ],
 
+
+            [
+                'old_name' => 'responsabilite',
+                'new_name' => 'Responsabilité',
+                'table_name' => 'sinistres',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'observation',
+                'new_name' => 'Observation',
+                'table_name' => 'sinistres',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'reglement_macif',
+                'new_name' => 'Regl MACIF',
+                'table_name' => 'sinistres',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'franchise',
+                'new_name' => 'Franchise',
+                'table_name' => 'sinistres',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'solde_ad',
+                'new_name' => 'Solde AD',
+                'table_name' => 'sinistres',
+                'status' => 0
+            ],
+            [
+                'old_name' => 'date_cloture',
+                'new_name' => 'Date cloture',
+                'table_name' => 'sinistres',
+                'status' => 0
             ]
-
+            
             
         ]);
     }

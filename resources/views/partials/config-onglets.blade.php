@@ -16,6 +16,10 @@
 	    <div class="col-md-3">
 	    	<input id="search-ville-algeco" type="text" name="ville_algeco" class="form-control btn-info search-ville" placeholder="Rechercher par ville" value="">
 	    </div>
+	    @elseif($page == 'Vehicules' || $page == 'Sinistres' && $pageSmall == 'Véhicules')
+	    <div class="col-md-3">
+	    	<input id="search-immat" type="text" name="immat" class="form-control btn-info search-immat" placeholder="Rechercher par immat" value="">
+	    </div>
 	    @else
 	    <div class="col-md-3">
 	    	<input id="search-ville" type="text" name="ville_local" class="form-control btn-info search-ville" placeholder="Rechercher par ville" value="">

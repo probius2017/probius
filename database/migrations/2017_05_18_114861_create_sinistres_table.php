@@ -24,13 +24,13 @@ class CreateSinistresTable extends Migration {
 			$table->decimal('reglement_macif');
 			$table->decimal('franchise');
 			$table->decimal('solde_ad');
-			$table->date('date_cloture');
+			$table->date('date_cloture')->nullable()->default(null);
 			$table->timestamps();
 
 			#foreigne keys
 			$table->foreign('type_sinistre_id')->references('id')->on('type_sinistre');
-			$table->foreign('contrat_id')->references('id')->on('contrats')->onDelete('CASCADE');
-			$table->foreign('contrat_v_id')->references('id')->on('contrat_v')->onDelete('CASCADE');
+			$table->foreign('contrat_id')->references('id')->on('contrats')->onDelete('SET NULL');
+			$table->foreign('contrat_v_id')->references('id')->on('contrat_v')->onDelete('SET NULL');
 		});
 	}
 

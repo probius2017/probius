@@ -221,6 +221,10 @@ h1 > i{
   font-size: 20px;
   font-weight: bold;
 }
+.huge3{
+  font-size: 18px;
+  font-weight: 500;
+}
 /*
 	FOOTER
 */
@@ -318,7 +322,7 @@ h1 > i{
 /*
   Filtres et autocompelte
 */
-.search-ville::placeholder, .searchAd::placeholder{
+.search-ville::placeholder, .searchAd::placeholder, .search-immat::placeholder{
   color: #fff;
 }
 
@@ -339,15 +343,14 @@ h1 > i{
   background-color: #d9edf7;
 }
 
+.flex-veh{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .CF-dlt{
 
   padding: .2rem .2rem;
   margin-left: 1rem;
 }
-
-/*.test-fixe{
-  position: fixed;
-}
-#locauxInf25{
-  margin-top: 180px;
-}*/

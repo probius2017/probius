@@ -31,7 +31,8 @@ class LocauxTableSeeder extends Seeder
                         'name_contrat'       => 'Dommages mobilier sup à 50RI',
                         'intercalaire'       => 'S00'.rand(1,100),
                         'local_id'           =>  $local->id,
-                        'algeco_id'          =>  null
+                        'algeco_id'          =>  null,
+                        'logement_id'        =>  null
                     ]);
 
                     $contratRCPRO = \App\Models\Contrat::create(
@@ -40,7 +41,8 @@ class LocauxTableSeeder extends Seeder
                         'name_contrat'       => 'RC PRO (ACI)',
                         'intercalaire'       => 'S00'.rand(1,100),
                         'local_id'           =>  $local->id,
-                        'algeco_id'          =>  null
+                        'algeco_id'          =>  null,
+                        'logement_id'        =>  null
                     ]);
 
                 }
@@ -53,7 +55,8 @@ class LocauxTableSeeder extends Seeder
                         'name_contrat'       => 'RC PRO (ACI)',
                         'intercalaire'       => 'S00'.rand(1,100),
                         'local_id'           =>  $local->id,
-                        'algeco_id'          =>  null
+                        'algeco_id'          =>  null,
+                        'logement_id'        =>  null
                     ]);
 
                 }
@@ -66,7 +69,8 @@ class LocauxTableSeeder extends Seeder
                         'name_contrat'       => 'Entrepot >25RI',
                         'intercalaire'       => 'S00'.rand(1,100),
                         'local_id'           => $local->id,
-                        'algeco_id'          =>  null
+                        'algeco_id'          =>  null,
+                        'logement_id'        =>  null
                     ]);
 
                 }
@@ -80,7 +84,8 @@ class LocauxTableSeeder extends Seeder
                         'name_contrat'       => 'Bien AN legs',
                         'intercalaire'       => 'S00'.rand(1,100),
                         'local_id'           => $local->id,
-                        'algeco_id'          =>  null
+                        'algeco_id'          =>  null,
+                        'logement_id'        =>  null
                     ]);
                 }
             }

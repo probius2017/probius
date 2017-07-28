@@ -109,16 +109,13 @@ $factory->define(App\Models\Bail::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Evenement::class, function (Faker\Generator $faker) {
 
-    $statut = ['validé', 'non validé'];
-
-
     return [
-                'statut_event'     => $statut[array_rand($statut)],
+                'statut_event'     => rand(0, 1),
                 'nom_salle'        => $faker->state,
                 'nom_event'        => $faker->jobTitle,
                 'date_demande'     => $faker->date,
                 'date_reponse'     => $faker->date,
-                'remarque'         => $faker->text(100),
-                'contrat_id'       => 1
+                'remarque'         => $faker->text(100)
+                //'contrat_id'       => 1
             ];
 });

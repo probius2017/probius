@@ -13,18 +13,18 @@ class TypeSinistresTableSeeder extends Seeder
     {
         DB::table('type_sinistre')->insert([
 
-        	['reference' => 'VOl'],
-        	['reference' => 'BDG / EFFRACTION'],
-        	['reference' => 'CAT NAT'],
-        	['reference' => 'RC'],
-        	['reference' => 'INCENDIE'],
-        	['reference' => 'DOMMAGE'],
-        	['reference' => 'CORPORELS'],
-        	['reference' => 'ASSISTANCE'],
-            ['reference' => 'DDE'],
-            ['reference' => 'DOM ELEC'],
-            ['reference' => 'RAPATRIEMENT'],
-            ['reference' => 'PJ']
+        	['ref' => 'BDG'],
+        	['ref' => 'VOL / EFFRACTION'],
+        	['ref' => 'CAT NAT'],
+        	['ref' => 'RC'],
+        	['ref' => 'INCENDIE'],
+        	['ref' => 'DOMMAGE'],
+        	['ref' => 'CORPORELS'],
+        	['ref' => 'ASSISTANCE'],
+            ['ref' => 'DDE'],
+            ['ref' => 'DOM ELEC'],
+            ['ref' => 'RAPATRIEMENT'],
+            ['ref' => 'PJ']
         ]);
     }
 }

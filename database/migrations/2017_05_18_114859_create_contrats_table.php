@@ -14,11 +14,13 @@ class CreateContratsTable extends Migration {
 			$table->string('intercalaire', 30)->nullable();
 			$table->integer('local_id')->unsigned()->nullable();
 			$table->integer('algeco_id')->unsigned()->nullable();
+			$table->integer('logement_id')->unsigned()->nullable();
 			$table->timestamps();
 
 			#foreign keys
             $table->foreign('local_id')->references('id')->on('locaux')->onDelete('SET NULL');
             $table->foreign('algeco_id')->references('id')->on('algecos')->onDelete('SET NULL');
+            $table->foreign('logement_id')->references('id')->on('logements')->onDelete('SET NULL');
 		});
 	}
 

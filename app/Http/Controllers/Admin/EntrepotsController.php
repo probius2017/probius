@@ -26,12 +26,12 @@ class EntrepotsController extends Controller
             $contratLocauxID[] = $contrat->local_id;
         }
 
-        isset($contratLocauxID) ? $locaux = Local::whereIn('id', $contratLocauxID)->get() : $locaux = [];
+        isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
 
         $page = 'Entrepots';
         $pageSmall = '>25RI';
 
-        $array = ['locaux' => $locaux, 'structures' => $structures, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['entities' => $entities, 'structures' => $structures, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -54,7 +54,7 @@ class EntrepotsController extends Controller
         $pageSmall = $data['pageSmall'];
 
         $structures = $data['structures'];
-        $locaux = $data['locaux']; 
+        $entities = $data['entities']; 
 
         $colonnes = ['ad_id', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
@@ -79,7 +79,7 @@ class EntrepotsController extends Controller
 
         $request->session()->put('champsFinal', $champsFinal);
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        return view('admin.blocs.entities', compact('page', 'pageSmall', 'entities', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**

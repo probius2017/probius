@@ -26,6 +26,11 @@ class Contrat extends Model
         return $this->belongsTo(Local::class);
     }
 
+    public function logement()
+    {
+        return $this->belongsTo(Logement::class);
+    }
+
     public function evenements()
     {
         return $this->hasMany(Evenement::class);

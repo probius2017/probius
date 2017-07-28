@@ -26,11 +26,10 @@ class EvenementsTableSeeder extends Seeder
 	        	]
 	        );
             $event->typeEvenements()->attach($typeEvt);
-
 	    
             /*$event->id%2 == 0 ? $event->contrat()->associate($contratCulture->id) : $event->contrat()->associate($contratVac->id);*/
 
-            $event->save();
+           // $event->save();
 
         });
     }

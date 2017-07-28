@@ -9,7 +9,8 @@ class Vehicule extends Model
 
     protected $table = 'vehicules';
     public $timestamps = true;
-    protected $fillable = array('immat', 'old_immat', 'pmc', 'atp');
+    protected $fillable = array('immat', 'old_immat', 'pmc', 'atp', 'date_delete');
+    protected $dates = ['created_at', 'updated_at', 'atp', 'pmc', 'date_delete'];
 
     public function ad()
     {
@@ -26,9 +27,8 @@ class Vehicule extends Model
         return $this->belongsTo(ContratV::class);
     }
 
-    public function historique()
+    public function modele()
     {
-        return $this->belongsTo(Historique::class);
+        return $this->belongsTo(Modele::class);
     }
-
 }

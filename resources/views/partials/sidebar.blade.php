@@ -32,16 +32,16 @@
     <li{!! isset($page) && $page == 'AN' ? ' class="active"' : '' !!}>
         <a href="{{ route('listeBiensAN.index', ['AN', 'Biens']) }}"><i class="fa fa-building-o"></i> Biens AN</a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-car"></i> Véhicules</a>
+    <li{!! isset($page) && $page == 'Vehicules' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeVehicules.index', ['Vehicules', ' ']) }}"><i class="fa fa-car"></i> Véhicules</a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-calendar"></i> Evènements</a>
+    <li{!! isset($page) && $page == 'Evenements' ? ' class="active"' : '' !!}>
+        <a href=""><i class="fa fa-calendar"></i> Evènements</a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-exclamation-triangle"></i> Sinistres masse</a>
+    <li{!! isset($page) && $page == 'Sinistres' && $pageSmall == 'Masse' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeSinistresMasse.index', ['Sinistres', 'Masse']) }}"><i class="fa fa-exclamation-triangle"></i> Sinistres masse</a>
     </li>
-    <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
-        <a href="#"><i class="fa fa-exclamation-triangle"></i> Sinistres véhicules</a>
+    <li{!! isset($page) && $page == 'Sinistres' && $pageSmall == 'Véhicules' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeSinistresVehicules.index', ['Sinistres', 'Véhicules']) }}"><i class="fa fa-exclamation-triangle"></i> Sinistres véhicules</a>
     </li>
 </ul>

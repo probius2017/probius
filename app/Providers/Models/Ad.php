@@ -30,4 +30,9 @@ class Ad extends Model
     {
         return $this->hasMany(Algeco::class);
     }
+
+    public function logements()
+    {
+        return $this->hasMany(Logement::class);
+    }
 }

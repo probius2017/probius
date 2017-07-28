@@ -21,11 +21,11 @@ class LocauxInf25Controller extends Controller
 
         $structures = Structure::all();
         //$structures = Structure::where('RI', '<=25')->get();
-        $locaux = Local::all();
+        $entities = Local::all();
         $page = 'Locaux';
         $pageSmall = '&lt;25RI';
 
-        $array = ['locaux' => $locaux, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['entities' => $entities, 'structures' => $structures, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -52,7 +52,7 @@ class LocauxInf25Controller extends Controller
 
         $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
-        $locaux = $data['locaux'];
+        $entities = $data['entities'];
         
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -75,7 +75,7 @@ class LocauxInf25Controller extends Controller
 
         $request->session()->put('champsFinal', $champsFinal);
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
+        return view('admin.blocs.entities', compact('page', 'pageSmall', 'entities', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
     /**

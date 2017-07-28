@@ -21,7 +21,7 @@ class CreateHistoriqueVehiculesTable extends Migration
             $table->string('model', 50);
             $table->string('immat', 15);
             $table->date('date_resiliation');
-            $table->text('motif');
+            $table->text('motif')->nullable();
             $table->timestamps();
         });
     }

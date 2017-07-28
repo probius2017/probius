@@ -16,9 +16,10 @@ class ContratsTableSeeder extends Seeder
             [
                 'num_contrat'        => '3411862',
                 'name_contrat'       => 'Contrat socle',
-                'intercalaire'       => null,
-                'local_id'        => null,
-                'algeco_id'          =>  null
+                'intercalaire'       =>  null,
+                'local_id'           =>  null,
+                'algeco_id'          =>  null,
+                'logement_id'        =>  null
             ]
         );
 
@@ -26,9 +27,10 @@ class ContratsTableSeeder extends Seeder
             [
                 'num_contrat'        => '9454153',
                 'name_contrat'       => 'Culture loisirs',
-                'intercalaire'       =>  null,
-                'local_id'        =>  null,
-                'algeco_id'          =>  null
+                'intercalaire'       =>  'C001',
+                'local_id'           =>  null,
+                'algeco_id'          =>  null,
+                'logement_id'        =>  null
             ]
         );
 
@@ -37,8 +39,9 @@ class ContratsTableSeeder extends Seeder
                 'num_contrat'        => '9454143',
                 'name_contrat'       => 'rapatriement RC vacances manif',
                 'intercalaire'       => null,
-                'local_id'        => null,
-                'algeco_id'          => null
+                'local_id'           => null,
+                'algeco_id'          => null,
+                'logement_id'        => null
             ]
         );
     }

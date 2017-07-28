@@ -34,11 +34,5 @@ class ModelesTableSeeder extends Seeder
         	'marque_id' => 2,
             'category_id' => 3
         ]);
-
-        DB::table('modeles')->insert([
-            'name_modele' => 'MEGANE',
-            'marque_id' => 2,
-            'category_id' => 3
-        ]);
     }
 }

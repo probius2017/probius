@@ -76,6 +76,10 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
             'League\\Flysystem\\' => 17,
             'Laravel\\Tinker\\' => 15,
         ),
+        'J' => 
+        array (
+            'Jenssegers\\Date\\' => 16,
+        ),
         'I' => 
         array (
             'Illuminate\\Html\\' => 16,
@@ -218,6 +222,10 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
         array (
             0 => __DIR__ . '/..' . '/laravel/tinker/src',
         ),
+        'Jenssegers\\Date\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/date/src',
+        ),
         'Illuminate\\Html\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/html',
@@ -323,6 +331,8 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
         'App\\Http\\Controllers\\Admin\\EntrepotsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/EntrepotsController.php',
         'App\\Http\\Controllers\\Admin\\FonctionsLocauxController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/FonctionsLocauxController.php',
         'App\\Http\\Controllers\\Admin\\LocauxInf25Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/LocauxInf25Controller.php',
+        'App\\Http\\Controllers\\Admin\\SinistresVehiculesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SinistresVehiculesController.php',
+        'App\\Http\\Controllers\\Admin\\VehiculesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/VehiculesController.php',
         'App\\Http\\Controllers\\Admin\\importExportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/importExportController.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
@@ -336,7 +346,9 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Requests\\AlgecosRequest' => __DIR__ . '/../..' . '/app/Http/Requests/AlgecosRequest.php',
         'App\\Http\\Requests\\LocauxRequest' => __DIR__ . '/../..' . '/app/Http/Requests/LocauxRequest.php',
+        'App\\Http\\Requests\\VehiculesRequest' => __DIR__ . '/../..' . '/app/Http/Requests/VehiculesRequest.php',
         'App\\Models\\Ad' => __DIR__ . '/../..' . '/app/Providers/Models/Ad.php',
         'App\\Models\\Algeco' => __DIR__ . '/../..' . '/app/Providers/Models/Algeco.php',
         'App\\Models\\Antenne' => __DIR__ . '/../..' . '/app/Providers/Models/Antenne.php',
@@ -348,7 +360,9 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
         'App\\Models\\Evenement' => __DIR__ . '/../..' . '/app/Providers/Models/Evenement.php',
         'App\\Models\\Garantie' => __DIR__ . '/../..' . '/app/Providers/Models/Garantie.php',
         'App\\Models\\HistoriqueLocal' => __DIR__ . '/../..' . '/app/Providers/Models/HistoriqueLocal.php',
+        'App\\Models\\HistoriqueVehicule' => __DIR__ . '/../..' . '/app/Providers/Models/HistoriqueVehicule.php',
         'App\\Models\\Local' => __DIR__ . '/../..' . '/app/Providers/Models/Local.php',
+        'App\\Models\\Logement' => __DIR__ . '/../..' . '/app/Providers/Models/Logement.php',
         'App\\Models\\Marque' => __DIR__ . '/../..' . '/app/Providers/Models/Marque.php',
         'App\\Models\\Modele' => __DIR__ . '/../..' . '/app/Providers/Models/Modele.php',
         'App\\Models\\NewChamp' => __DIR__ . '/../..' . '/app/Providers/Models/NewChamp.php',
@@ -396,6 +410,7 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
         'CreateHistoriqueVehiculesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_114848_create_historiqueVehicules_table.php',
         'CreateLocalStructureTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_114865_create_local_structure_table.php',
         'CreateLocauxTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_114857_create_locaux_table.php',
+        'CreateLogementsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_114856_create_logements_table.php',
         'CreateMarquesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_114849_create_marques_table.php',
         'CreateModelesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_114851_create_modeles_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
@@ -1628,6 +1643,8 @@ class ComposerStaticInita144278fbfb8631dace663693d8b9f04
         'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/ConsoleColor.php',
         'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/InvalidStyleException.php',
         'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src/JakubOnderka/PhpConsoleHighlighter/Highlighter.php',
+        'Jenssegers\\Date\\Date' => __DIR__ . '/..' . '/jenssegers/date/src/Date.php',
+        'Jenssegers\\Date\\DateServiceProvider' => __DIR__ . '/..' . '/jenssegers/date/src/DateServiceProvider.php',
         'Laravel\\Tinker\\Console\\TinkerCommand' => __DIR__ . '/..' . '/laravel/tinker/src/Console/TinkerCommand.php',
         'Laravel\\Tinker\\TinkerCaster' => __DIR__ . '/..' . '/laravel/tinker/src/TinkerCaster.php',
         'Laravel\\Tinker\\TinkerServiceProvider' => __DIR__ . '/..' . '/laravel/tinker/src/TinkerServiceProvider.php',

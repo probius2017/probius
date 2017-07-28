@@ -26,12 +26,12 @@ class ChambreFController extends Controller
             $contratLocauxID[] = $contrat->local_id;
         }
 
-        isset($contratLocauxID) ? $locaux = Local::whereIn('id', $contratLocauxID)->get() : $locaux = [];
+        isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
 
         $page = 'Chambres-froides';
         $pageSmall = ' ';
 
-        $array = ['locaux' => $locaux, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
+        $array = ['entities' => $entities, 'contrats' => $contrats, 'page' => $page, 'pageSmall' => $pageSmall];
 
         return $array;
     }
@@ -55,7 +55,7 @@ class ChambreFController extends Controller
 
         $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'id'];
 
-        $locaux = $data['locaux'];
+        $entities = $data['entities'];
 
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
@@ -77,7 +77,7 @@ class ChambreFController extends Controller
 
         $request->session()->put('champsFinal', $champsFinal);
 
-        return view('admin.blocs.locaux', compact('page', 'pageSmall', 'locaux', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName')); 
+        return view('admin.blocs.entities', compact('page', 'pageSmall', 'entities', 'champs', 'champsFinal', 'colonnes', 'routeName')); 
     }
 
     /**

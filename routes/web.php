@@ -41,16 +41,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('/accueil', 'Admin\AdminController@adminIndex')->name('home');
 
-
-
-
-
-  Route::get('test', 'Admin\FonctionsLocauxController@autocomplete');
-
-
-
-
-
   //route pour le blocs contrat socle
   Route::resource('{page}/{info}/listeLocaux', 'Admin\LocauxInf25Controller');
 
@@ -72,6 +62,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   //route pour le blocs Algécos
   Route::resource('{page}/{info}/listeAlgecos', 'Admin\AlgecosController');
 
+  //route pour le blocs véhicules
+  Route::resource('{page}/{info}/listeVehicules', 'Admin\VehiculesController');
+
+  //route pour le blocs sinistres Masse et Véhicules
+  Route::resource('{page}/{info}/listeSinistresVehicules', 'Admin\SinistresVehiculesController');
+
+  Route::resource('{page}/{info}/listeSinistresMasse', 'Admin\SinistresMasseController');
+
   
 
   //route pour l'autocomplétion/recherche
@@ -79,11 +77,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('{page}/{info}/recherche-ad', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheAd');
 
+  Route::get('{page}/{info}/recherche-immat', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheImmat');
+
   //Route pour les filtres
   Route::get('{page}/{info}/filters', 'Admin\FonctionsLocauxController@filters')->name('filters');
 
-
   Route::post('{page}/{info}/updateColonnes', 'Admin\FonctionsLocauxController@updateColumns')->name('updateColumns');
+
+  Route::any('{page}/{info}/cloture/{id}', 'Admin\FonctionsLocauxController@clotureSinistre')->name('clotureSinistre');
+
 
 
   Route::resource('locaux/bail', 'Admin\BauxController');

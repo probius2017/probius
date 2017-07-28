@@ -10,6 +10,7 @@ class Sinistre extends Model
     protected $table = 'sinistres';
     public $timestamps = true;
     protected $fillable = array('ref_rdc', 'ref_macif', 'date_reception', 'date_ouverture', 'date_sinistre', 'ville_sinistre', 'cp_sinistre', 'responsabilite', 'observation', 'reglement_macif', 'franchise', 'solde_ad', 'date_cloture');
+    protected $dates = ['created_at', 'updated_at', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture'];
 
     public function contratV()
     {
