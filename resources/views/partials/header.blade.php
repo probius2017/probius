@@ -10,11 +10,11 @@
                         <a href="#"><i class="fa fa-file-text"></i> Flux d'activités</a>
                     </li>
 
-                    <li{!! isset($page) && $page == 'historique' ? ' class="active"' : '' !!}>
+                    <li{!! isset($page) && $page == 'Historique' ? ' class="active"' : '' !!}>
                         <a  href="#" id="dropHisto" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-history" aria-hidden="true"></i> Historiques <span class="caret"></span></a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="#"><i class="fa fa-eye" aria-hidden="true"></i> Historique locaux</a></li>
-                                <li><a href="#"><i class="fa fa-eye" aria-hidden="true"></i> historique véhicules</a></li>
+                                <li><a href="{{ route('historiqueLocaux', ['Historique', 'Locaux']) }}"><i class="fa fa-eye" aria-hidden="true"></i> Historique locaux</a></li>
+                                <li><a href="{{ route('historiqueVehicules', ['Historique', 'véhicules']) }}"><i class="fa fa-eye" aria-hidden="true"></i> historique véhicules</a></li>
                             </ul>
                     </li>
 

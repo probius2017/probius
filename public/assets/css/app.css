@@ -13,14 +13,14 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center*;*/
- }
+}
 
- ol, ul{
+ol, ul{
   list-style: none;
- }
- a, a:hover{
+}
+a, a:hover{
   text-decoration: none;
- }
+}
 
 .navbar {
   border: 0 !important;
@@ -80,6 +80,12 @@ body {
     background-color: #e5007d;
     border-color: #adadad;}
 
+.navbar-nav > .active > a,
+.navbar-nav > .active > a:hover,
+.navbar-nav > .active > a:focus {
+  color: #e5007d;
+  background-color: #fff; }
+
 .navbar-n > li > a {
   color: #000 !important; }
 
@@ -90,14 +96,9 @@ body {
   color: #fff;
   background-color: #e5007d; }
 
-.navbar-nav > .active > a,
-.navbar-nav > .active > a:hover,
-.navbar-nav > .active > a:focus {
-  color: #e5007d;
-  background-color: #fff; }
 
 .dropdown-menu>li>a>i{
-  color: #e5007d;
+  color: #e5007d !important;
 }
 /*
 	SIDEBAR

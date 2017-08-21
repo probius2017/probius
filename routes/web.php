@@ -70,7 +70,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::resource('{page}/{info}/listeSinistresMasse', 'Admin\SinistresMasseController');
 
-  
+  //routes pour les historiques
+  Route::get('{page}/{info}/listeHistoriqueLocaux', 'Admin\HistoriquesController@historiqueLocaux')->name('historiqueLocaux');
+
+  Route::get('{page}/{info}/listeHistoriqueVehicules', 'Admin\HistoriquesController@historiqueVehicules')->name('historiqueVehicules');
 
   //route pour l'autocomplétion/recherche
   Route::get('{page}/{info}/recherche-ville', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheVille');

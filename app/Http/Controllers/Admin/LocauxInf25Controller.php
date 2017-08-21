@@ -10,9 +10,11 @@ use App\Models\Local;
 use App\Models\Bail;
 use App\Models\Structure;
 use App\Models\Contrat;
+use App\Models\ChambreFroide;
 use Illuminate\Http\Request;
 use App\Http\Requests\LocauxRequest;
 use App\Http\Controllers\Controller;
+
 
 class LocauxInf25Controller extends Controller
 {   
@@ -413,6 +415,9 @@ class LocauxInf25Controller extends Controller
     
         //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
         $contrats = Contrat::where('local_id', $id)->delete();
+
+        //Suppréssion des CF du local si elles existent
+        $chambresF = ChambreFroide::where('local_id', $id)->delete();
 
         //On supprime le local 
         $local = Local::destroy($id);

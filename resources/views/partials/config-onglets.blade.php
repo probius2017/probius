@@ -43,10 +43,19 @@
 <br>
 
 <div class="row">
+	@if( $page != 'Historique' )
     <div class="col-md-3 form-group">
         <button id="addColumn" type="button" class="btn btn-extia" data-toggle="modal" data-target="#myModalColumn">Paramétrage du tableau <span class="glyphicon glyphicon-flash" aria-hidden="true"></span></button>
     </div>
     <div class="col-md-2 form-group">
         <button id="choixExport" type="button" class="btn btn-extia" data-toggle="modal" data-target="#export-locaux">Exporter <span class="glyphicon glyphicon-export" aria-hidden="true"></span></span></button>
     </div>
+    @else
+    <div class="col-md-2 form-group">
+    	<form action="{{ URL::to('admin/downloadExcel/xls') }}" method="POST">
+    	{{csrf_field()}}
+        	<button id="exportExcel" type="submit" class="btn btn-extia">Exporter (.xls) <span class="glyphicon glyphicon-export" aria-hidden="true"></span></button>
+        </form>
+    </div>
+    @endif
 </div>
