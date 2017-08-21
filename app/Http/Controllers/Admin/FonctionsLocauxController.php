@@ -297,8 +297,8 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
-            $entities = $data['entities'];
-
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
+            
             $champs = DB::table('champsUpdate')
                 ->where('table_name', 'locaux')
                 ->orWhere('table_name', 'baux')
@@ -314,7 +314,7 @@ class FonctionsLocauxController extends Controller
          
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'type_structure'];
             
-            $entities = $data['entities'];
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
 
             $champs = DB::table('champsUpdate')
                 ->where('table_name', 'locaux')
@@ -331,7 +331,7 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'id'];
 
-            $entities = $data['entities'];
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
 
             $champs = DB::table('champsUpdate')
                 ->select('new_name', 'old_name', 'status')
@@ -347,7 +347,7 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'intercalaire', 'cp_algeco', 'ville_algeco', 'adresse_algeco', 'type_algeco', 'id', 'bail_id'];
 
-            $entities = $data['entities'];
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
 
             $champs = DB::table('champsUpdate')
                 ->select('new_name', 'old_name', 'status')
@@ -363,7 +363,7 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'type', 'reference', 'name_marque', 'name_modele', 'immat', 'id'];
 
-            $entities = $data['entities'];
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
 
             $champs = DB::table('champsUpdate')
                 ->select('new_name', 'old_name', 'status')
@@ -379,7 +379,7 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'name_marque', 'immat','id'];
 
-            $entities = $data['entities'];
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
 
             $champs = DB::table('champsUpdate')
                 ->select('new_name', 'old_name', 'status')
@@ -395,7 +395,7 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire','id'];
 
-            $entities = $data['entities'];
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
 
             $champs = DB::table('champsUpdate')
                 ->select('new_name', 'old_name', 'status')
@@ -441,6 +441,7 @@ class FonctionsLocauxController extends Controller
 
             if (!empty($entities)) {
                 $entities = $structure->locaux->where('ad_id', $ad->id)->where('ville_local', $villeLocal);
+                $request->session()->put('entities', $entities);
             }else{
 
                 return redirect()
@@ -454,6 +455,7 @@ class FonctionsLocauxController extends Controller
 
             if (!empty($entities)) {
                 $entities = $structure->locaux->where('ville_local', $villeLocal);
+                $request->session()->put('entities', $entities);
             }else{
 
                 return redirect()
@@ -474,6 +476,8 @@ class FonctionsLocauxController extends Controller
                     ->where('ad_id', $ad->id)
                     ->where('ville_local', $villeLocal)
                     ->where('ville_algeco', $villeAlgeco);
+                $request->session()->put('entities', $entities);
+
             }else{
 
                 return redirect()
@@ -487,6 +491,7 @@ class FonctionsLocauxController extends Controller
 
             if (!empty($entities)) {
                 $entities = $structure->locaux->where('ad_id', $ad->id);
+                $request->session()->put('entities', $entities);
             }else{
 
                 return redirect()
@@ -501,6 +506,8 @@ class FonctionsLocauxController extends Controller
             if (!empty($entities)) {
                 
                 $entities = $data['entities']->where('ville_local', $villeLocal)->where('ville_algeco', $villeAlgeco);
+                $request->session()->put('entities', $entities);
+
             }else{
 
                 return redirect()
@@ -516,6 +523,7 @@ class FonctionsLocauxController extends Controller
           
             if (!empty($entities)) {
                 $entities = $structure->locaux;
+                $request->session()->put('entities', $entities);
             }else{
 
                 return redirect()
@@ -535,6 +543,7 @@ class FonctionsLocauxController extends Controller
             
                 if (!empty($entities)) {
                     $entities = $sinistres;
+                    $request->session()->put('entities', $entities);
                 }else{
 
                     return redirect()
@@ -547,6 +556,7 @@ class FonctionsLocauxController extends Controller
             
                 if (!empty($entities)) {
                     $entities = $data['entities']->where('ad_id', $ad->id);
+                    $request->session()->put('entities', $entities);
                 }else{
 
                     return redirect()
@@ -567,6 +577,7 @@ class FonctionsLocauxController extends Controller
             
                 if (!empty($entities)) {
                     $entities = $sinistres;
+                    $request->session()->put('entities', $entities);
                 }else{
 
                     return redirect()
@@ -580,6 +591,7 @@ class FonctionsLocauxController extends Controller
                 if (!empty($entities)) {
                     
                     $entities = $data['entities']->where('immat', $immat);
+                    $request->session()->put('entities', $entities);
                 }else{
 
                     return redirect()
@@ -589,6 +601,7 @@ class FonctionsLocauxController extends Controller
             }
 
         }else{
+            $request->session()->forget('entities');
             $entities = $data['entities'];
         }
 

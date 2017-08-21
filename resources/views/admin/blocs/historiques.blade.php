@@ -6,44 +6,50 @@
 
 <h1 class="page-header"><i class="fa fa-building"></i> {{$page}} <small>{{$pageSmall}}</small></h1>
 
-@include('partials.config-onglets')
-
 <br>
 
+<div class="row">
+    <div class="col-md-2 form-group">
+    	<form action="{{ URL::to('admin/downloadExcel/xls') }}" method="POST">
+    	{{csrf_field()}}
+        	<button id="exportExcel" type="submit" class="btn btn-extia">Exporter (.xls) <span class="glyphicon glyphicon-export" aria-hidden="true"></span></button>
+        </form>
+    </div>
+</div>
+
 <div class="">
-	<table class="table table-striped table-hover">
-	    <thead>
-	        <tr>
-       			@if($page == 'Historique' && $pageSmall == 'Locaux')
-       			<th>Ad</th>
-       			<th>Ville</th>
-       			<th>Code postal</th>
-       			<th>Adresse</th>
-       			<th>Complément adresse</th>
-       			<th>Mentions complémentaires</th>
-       			<th>Superficie (m²)</th>
-       			<th>Structure(s)</th>
-       			<th>Date fin</th>
-       			<th>Date résiliation</th>
-       			<th>Motif</th>
-       			@else
+	<table class="table">
+	    <thead >
+	    	@if($page == 'Historique' && $pageSmall == 'Locaux')
+	        <tr class="info">
+       			<th class="col-md-1">Ad</th>
+       			<th class="col-md-1">Ville</th>
+       			<th class="col-md-1">Code postal</th>
+       			<th class="col-md-1">Adresse</th>
+       			<th class="col-md-1">Complément adresse</th>
+       			<th class="col-md-1">Mentions complémentaires</th>
+       			<th class="col-md-1">Superficie (m²)</th>
+       			<th class="col-md-1">Structure(s)</th>
+       			<th class="col-md-1">Date fin</th>
+       			<th class="col-md-1">Date résiliation</th>
+       		</tr>
+       		@else
+       		<tr class="info">
        			<th class="col-md-1">Ad</th>
        			<th class="col-md-1">Marque</th>
        			<th class="col-md-1">Model</th>
        			<th class="col-md-1">N° immat</th>
        			<th class="col-md-1">Date résiliation</th>
        			<th class="col-md-5">Motif</th>
-       			@endif
-       	
-	        </tr>	
+       		</tr>
+       		@endif
 	    </thead>
 	    <tbody>
         @forelse($historiques as $historique)
             
+            @if($page == 'Historique' && $pageSmall == 'Locaux')
             <tr>
-                <td>{{ $historique->ad }}</td> 
-
-                @if($page == 'Historique' && $pageSmall == 'Locaux')
+                <td rowspan="2">{{ $historique->ad }}</td> 
                 <td>{{ $historique->ville_local }}</td>
                 <td>{{ $historique->cp_local }}</td>
                 <td>{{ $historique->adresse_local }}</td>
@@ -61,17 +67,25 @@
                 </td>
                 <td>{{ $historique->date_fin->format('d/m/Y') }}</td>
                 <td><b>{{ $historique->date_resiliation->format('d/m/Y') }}</b></td>
-                <td>{{ $historique->motif }}</td>
-                @else
-                <td>{{ $historique->marque }}</td>
+	        </tr>
+	        <tr>
+	        	<td colspan="" style="text-align: right;" ><b>Motif :</b></td>
+	        	<td colspan="9">{{ $historique->motif}}</td>
+	        </tr>
+	        <tr>
+	        	<td colspan="12" class="active"></td>
+	        </tr>
+	        @else
+	        <tr>
+	        	<td>{{ $historique->ad }}</td> 
+	        	<td>{{ $historique->marque }}</td>
                 <td>{{ $historique->model }}</td>
                 <td>{{ $historique->immat }}</td>
                 <td><b>{{ $historique->date_resiliation->format('d/m/Y') }}</b></td>
                 <td>{{ $historique->motif }}</td>
-                @endif
-
 	        </tr>
-	
+	        @endif
+	        
         @empty
         @endforelse
 	    </tbody>
