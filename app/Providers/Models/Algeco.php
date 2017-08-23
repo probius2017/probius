@@ -21,6 +21,11 @@ class Algeco extends Model
         return $this->hasMany(Contrat::class);
     }
 
+    public function sinistres()
+    {
+        return $this->hasManyThrough('App\Models\Sinistre', 'App\Models\Contrat');
+    }
+    
     public function bail()
     {
         return $this->belongsTo(Bail::class);

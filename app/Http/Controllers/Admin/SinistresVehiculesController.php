@@ -44,6 +44,7 @@ class SinistresVehiculesController extends Controller
 
         $request->session()->forget('columns');
         $request->session()->forget('champsFinal');
+        $request->session()->forget('entities');
 
         $routeName = Route::currentRouteName();
 

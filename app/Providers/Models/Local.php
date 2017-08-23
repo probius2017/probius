@@ -44,6 +44,11 @@ class Local extends Model
         return $this->belongsTo(Bail::class);
     }
 
+    public function sinistres()
+    {
+        return $this->hasManyThrough('App\Models\Sinistre', 'App\Models\Contrat');
+    }
+
     public function isStruc($strucId)
     {
       

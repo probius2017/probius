@@ -173,10 +173,13 @@ $( document ).ready(function() {
             //Alertes pour les sinistres lors de la suppression
             var sinistres = $(this).data('sinistres');
 
+            console.log(sinistres);
+
             if (sinistres  >  0) {
+                $('.alertSinistres').show();
                 $('.countSinistres').text(sinistres);
             }else{
-              $('.alertSinistres').remove();
+                $('.alertSinistres').hide();
             }
         }); 
     });
@@ -231,7 +234,41 @@ $( document ).ready(function() {
   //cocher/décocher toutes les checkbox boutton paramètrage/export
   $(".checkAllCol, .checkAllExp").on('click', 'input:checkbox', function(){
 
-    var colonnesIdDefault = ['numero_ad', 'intercalaire', 'cp_local', 'ville_local', 'adresse_local', 'superficie'];
+    var colonnesIdDefault = [
+
+          //locaux
+          'numero_ad', 
+          'intercalaire', 
+          'cp_local', 
+          'ville_local', 
+          'adresse_local', 
+          'superficie',
+
+          //algeco
+          'ville_algeco', 
+          'cp_algeco',
+          'adresse_algeco',
+          'type_algeco',
+
+          //véhicules
+          'name_marque',
+          'name_modele',
+          'type',
+          'immat',
+          'reference',
+
+          //sinistres
+          //'num_contrat',
+          'ref_macif',
+          'ref_rdc',
+          'date_reception',
+          'date_ouverture',
+          'date_sinistre',
+          'ville_sinistre',
+          'ref',
+          'date_cloture'
+
+    ];
 
     if ($(this).is(':checked')){
         
@@ -291,7 +328,6 @@ $( document ).ready(function() {
       $(this).each(function(){
 
             var url = $(this).data('url');
-            console.log(url);
             $("#cloture-sinistre").attr('action', url);
       });
 

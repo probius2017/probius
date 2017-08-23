@@ -13,6 +13,8 @@ use App\Models\Contrat;
 use App\Models\Vehicule;
 use App\Models\Structure;
 use App\Models\Sinistre;
+use App\Models\Logement;
+use App\Models\Evenement;
 use App\Http\Requests;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
@@ -550,7 +552,40 @@ class FonctionsLocauxController extends Controller
                             ->route($routeName, [$page, $pageSmall])
                             ->withErrors('L\'AD recherchée ne possède pas de sinistre');
                 }
-            }else{
+            }
+
+            /*elseif ($page == 'Sinistres' && $pageSmall == 'Masse') {
+                
+                
+                $sinistres = Local::with('contrats.sinistres')->get();
+
+                /*$sinistresAlgecos = Algeco::all()->sinistres;
+                $sinistresLogements = Logement::all()->sinistres;
+                $sinistresEvenements = Evenement::all()->sinistres;
+
+                //dump($sinistresLocaux); die; 
+
+                $sinistres = Sinistre::join('locaux', 'locaux.contrat_id', '=', 'sinistres.contrat_id')
+                            ->join('algecos', 'algecos.contrat_id', '=', 'sinistres.contrat_id')
+                            ->join('logements', 'logements.contrat_id', '=', 'sinistres.contrat_id')
+                            ->join('evenements', 'evenements.contrat_id', '=', 'sinistres.contrat_id')
+                            //->where('ad_id', $ad->id)
+                            ->get();
+
+                dump($sinistres); die;
+
+                $entities = $sinistres->toArray();
+            
+                if (!empty($entities)) {
+                    $entities = $sinistres;
+                    $request->session()->put('entities', $entities);
+                }else{
+
+                    return redirect()
+                            ->route($routeName, [$page, $pageSmall])
+                            ->withErrors('L\'AD recherchée ne possède pas de sinistre');
+                }
+            }*/else{
 
                 !empty($data['entities']) ? $entities = $data['entities']->where('ad_id', $ad->id)->toArray() : [];
             

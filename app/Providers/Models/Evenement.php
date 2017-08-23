@@ -16,6 +16,11 @@ class Evenement extends Model
         return $this->belongsTo(Contrat::class);
     }
 
+    public function sinistres()
+    {
+        return $this->hasManyThrough('App\Models\Sinistre', 'App\Models\Contrat');
+    }
+
     public function typeEvenements()
     {
         return $this->belongsToMany(TypeEvenement::class);

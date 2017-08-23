@@ -10,6 +10,9 @@ use App\Models\Local;
 use App\Models\Bail;
 use App\Models\Structure;
 use App\Models\Contrat;
+
+use App\Models\Sinistre;
+
 use App\Models\ChambreFroide;
 use Illuminate\Http\Request;
 use App\Http\Requests\LocauxRequest;
@@ -24,6 +27,7 @@ class LocauxInf25Controller extends Controller
         $structures = Structure::all();
         //$structures = Structure::where('RI', '<=25')->get();
         $entities = Local::all();
+
         $page = 'Locaux';
         $pageSmall = '&lt;25RI';
 
@@ -44,6 +48,7 @@ class LocauxInf25Controller extends Controller
 
         $request->session()->forget('columns');
         $request->session()->forget('champsFinal');
+        $request->session()->forget('entities');
 
         $routeName = Route::currentRouteName();
 

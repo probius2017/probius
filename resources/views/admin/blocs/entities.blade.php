@@ -94,7 +94,7 @@
                 </td>
                 <td>
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeAlgecos.edit', [$page, $pageSmall, $entity->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeAlgecos.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-sinistres="{{ $entity->sinistres->where('date_cloture', null)->count() }}" data-url="{!! route('listeAlgecos.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 </td>
             </tr>
             @elseif($page == 'Vehicules')
@@ -256,23 +256,23 @@
                 <td>
                     @if($page == 'Locaux')
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeLocaux.edit', [$page, $pageSmall, $entity->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeLocaux.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-extia delete-data" data-sinistres="{{ $entity->sinistres->where('date_cloture', null)->count() }}" data-url="{!! route('listeLocaux.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'ACI' && $pageSmall == '>50RI')
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeACI.edit', [$page, $pageSmall, $entity->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeACI.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-sinistres="{{ $entity->sinistres->where('date_cloture', null)->count() }}" data-url="{!! route('listeACI.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'ACI' && $pageSmall == 'RCPRO')
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeAciRCPRO.edit', [$page, $pageSmall, $entity->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeAciRCPRO.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-sinistres="{{ $entity->sinistres->where('date_cloture', null)->count() }}" data-url="{!! route('listeAciRCPRO.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'Entrepots')
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeEntrepots.edit', [$page, $pageSmall, $entity->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeEntrepots.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-sinistres="{{ $entity->sinistres->where('date_cloture', null)->count() }}" data-url="{!! route('listeEntrepots.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                     @if($page == 'AN')
                     <a class="btn btn-extia question-badge edition-badge" href="{{ route('listeBiensAN.edit', [$page, $pageSmall, $entity->id])}}" value="" ><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="" class="btn btn-extia delete-data" data-url="{!! route('listeBiensAN.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <a href="" class="btn btn-extia delete-data" data-sinistres="{{ $entity->sinistres->where('date_cloture', null)->count() }}" data-url="{!! route('listeBiensAN.destroy', [$page, $pageSmall, $entity->id]) !!}" data-toggle="modal" data-target="#supLocal""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     @endif
                 </td>
             </tr>
@@ -462,7 +462,7 @@
                     Cloture du sinistre
                 </h4>
             </div>
-            <form id="cloture-sinistre" action="" method="POSt">
+            <form id="cloture-sinistre" action="" method="POST">
                 {{ csrf_field() }} 
                 {{ method_field('PUT') }}
                 <div class="modal-body">
@@ -479,7 +479,7 @@
     </div>
 </div>
 
-<!-- Modal surpression local / Algéco / chambre froide / vehicules-->
+<!-- Modal surpression local / Algéco / chambre froide / vehicules etc-->
 <div class="modal fade" id="supLocal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -498,16 +498,20 @@
                 
                 <div class="modal-body">
                     @if($page == 'Algecos')
-                        <p class="huge2"> <b>Etes vous sure de vouloir supprimer cet algéco ?</b> </p>
+                        <div class="alert alert-danger alert-dismissible alertSinistres" role="alert">
+                            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Attention!</strong> Vous avez <b class="warning"><span class="countSinistres"></span> sinistre(s)</b> en attente d'être clôturé(s) pour cet algéco
+                        </div>
+
+                        <p class="huge2"> <b>Etes vous sûr de vouloir supprimer cet algéco ?</b> </p>
                     @elseif($page == 'Chambres-froides')
-                        <p class="huge2"> <b>Etes vous sure de vouloir supprimer cette chambre froide ?</b> </p>
+                        <p class="huge2"> <b>Etes vous sûr de vouloir supprimer cette chambre froide ?</b> </p>
                     @elseif($page == 'Vehicules')
                         
                         <div class="alert alert-danger alert-dismissible alertSinistres" role="alert">
-                            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Attention!</strong> Vous avez <b class="warning"><span class="countSinistres"></span> sinistres</b> en attentes d'être cloturés pour ce véhicule
+                            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Attention!</strong> Vous avez <b class="warning"><span class="countSinistres"></span> sinistre(s)</b> en attente d'être clôturé(s) pour ce véhicule
                         </div>
 
-                        <p><b>Etes-vous sure de vouloir supprimer ce véhicule ?</b></p>
+                        <p><b>Etes-vous sûr de vouloir supprimer ce véhicule ?</b></p>
 
                         <div class="form-inline">
                             <p>Si oui, veuillez indiquer la <b>date de résiliation effective</b> : <input type="date" name="date_resiliation" class="form-control"></p>
@@ -516,7 +520,11 @@
                             <p><b>Motif de la résiliation</b> : <textarea name="motif" class="form-control" rows="3"></textarea></p>
                         </div>
                     @else
-                        <p class="huge2"> <b>Etes vous sure de vouloir supprimer ce local?</b> </p>
+                        <div class="alert alert-danger alert-dismissible alertSinistres" role="alert">
+                            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Attention!</strong> Vous avez <b class="warning"><span class="countSinistres"></span> sinistre(s)</b> en attente d'être clôturé(s) pour ce local
+                        </div>
+
+                        <p class="huge2"> <b>Etes vous sûr de vouloir supprimer ce local?</b> </p>
 
                         <div class="form-inline">
                             <p>Si oui, veuillez indiquer la <b>date de résiliation effective</b> : <input type="date" name="date_resiliation" class="form-control"></p>

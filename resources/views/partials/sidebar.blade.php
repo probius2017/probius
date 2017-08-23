@@ -24,7 +24,7 @@
         <a href="{{ route('listeAlgecos.index', ['Algecos', ' ']) }}"><i class="fa fa-building"></i> Algécos</a>
     </li>
     <li{!! isset($page) && $page == 'Chambres-froides' ? ' class="active"' : '' !!}>
-        <a href="{{ route('listeChambresFroides.index', ['Chambres-froides', ' ']) }}"><i class="fa fa-building"></i> Chambres froides</a>
+        <a href="{{ route('listeChambresFroides.index', ['Chambres-froides', ' ']) }}"><i class="fa fa-snowflake-o" aria-hidden="true"></i> Chambres froides</a>
     </li>
     <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
         <a href="#"><i class="fa fa-bed"></i> Logements</a>
