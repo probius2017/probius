@@ -66,6 +66,50 @@ class FonctionsLocauxController extends Controller
                 $results[] = $s2->old_immat;
             }
 
+        }elseif ($routeName == 'rechercheRef') {
+            
+            $searche1 = Sinistre::select('ref_macif')
+                    ->whereRaw('LOWER(ref_macif) like ?', '%'.$term.'%')
+                    ->take(5)
+                    ->get();
+
+            foreach ($searche1 as $s1) {
+                $results[] = $s1->ref_macif;
+            }
+
+        }elseif ($routeName == 'rechercheVilleSinistre') {
+            
+            $searche1 = Sinistre::select('ville_sinistre')
+                    ->distinct()
+                    ->whereRaw('LOWER(ville_sinistre) like ?', '%'.$term.'%')
+                    ->take(5)
+                    ->get();
+
+            foreach ($searche1 as $s1) {
+                $results[] = $s1->ville_sinistre;
+            }
+        }elseif ($routeName == 'rechercheVilleEvent') {
+            
+            $searche1 = Evenement::select('ville_event')
+                    ->distinct()
+                    ->whereRaw('LOWER(ville_event) like ?', '%'.$term.'%')
+                    ->take(5)
+                    ->get();
+
+            foreach ($searche1 as $s1) {
+                $results[] = $s1->ville_event;
+            }
+        }elseif ($routeName == 'rechercheNomEvent') {
+            
+            $searche1 = Evenement::select('nom_event')
+                    ->distinct()
+                    ->whereRaw('LOWER(nom_event) like ?', '%'.$term.'%')
+                    ->take(5)
+                    ->get();
+
+            foreach ($searche1 as $s1) {
+                $results[] = $s1->nom_event;
+            }
         }else{
             $searches = Ad::distinct()
                         ->select('numero_ad')
@@ -102,7 +146,7 @@ class FonctionsLocauxController extends Controller
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
-            $entities = Local::all();
+            $entities = Local::where('date_delete', null)->get();
             $structures = Structure::all();
             $routeName = 'listeLocaux.index';
 
@@ -117,7 +161,7 @@ class FonctionsLocauxController extends Controller
 
                 $contratLocauxID[] = $contrat->local_id;
             }
-            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
+            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->where('date_delete', null)->get() : $entities = [];
             $routeName = 'listeACI.index';
 
         }else if($routePage['page'] == 'ACI' && $routePage['info'] == 'RCPRO'){
@@ -133,7 +177,7 @@ class FonctionsLocauxController extends Controller
                 $contratLocauxID[] = $contrat->local_id;
             }
 
-            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
+            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->where('date_delete', null)->get() : $entities = [];
             $routeName = 'listeAciRCPRO.index';
 
         }elseif ($routePage['page'] == 'Entrepots') {
@@ -148,7 +192,7 @@ class FonctionsLocauxController extends Controller
                 $contratLocauxID[] = $contrat->local_id;
             }
 
-            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
+            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->where('date_delete', null)->get() : $entities = [];
             $routeName = 'listeEntrepots.index';
 
         }elseif ($routePage['page'] == 'AN') {
@@ -163,7 +207,7 @@ class FonctionsLocauxController extends Controller
                 $contratLocauxID[] = $contrat->local_id;
             }
 
-            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
+            isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->where('date_delete', null)->get() : $entities = [];
             $routeName = 'listeBiensAN.index';
 
         }elseif ($routePage['page'] == 'Chambres-froides') {
@@ -193,7 +237,7 @@ class FonctionsLocauxController extends Controller
                 $contratAlgecosID[] = $contrat->algeco_id;
             }
 
-            isset($contratAlgecosID) ? $entities = Algeco::whereIn('id', $contratAlgecosID)->get() : $entities = [];
+            isset($contratAlgecosID) ? $entities = Algeco::whereIn('id', $contratAlgecosID)->where('date_delete', null)->get() : $entities = [];
             $routeName = 'listeAlgecos.index';
 
         }elseif ($routePage['page'] == 'Vehicules') {
@@ -204,6 +248,14 @@ class FonctionsLocauxController extends Controller
             $entities = Vehicule::where('date_delete', null)->get();
             $routeName = 'listeVehicules.index';
 
+        }elseif ($routePage['page'] == 'Evenements') {
+
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque'];
+
+            $structures = [];
+            $entities = Evenement::all();
+            $routeName = 'listeEvenements.index';
+
         }elseif ($routePage['page'] == 'Sinistres' && $routePage['info'] == 'Véhicules') {
 
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'name_marque', 'immat','id'];
@@ -211,16 +263,20 @@ class FonctionsLocauxController extends Controller
             $structures = [];
             $entities = Sinistre::whereNull('contrat_id')
                     ->whereNotNull('contrat_v_id')
+                    ->orderBy('ref_rdc', 'asc')
+                    ->orderBy('contrat_v_id', 'asc')
                     ->get();
             $routeName = 'listeSinistresVehicules.index';
 
-        }elseif ($routePage['page'] == 'Sinistres' && $routePage['info'] == 'Masse') {
+        }elseif ($routePage['page'] == 'Sinistres' && $routePage['info'] == 'Mas') {
 
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire','id'];
 
             $structures = [];
             $entities = Sinistre::whereNull('contrat_v_id')
                     ->whereNotNull('contrat_id')
+                    ->orderBy('ref_rdc', 'asc')
+                    ->orderBy('contrat_id', 'asc')
                     ->get();
             $routeName = 'listeSinistresMasse.index';
         }
@@ -240,6 +296,7 @@ class FonctionsLocauxController extends Controller
         $page = $p;
         $pageSmall = $ps;
         $routeName = $data['routeName'];
+        $routeName2 = Route::currentRouteName();
 
         if (empty($request->columns)) {
             
@@ -255,11 +312,15 @@ class FonctionsLocauxController extends Controller
 
                 $colonnes = ['ad_id', 'type', 'reference', 'name_marque', 'name_modele', 'immat', 'id'];
 
+            }elseif ($page == 'Evenements') {
+
+                $colonnes = ['nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque'];
+
             }elseif ($page == 'Sinistres' && $pageSmall == 'Véhicules') {
 
                 $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'name_marque', 'immat','id'];
 
-            }elseif ($page == 'Sinistres' && $pageSmall == 'Masse') {
+            }elseif ($page == 'Sinistres' && $pageSmall == 'Mas') {
 
                 $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire','id'];
 
@@ -272,10 +333,10 @@ class FonctionsLocauxController extends Controller
 
             $colonnes = $request->columns;
 
-            if($page == 'Chambres-froides'){
+            if($page == 'Chambres-froides' || $page == 'Evenements'){
                 array_push($colonnes, 'id');
 
-            }elseif($page == 'Vehicules' || $page == 'Sinistres' ){
+            }elseif($page == 'Vehicules' || $page == 'Sinistres' || $routeName2 == 'filterSinistresByref' ){
                 array_push($colonnes, 'id', 'ad_id');
 
             }else{
@@ -377,7 +438,23 @@ class FonctionsLocauxController extends Controller
                     ->whereIn('old_name', $colonnes)
                     ->get(); 
 
-        }elseif ($page == 'Sinistres' && $pageSmall == 'Véhicules') {
+        }elseif ($page == 'Evenements') {
+            
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque'];
+
+            session('entities') != null ? $entities = session('entities') : $entities = $data['entities'];
+
+            $champs = DB::table('champsUpdate')
+                ->select('new_name', 'old_name', 'status')
+                ->whereIn('old_name', ['nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque'])
+                ->get();
+
+            $champsFinal = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'table_name')
+                    ->whereIn('old_name', $colonnes)
+                    ->get(); 
+
+        }elseif ($page == 'Sinistres' && $pageSmall == 'Véhicules' || $routeName2 == 'filterSinistresByref') {
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'name_marque', 'immat','id'];
 
@@ -393,7 +470,7 @@ class FonctionsLocauxController extends Controller
                     ->whereIn('old_name', $colonnes)
                     ->get(); 
 
-        }elseif ($page == 'Sinistres' && $pageSmall == 'Masse') {
+        }elseif ($page == 'Sinistres' && $pageSmall == 'Mas' || $routeName2 == 'filterSinistresByref') {
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire','id'];
 
@@ -418,7 +495,7 @@ class FonctionsLocauxController extends Controller
     public function filters(Request $request, $p, $ps){   
         
         $data = (new FonctionsLocauxController)->dataLocaux();
-
+        //dump($request->all()); die;
         $page = $p;
         $pageSmall = $ps;
         $routeName = $data['routeName'];
@@ -426,7 +503,13 @@ class FonctionsLocauxController extends Controller
 
         $villeLocal = $request->ville_local;
         $villeAlgeco = $request->ville_algeco;
-
+        $villeSinistre = $request->ville_sinistre;
+        $villeEvent = $request->ville_event;
+        $immat = $request->immat;
+        $refMacif = $request->ref_macif;
+        $nomEvent = $request->nom_event;
+        $statutEvent = $request->statut_event;
+        $typeEvent = $request->type_event;
         $structureID = $request->type_structure;
             //Je recherche la structure via le type de structure recup en POST
             $structure = Structure::find($structureID);
@@ -435,14 +518,12 @@ class FonctionsLocauxController extends Controller
             //Je recherche l'Ad via le numero ad récupérer en méthode POST
             $ad = Ad::where('numero_ad', $numAd)->first();
 
-        $immat = $request->immat;
-            
         if($request->has('ville_local') && $request->has('type_structure') && $request->has('numero_ad')){
 
-            $entities = $structure->locaux->where('ad_id', $ad->id)->where('ville_local', $villeLocal)->toArray();
+            $locaux = $structure->locaux->where('ad_id', $ad->id)->where('ville_local', $villeLocal);
 
-            if (!empty($entities)) {
-                $entities = $structure->locaux->where('ad_id', $ad->id)->where('ville_local', $villeLocal);
+            if ($locaux->isNotEmpty()) {
+                $entities = $locaux;
                 $request->session()->put('entities', $entities);
             }else{
 
@@ -453,10 +534,10 @@ class FonctionsLocauxController extends Controller
           
         }else if ($request->has('ville_local') && $request->has('type_structure')){
            
-            $entities = $structure->locaux->where('ville_local', $villeLocal)->toArray();
+            $locaux = $structure->locaux->where('ville_local', $villeLocal);
 
-            if (!empty($entities)) {
-                $entities = $structure->locaux->where('ville_local', $villeLocal);
+            if ($locaux->isNotEmpty()) {
+                $entities = $locaux;
                 $request->session()->put('entities', $entities);
             }else{
 
@@ -467,17 +548,30 @@ class FonctionsLocauxController extends Controller
        
         }else if ($request->has('ville_local') && $request->has('numero_ad')){
 
-            !empty($data['entities']) ? $entities = $data['entities']
+            !empty($data['entities']) ? $locaux = $data['entities']
                     ->where('ad_id', $ad->id)
                     ->where('ville_local', $villeLocal)
-                    ->where('ville_algeco', $villeAlgeco)
-                    ->toArray() : [];
+                    ->where('ville_algeco', $villeAlgeco) : [];
 
-            if (!empty($entities)) {
-                $entities = $data['entities']
+            if ($locaux->isNotEmpty()) {
+                $entities = $locaux;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('Il n\'existe pas de local pour cette recherche');
+            }
+
+        }else if ($request->has('ville_algeco') && $request->has('numero_ad')){
+
+            !empty($data['entities']) ? $algecos = $data['entities']
                     ->where('ad_id', $ad->id)
-                    ->where('ville_local', $villeLocal)
-                    ->where('ville_algeco', $villeAlgeco);
+                    ->where('ville_algeco', $villeAlgeco) : [];
+
+            if ($algecos->isNotEmpty()) {
+                $entities = $algecos;
                 $request->session()->put('entities', $entities);
 
             }else{
@@ -489,10 +583,10 @@ class FonctionsLocauxController extends Controller
 
         }else if ($request->has('type_structure') && $request->has('numero_ad')){
             
-            $entities = $structure->locaux->where('ad_id', $ad->id)->toArray();
+            $locaux = $structure->locaux->where('ad_id', $ad->id);
 
-            if (!empty($entities)) {
-                $entities = $structure->locaux->where('ad_id', $ad->id);
+            if ($locaux->isNotEmpty()) {
+                $entities = $locaux;
                 $request->session()->put('entities', $entities);
             }else{
 
@@ -501,36 +595,109 @@ class FonctionsLocauxController extends Controller
                         ->withErrors('Il n\'existe pas de local pour cette recherche');
             }
 
-        }else if ($request->has('ville_local') || $request->has('ville_algeco')){
-
-            !empty($data['entities']) ? $entities = $data['entities']->where('ville_local', $villeLocal)->where('ville_algeco', $villeAlgeco)->toArray() : [];
-
-            if (!empty($entities)) {
-                
-                $entities = $data['entities']->where('ville_local', $villeLocal)->where('ville_algeco', $villeAlgeco);
-                $request->session()->put('entities', $entities);
-
-            }else{
-
-                return redirect()
-                        ->route($routeName, [$page, $pageSmall])
-                        ->withErrors('La ville recherchée ne possède aucun local pour ce contrat');
-            }
-
         }else if ($request->has('type_structure')){
 
             $structures = $data['structures'];
 
-            $entities = $structure->locaux->toArray();
+            $locaux = $structure->locaux;
           
-            if (!empty($entities)) {
-                $entities = $structure->locaux;
+            if ($locaux->isNotEmpty()) {
+                $entities = $locaux;
                 $request->session()->put('entities', $entities);
             }else{
 
                 return redirect()
                         ->route($routeName, [$page, $pageSmall])
-                        ->withErrors('Il n\'a pas de locaux avec ce type de structure');
+                        ->withErrors('Il n\'a pas de locaux pour ce type de structure');
+            }
+
+        }else if ($request->has('ville_local') || $request->has('ville_algeco')){
+
+            !empty($data['entities']) ? $ent = $data['entities']->where('ville_local', $villeLocal)->where('ville_algeco', $villeAlgeco) : [];
+
+            if ($ent->isNotEmpty()) {
+                $entities = $ent;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('La ville recherchée ne possède aucun local/algéco pour ce contrat');
+            }
+
+        }else if ($request->has('ville_sinistre')) {
+            
+            !empty($data['entities']) ? $sinistres = $data['entities']->where('ville_sinistre', $villeSinistre) : [];
+
+            if ($sinistres->isNotEmpty()) {
+                $entities = $sinistres;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas de sinistre pour cette ville');
+            }
+
+        }else if ($request->has('ville_event') && $request->has('nom_event')) {
+
+            !empty($data['entities']) ? $evenements = $data['entities']->where('ville_event', $villeEvent)->where('nom_event', $nomEvent) : [];
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour cette recherche.');
+            }
+
+        }else if ($request->has('ville_event') && $request->has('type_event')) {
+
+            !empty($data['entities']) ? $evenements = $data['entities']->where('ville_event', $villeEvent)->where('type_event', $typeEvent) : [];
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour cette recherche.');
+            }
+
+        }else if ($request->has('ville_event') && $request->has('statut_event')) {
+
+            !empty($data['entities']) ? $evenements = $data['entities']->where('ville_event', $villeEvent)->where('statut_event', $statutEvent) : [];
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour cette recherche.');
+            }
+
+        }else if ($request->has('ville_event')) {
+            !empty($data['entities']) ? $evenements = $data['entities']->where('ville_event', $villeEvent) : [];
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour cette ville');
             }
 
         }else if ($request->has('numero_ad')){
@@ -540,10 +707,8 @@ class FonctionsLocauxController extends Controller
                 $sinistres = Sinistre::join('vehicules', 'vehicules.contrat_v_id', '=', 'sinistres.contrat_v_id' )
                             ->where('ad_id', $ad->id)
                             ->get();
-
-                $entities = $sinistres->toArray();
             
-                if (!empty($entities)) {
+                if ($sinistres->isNotEmpty()) {
                     $entities = $sinistres;
                     $request->session()->put('entities', $entities);
                 }else{
@@ -552,40 +717,37 @@ class FonctionsLocauxController extends Controller
                             ->route($routeName, [$page, $pageSmall])
                             ->withErrors('L\'AD recherchée ne possède pas de sinistre');
                 }
-            }
-
-            /*elseif ($page == 'Sinistres' && $pageSmall == 'Masse') {
+            }elseif ($page == 'Sinistres' && $pageSmall == 'Mas') {
                 
-                
-                $sinistres = Local::with('contrats.sinistres')->get();
+                $locaux = $ad->locaux;
+                $algecos = $ad->algecos;
+                $logements = $ad->logements;
 
-                /*$sinistresAlgecos = Algeco::all()->sinistres;
-                $sinistresLogements = Logement::all()->sinistres;
-                $sinistresEvenements = Evenement::all()->sinistres;
+                //Je regroupe toutes les collections '$locaux, $algecos, ..) pour en former qu'une seule
+                $dataEntities = $locaux->merge($algecos)->merge($logements);
 
-                //dump($sinistresLocaux); die; 
+                //J'instencie une nouvelle collection
+                $sinistres = new \Illuminate\Database\Eloquent\Collection;
 
-                $sinistres = Sinistre::join('locaux', 'locaux.contrat_id', '=', 'sinistres.contrat_id')
-                            ->join('algecos', 'algecos.contrat_id', '=', 'sinistres.contrat_id')
-                            ->join('logements', 'logements.contrat_id', '=', 'sinistres.contrat_id')
-                            ->join('evenements', 'evenements.contrat_id', '=', 'sinistres.contrat_id')
-                            //->where('ad_id', $ad->id)
-                            ->get();
+                //A chaque tour de boucle je merge les collections pour en former qu'une seule
+                foreach ($dataEntities as $entity) {
 
-                dump($sinistres); die;
+                    $sinistresByentity = $entity->sinistres; 
+                    $sinistres = $sinistres->merge($sinistresByentity);
+                }
+                //$entities = $sinistres->toArray(); 
 
-                $entities = $sinistres->toArray();
-            
-                if (!empty($entities)) {
-                    $entities = $sinistres;
-                    $request->session()->put('entities', $entities);
+                if ($sinistres->isNotEmpty()) {
+                        $entities = $sinistres;
+                        $request->session()->put('entities', $entities);
                 }else{
 
                     return redirect()
                             ->route($routeName, [$page, $pageSmall])
-                            ->withErrors('L\'AD recherchée ne possède pas de sinistre');
+                            ->withErrors('L\'AD recherchée ne possède pas de sinistre(s)');
                 }
-            }*/else{
+       
+            }else{
 
                 !empty($data['entities']) ? $entities = $data['entities']->where('ad_id', $ad->id)->toArray() : [];
             
@@ -600,17 +762,16 @@ class FonctionsLocauxController extends Controller
                 }
             }
                
-        }else if($request->has('immat')){
+        }else if ($request->has('immat')){
 
             if ($page == 'Sinistres' && $pageSmall == 'Véhicules') {
             
                 $sinistres = Sinistre::join('vehicules', 'vehicules.contrat_v_id', '=', 'sinistres.contrat_v_id' )
                             ->where('immat', $immat)
                             ->get();
+                //!empty($data['entities']) ? $sinistres = $data['entities']->where('immat', $immat) : [];
 
-                $entities = $sinistres->toArray();
-            
-                if (!empty($entities)) {
+                if ($sinistres->isNotEmpty()) {
                     $entities = $sinistres;
                     $request->session()->put('entities', $entities);
                 }else{
@@ -621,11 +782,10 @@ class FonctionsLocauxController extends Controller
                 }
 
             }else{
-                !empty($data['entities']) ? $entities = $data['entities']->where('immat', $immat)->toArray() : [];
+                !empty($data['entities']) ? $vehicules = $data['entities']->where('immat', $immat) : [];
 
-                if (!empty($entities)) {
-                    
-                    $entities = $data['entities']->where('immat', $immat);
+                if ($vehicules->isNotEmpty()) {
+                    $entities = $vehicules;
                     $request->session()->put('entities', $entities);
                 }else{
 
@@ -635,6 +795,156 @@ class FonctionsLocauxController extends Controller
                 }
             }
 
+        }else if ($request->has('nom_event')){
+
+            $evenements = $data['entities']->where('nom_event', $nomEvent);
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour ce nom');
+            }
+
+        }else if ($request->has('type_event')){
+
+            $evenements = $data['entities']->where('type_event', $typeEvent);
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour ce type');
+            }
+
+        }else if ($request->has('statut_event')){
+
+            $evenements = $data['entities']->where('statut_event', $statutEvent);
+
+            if ($evenements->isNotEmpty()) {
+                $entities = $evenements;
+                $request->session()->put('entities', $entities);
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas d\'évènement(s) pour ce type');
+            }
+
+        }else if ($request->has('ref_macif')) {
+            
+            !empty($data['entities']) ? $sinistres = $data['entities']->where('ref_macif', $refMacif) : [];
+
+            if ($sinistres->isNotEmpty()) {
+                $entities = $sinistres;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas de sinistre pour cette référence MACIF');
+            }
+
+        }else if ($request->has('ref_macif') && $request->has('ville_sinistre')) {
+            
+            !empty($data['entities']) ? $sinistres = $data['entities']->where('ref_macif', $refMacif)->where('ville_sinistre', $villeSinistre) : [];
+
+            if ($sinistres->isNotEmpty()) {
+                $entities = $sinistres;
+                $request->session()->put('entities', $entities);
+
+            }else{
+
+                return redirect()
+                        ->route($routeName, [$page, $pageSmall])
+                        ->withErrors('il n\'existe pas de sinistre pour cette recherche');
+            }
+
+        }else if ($request->has('ref_macif') && $request->has('numero_ad')) {
+            
+                $locaux = $ad->locaux;
+                $algecos = $ad->algecos;
+                $logements = $ad->logements;
+
+                $dataEntities = $locaux->merge($algecos)->merge($logements);
+
+                $sinistres = new \Illuminate\Database\Eloquent\Collection;
+
+                foreach ($dataEntities as $entity) {
+
+                    $sinistresByentity = $entity->sinistres; 
+                    $sinistresAll = $sinistres->merge($sinistresByentity);
+                }
+                $sinistres = $sinistres->where('ref_macif', $refMacif); 
+
+                if ($sinistres->isNotEmpty()) {
+                        $entities = $sinistres;
+                        $request->session()->put('entities', $entities);
+                }else{
+
+                    return redirect()
+                            ->route($routeName, [$page, $pageSmall])
+                            ->withErrors('il n\'existe pas de sinistre pour cette recherche');
+                }
+        }else if ($request->has('ville_sinistre') && $request->has('numero_ad')) {
+            
+                $locaux = $ad->locaux;
+                $algecos = $ad->algecos;
+                $logements = $ad->logements;
+
+                $dataEntities = $locaux->merge($algecos)->merge($logements);
+
+                $sinistres = new \Illuminate\Database\Eloquent\Collection;
+
+                foreach ($dataEntities as $entity) {
+
+                    $sinistresByentity = $entity->sinistres; 
+                    $sinistresAll = $sinistres->merge($sinistresByentity);
+                }
+                $sinistres = $sinistres->where('ville_sinistre', $villeSinistre); 
+
+                if ($sinistres->isNotEmpty()) {
+                        $entities = $sinistres;
+                        $request->session()->put('entities', $entities);
+                }else{
+
+                    return redirect()
+                            ->route($routeName, [$page, $pageSmall])
+                            ->withErrors('il n\'existe pas de sinistre pour cette recherche');
+                }
+        }else if ($request->has('ville_sinistre') && $request->has('numero_ad') && $request->has('ref_macif')) {
+            
+                $locaux = $ad->locaux;
+                $algecos = $ad->algecos;
+                $logements = $ad->logements;
+
+                $dataEntities = $locaux->merge($algecos)->merge($logements);
+
+                $sinistres = new \Illuminate\Database\Eloquent\Collection;
+
+                foreach ($dataEntities as $entity) {
+
+                    $sinistresByentity = $entity->sinistres; 
+                    $sinistresAll = $sinistres->merge($sinistresByentity);
+                }
+                $sinistres = $sinistres->where('ville_sinistre', $villeSinistre)->where('ref_macif', $refMacif); 
+
+                if ($sinistres->isNotEmpty()) {
+                        $entities = $sinistres;
+                        $request->session()->put('entities', $entities);
+                }else{
+
+                    return redirect()
+                            ->route($routeName, [$page, $pageSmall])
+                            ->withErrors('il n\'existe pas de sinistre pour cette recherche');
+                }
         }else{
             $request->session()->forget('entities');
             $entities = $data['entities'];
@@ -688,13 +998,31 @@ class FonctionsLocauxController extends Controller
                 ->whereIn('old_name', ['type', 'name_marque', 'name_modele', 'immat', 'old_immat', 'pmc', 'atp', 'numero_contratV', 'reference'])
                 ->get();
 
-        }elseif ($page == 'Sinistres' && $pageSmall = 'Véhicules') {
+        }elseif ($page == 'Evenements') {
+            
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque'];
+
+            $champs = DB::table('champsUpdate')
+                ->select('new_name', 'old_name', 'status')
+                ->whereIn('old_name', ['nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque'])
+                ->get();
+
+        }elseif ($page == 'Sinistres' && $pageSmall == 'Véhicules') {
             
             session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'name_marque', 'immat','id'];
 
             $champs = DB::table('champsUpdate')
                 ->select('new_name', 'old_name', 'status')
                 ->whereIn('old_name', ['ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'ville_sinistre', 'ref', 'name_marque', 'immat', 'reference', 'responsabilite', 'observation', 'reglement_macif', 'franchise', 'solde_ad', 'date_cloture'])
+                ->get();
+
+        }elseif ($page == 'Sinistres' && $pageSmall == 'Mas') {
+            
+            session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire','id'];
+
+            $champs = DB::table('champsUpdate')
+                ->select('new_name', 'old_name', 'status')
+                ->whereIn('old_name', ['ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire', 'responsabilite', 'observation', 'reglement_macif', 'franchise', 'solde_ad', 'date_cloture'])
                 ->get();
         }
     
@@ -717,11 +1045,104 @@ class FonctionsLocauxController extends Controller
 
         $sinistre = Sinistre::findOrFail($id);
         $sinistre->date_cloture = $request->date_cloture;
-        $sinistre->save();
+        $sinistre->save(); 
 
         return redirect()
                 ->route($routeName, [$page, $pageSmall])
                 ->withSuccess('Le sinistre est bien cloturé.');
+    }
+
+    public function listeRefSinistresByEntity($p, $ps, $id){
+
+        if ($p == 'Locaux') {
+            $sinistres = Local::join('contrats', function($join){
+                            $join->on('locaux.id', '=', 'contrats.local_id');
+                        })
+                        ->join('sinistres', function($join){
+                            $join->on('contrats.id', '=', 'sinistres.contrat_id');
+                        })
+                        ->where('locaux.id', $id)
+                        ->get();
+                        
+        }elseif ($p == 'Algecos') {
+            $entity = Algeco::findOrFail($id);
+            $sinistres = $entity->sinistres; 
+        }elseif ($p == 'Chambres-froides') {
+            $entity = Local::findOrFail($id); 
+            $sinistres = $entity->sinistres;
+        }elseif ($p == 'Logements') {
+            $entity = Logement::findOrFail($id);
+            $sinistres = $entity->sinistres;
+        }/*elseif ($p == 'Evènements') {
+            $entity = Evenement::findOrFail($id);
+            $sinistres = $entity->sinistres;
+        }*/elseif ($p == 'Vehicules') {
+            $entity = Vehicule::findOrFail($id);
+            $sinistres = $entity->contratV->sinistres;
+        }
+
+        return Response::json($sinistres);
+    }
+
+    public function filterSinistresByref(Request $request){
+        
+        $entities = Sinistre::whereIn('id', $request->sinistresID)->get();
+        $request->session()->put('entities', $entities);
+
+        $page = 'Sinistres';
+        $structures = [];
+
+        foreach ($entities as $entity) {
+            
+            if ($entity->contrat_v_id != null) {
+            
+                $pageSmall = 'Véhicules';
+                $routeName = 'listeSinistresVehicules.index';
+
+                session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'name_marque', 'immat','id'];
+
+                DB::table('champsUpdate')
+                    ->whereIn('old_name', $colonnes)
+                    ->update(['status' => 1]);
+
+                DB::table('champsUpdate')
+                    ->whereNotIn('old_name', $colonnes)
+                    ->update(['status' => 0]);
+
+                $champs = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'status')
+                    ->whereIn('old_name', ['ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'ville_sinistre', 'ref', 'name_marque', 'immat', 'reference', 'responsabilite', 'observation', 'reglement_macif', 'franchise', 'solde_ad', 'date_cloture'])
+                    ->get();
+
+            }elseif ($entity->contrat_id != null) {
+                
+                $pageSmall = 'Mas';
+                $routeName = 'listeSinistresMasse.index';
+
+                session('columns') != null ? $colonnes = session('columns') : $colonnes = ['ad_id', 'ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'date_cloture', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire','id'];
+
+                DB::table('champsUpdate')
+                    ->whereIn('old_name', $colonnes)
+                    ->update(['status' => 1]);
+
+                DB::table('champsUpdate')
+                    ->whereNotIn('old_name', $colonnes)
+                    ->update(['status' => 0]);
+
+                $champs = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'status')
+                    ->whereIn('old_name', ['ref_macif', 'ref_rdc', 'date_reception', 'date_ouverture', 'date_sinistre', 'ville_sinistre', 'ref', 'num_contrat', 'intercalaire', 'responsabilite', 'observation', 'reglement_macif', 'franchise', 'solde_ad', 'date_cloture'])
+                    ->get();
+            }
+        }
+        
+    
+        $champsFinal = DB::table('champsUpdate')
+                    ->select('new_name', 'old_name', 'table_name')
+                    ->whereIn('old_name', $colonnes)
+                    ->get(); 
+
+        return view('admin.blocs.entities', compact('page', 'pageSmall', 'entities', 'structures', 'champs', 'champsFinal', 'colonnes', 'routeName'));
     }
 
 }

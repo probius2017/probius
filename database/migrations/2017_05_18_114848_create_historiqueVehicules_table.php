@@ -17,8 +17,8 @@ class CreateHistoriqueVehiculesTable extends Migration
 
             $table->increments('id');
             $table->string('ad', 15);
-            $table->string('marque', 50);
-            $table->string('model', 50);
+            $table->string('name_marque', 50);
+            $table->string('name_modele', 50);
             $table->string('immat', 15);
             $table->date('date_resiliation');
             $table->text('motif')->nullable();

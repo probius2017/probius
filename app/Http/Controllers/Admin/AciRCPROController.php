@@ -11,6 +11,7 @@ use App\Models\Bail;
 use App\Models\Structure;
 use App\Models\Contrat;
 use App\Models\ChambreFroide;
+use Jenssegers\Date\Date;
 use Illuminate\Http\Request;
 use App\Http\Requests\LocauxRequest;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,7 @@ class AciRCPROController extends Controller
             $contratLocauxID[] = $contrat->local_id;
         }
 
-        isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->get() : $entities = [];
+        isset($contratLocauxID) ? $entities = Local::whereIn('id', $contratLocauxID)->where('date_delete', null)->get() : $entities = [];
         $page = 'ACI';
         $pageSmall = 'RCPRO';
 
@@ -239,6 +240,7 @@ class AciRCPROController extends Controller
     {
         $page = $p;
         $pageSmall = $ps;
+        $dateSupr = Date::now();
 
         if ($request->date_resiliation == null) {
             
@@ -280,14 +282,26 @@ class AciRCPROController extends Controller
 
                             ]); 
  
-        //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
-        $contrats = Contrat::where('local_id', $id)->delete();
+        /*$contrats = Contrat::where('local_id', $id)->get();
+
+        //On supprime les contrats qui n'ont pas de sinistres (alléger la base)
+        foreach ($contrats as $contrat) {
+
+            $sinistres = $contrat->sinistres->count();
+
+            if ($sinistres == 0) {
+                
+                $contrat->delete();
+            }
+        }*/
 
         //Suppréssion des CF du local si elles existent
-        $chambresF = ChambreFroide::where('local_id', $id)->delete();
+            //$chambresF = ChambreFroide::where('local_id', $id)->delete();
         
-        //On supprime le local 
-        $local = Local::destroy($id);
+        //On ajoute la date de supression pour signaler que le local est suprimé
+        $local->date_delete = $dateSupr;
+        $local->save();
+
 
         return redirect(route('listeAciRCPRO.index', [$page, $pageSmall]))
                 ->withSuccess('Le local à bien été supprimé.');

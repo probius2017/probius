@@ -14,6 +14,7 @@ use App\Models\Algeco;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlgecosRequest;
+use Jenssegers\Date\Date;
 use App\Http\Controllers\Controller;
 //use Illuminate\Support\Facades\Input;
 //use Illuminate\Support\Str;
@@ -29,7 +30,7 @@ class AlgecosController extends Controller
             $contratAlgecosID[] = $contrat->algeco_id;
         }
 
-        isset($contratAlgecosID) ? $entities = Algeco::whereIn('id', $contratAlgecosID)->get() : $entities = [];
+        isset($contratAlgecosID) ? $entities = Algeco::whereIn('id', $contratAlgecosID)->where('date_delete', null)->get() : $entities = [];
 
         $page = 'Algecos';
         $pageSmall = ' ';
@@ -212,9 +213,25 @@ class AlgecosController extends Controller
     {
         $page = $p;
         $pageSmall = $ps;
+        $dateSupr = Date::now();
 
-        $contrats = Contrat::where('algeco_id', $id)->delete();
-        $algeco = Algeco::destroy($id);
+        $algeco = Algeco::findOrFail($id);
+        $contrats = Contrat::where('algeco_id', $id)->get();
+
+        //On supprime les contrats qui n'ont pas de sinistres (alléger la base)
+        foreach ($contrats as $contrat) {
+
+            $sinistres = $contrat->sinistres->count();
+
+            if ($sinistres == 0) {
+                
+                $contrat->delete();
+            }
+        }
+
+        //On ajoute la date de supression pour signaler que l'algéco est suprimé
+        $algeco->date_delete = $dateSupr;
+        $algeco->save();
 
         return redirect(route('listeAlgecos.index', [$page, $pageSmall]))
                 ->withSuccess('L\'algéco a bien été supprimé.');

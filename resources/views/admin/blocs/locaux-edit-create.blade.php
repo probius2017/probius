@@ -7,7 +7,7 @@
 @if($local->id)
 <h1 class="page-header"><i class="fa fa-pencil-square-o"></i> Locaux <small>Edition du local n° {{ $local->id}}</small></h1>
 @else
-<h1 class="page-header"><i class="fa fa-pencil-square-o"></i> Locaux <small>Création nouveau local</small></h1>
+<h1 class="page-header"><i class="fa fa-pencil-square-o"></i> Local <small>Création nouveau local</small></h1>
 @endif
 
 
@@ -21,6 +21,8 @@
 {{ Form::open(array('url' => $local->id ? URL::route('listeEntrepots.update', [$page, $pageSmall, $local->id]) : URL::route('listeEntrepots.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
 @elseif($page == 'AN')
 {{ Form::open(array('url' => $local->id ? URL::route('listeBiensAN.update', [$page, $pageSmall, $local->id]) : URL::route('listeBiensAN.store', [$page, $pageSmall]), 'method' => $local->id ? 'put' : 'post')) }}
+@elseif($page == 'createEntity' && $pageSmall == 'Local')
+{{ Form::open(array('url' => URL::route('storeLocal', [$page, $pageSmall]), 'method' => 'post')) }}
 @endif
     <fieldset>
         <legend><i class="fa fa-info-circle" aria-hidden="true"></i> Informations principales du local</legend>

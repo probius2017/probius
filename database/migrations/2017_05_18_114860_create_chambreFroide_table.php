@@ -17,6 +17,7 @@ class CreateChambreFroideTable extends Migration
             $table->increments('id');
             $table->integer('local_id')->unsigned();
             $table->string('volume', 15);
+            $table->timestamp('date_delete')->nullable()->default(null);
             $table->timestamps();
 
             #foreigne keys

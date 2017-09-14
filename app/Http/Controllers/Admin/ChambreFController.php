@@ -12,6 +12,7 @@ use App\Models\Contrat;
 //use App\Models\Structure;
 use Illuminate\Http\Request;
 use App\Models\ChambreFroide;
+use Jenssegers\Date\Date;
 use App\Http\Requests\LocauxRequest;
 use App\Http\Controllers\Controller;
 
@@ -156,19 +157,21 @@ class ChambreFController extends Controller
     {
         $page = $p;
         $pageSmall = $ps;
+        $dateSupr = Date::now();
 
         $chambreF = ChambreFroide::find($id);
-        $local = $chambreF->local;
+        //$local = $chambreF->local;
         //$local = Local::find($chambreF->local_id);
-        $chambreF = ChambreFroide::destroy($id);
+        $chambreF->date_delete = $dateSupr;
+        $chambreF->save();
         
-        $nbCF = $local->chambresFroides->count();
+        /*$nbCF = $local->chambresFroides->where('date_delete', null)->count();
 
         if($nbCF == 0){
             $contratCF = $local->contrats->where('num_contrat', '9453062')->first();
             $contratFlotte = Contrat::find($contratCF->id);
             $contratFlotte->delete();
-        } 
+        }*/ 
 
         return redirect(route('listeChambresFroides.index', [$page, $pageSmall]))
                 ->withSuccess('La chambre froide a bien été supprimé.');

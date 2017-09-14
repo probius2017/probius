@@ -38,6 +38,46 @@ $( document ).ready(function() {
           $('.search-immat').val(ui.item.value);
         }
     });
+
+    $('.search-ref').autocomplete({
+        source: "recherche-ref",
+        minLength: 1,
+        autoFocus: true,
+        select: function(e,ui)
+        {
+          $('.search-ref').val(ui.item.value);
+        }
+    });
+
+    $('.search-villeSinistre').autocomplete({
+        source: "recherche-villeSinistre",
+        minLength: 1,
+        autoFocus: true,
+        select: function(e,ui)
+        {
+          $('.search-villeSinistre').val(ui.item.value);
+        }
+    });
+
+    $('.search-villeEvent').autocomplete({
+        source: "recherche-villeEvent",
+        minLength: 1,
+        autoFocus: true,
+        select: function(e,ui)
+        {
+          $('.search-villeEvent').val(ui.item.value);
+        }
+    });
+
+    $('.search-nomEvent').autocomplete({
+        source: "recherche-nomEvent",
+        minLength: 1,
+        autoFocus: true,
+        select: function(e,ui)
+        {
+          $('.search-nomEvent').val(ui.item.value);
+        }
+    });
 /*----------------------------------------------------------*/
     //Afficher les données du bail d'un local
     $('.bail').on('click', function(){
@@ -162,6 +202,81 @@ $( document ).ready(function() {
       });
 
 /*----------------------------------------------------------*/
+    //fonction pour modifier le format des dates
+    function formattedDate(d = new Date) {
+      let month = String(d.getMonth() + 1);
+      let day = String(d.getDate());
+      const year = String(d.getFullYear());
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
+      return `${day}/${month}/${year}`;
+    }
+
+    //Afficher les ref des sinistres en cours pour l'entity
+    $('.sinistres').on('click', function(){
+
+        var token_s = $(this).data('tok');
+        var id_s = $(this).data('id');
+        var lien_s = $(this).data('url');
+
+          $.ajax({
+              url: lien_s,
+              method: 'GET',
+              dataType: 'JSON',
+              data: {
+                  '_token': token_s,
+                  'id': id_s,
+                  '_method': 'GET'
+              },
+              success: function(data) {
+                
+                //permet de définir dynamiquement le rowspan en fct des sinistres
+                var x = data.length;
+                console.log(data);
+
+                //Permet de supprimer les lignes dans le tbody
+                $('.add-ref > tr').remove();
+
+                $.each(data, function(key, val){
+                  
+                  var d = new Date(val['date_sinistre']);
+
+                  $('.add-ref').append(
+                    '<tr class="rowspan-voir-'+val['id']+'">'+
+                      '<td>'+ val['ref_rdc'] +'</td>'+
+                      '<td>'+ val['ref_macif'] +'</td>'+
+                      '<td>'+ formattedDate(d) +'</td>'+
+                    '</tr>'
+                  );
+
+                  if (val['num_contrat'] != null) {
+                    $(".add-ref > .rowspan-voir-"+val['id']+"").prepend(
+                        '<td>'+ val['num_contrat'] +'</td>'
+                    );
+                  }
+
+                  val['date_cloture'] != null ? $('.rowspan-voir-'+val['id']+' > td').addClass('danger') : '';
+
+                  $('#sinistresById').append(
+                    '<input type="hidden" name="sinistresID[]" value="'+val['id']+'" />'
+                  );
+    
+                });
+
+                $('.voir-tout').prepend(
+                   '<button type="submit" class="btn btn-extia">Voir tout <i class="fa fa-eye"></i></button>'
+                );
+
+              },
+              error: function(){
+                  alert('La requête n\'a pas abouti'); 
+              }
+         });
+    });
+
+/*----------------------------------------------------------*/
     //Suppression local, CF, véhicules .... 
     $(".delete-data").on('click', function () {
         
@@ -183,30 +298,6 @@ $( document ).ready(function() {
             }
         }); 
     });
-
-    /*let tab = [];
-    let val = 0;*/
-    
-    //Suppression multiple (A finir)
-    /*$(".locauxDestAll").on('click', 'input:checkbox', function(){
-
-      val = $(this).attr('value');
-
-      if ($(this).is(':checked')){
-
-        tab.push(val);
-
-      }else{
-
-          var index = tab.indexOf(val);
-
-          if (index !== -1) {
-              tab.splice(tab[index], 1);
-          }
-        console.log(tab);
-      }
-      console.log(tab);
-    });*/
     
     //Edition Chambre froide
     $(".edit-cf").on('click', function () {
@@ -224,13 +315,6 @@ $( document ).ready(function() {
 
 /*----------------------------------------------------------*/
 
-  //Fermer la modal après export
-  $('#exportExcel').on('click', function () {
-      $('#export-locaux').modal('hide');
-  })
-
-/*----------------------------------------------------------*/
-  
   //cocher/décocher toutes les checkbox boutton paramètrage/export
   $(".checkAllCol, .checkAllExp").on('click', 'input:checkbox', function(){
 
@@ -266,7 +350,12 @@ $( document ).ready(function() {
           'date_sinistre',
           'ville_sinistre',
           'ref',
-          'date_cloture'
+          'date_cloture',
+
+          //evenements
+          'nom_salle', 'adresse_event', 'cp_event', 'ville_event', 
+          'nom_event', 'duree_event', 'type_event', 'statut_event',
+          'date_demande', 'date_reponse', 'remarque'
 
     ];
 
@@ -315,10 +404,32 @@ $( document ).ready(function() {
   });
 
   $('#choixExport').on('click', function(){
+
       if ($('#checkAllCol').is(':checked')) {
         $('#checkAllExp').prop('checked', 'checked');
       }
+
+      //Recup les id des entités de chaque page
+      $('.edition-badge').each( function (){
+        var ids = $(this).data('id');
+
+        $('.exportIds').append(
+          '<input type="hidden" name="entitiesID[]" value="'+ids+'" />'
+        );
+      });
+
+   /*   $('.excel-table .nb_cf').each( function(){
+
+          var nbCF = $(this).text();
+          console.log(nbCF);
+          $('#excel-colspan').attr('colspan', nbCF);
+      });*/
   });
+
+    //Fermer la modal après export
+  $('#exportExcel').on('click', function () {
+      $('#export-locaux').modal('hide');
+  })
 
 /*----------------------------------------------------------*/
 
@@ -334,3 +445,16 @@ $( document ).ready(function() {
   });
 
 });
+
+$(function(){
+    $('#co-affiche').click(function(){
+        $('#co-contenu').toggle() // AFFICHE ET CACHE A CHAQUE CLIQUE SUR LE BOUTTON
+    });
+});
+
+//fonction alignement tableau pour scroll
+/*$("#locauxInf25 tr").each( function () {
+
+    $(this).children().css("width","20%");
+
+});*/

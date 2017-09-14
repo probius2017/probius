@@ -17,6 +17,7 @@ class CreateAlgecosTable extends Migration {
 			$table->string('adresse_algeco', 100);
 			$table->string('apptEscalier', 100);
 			$table->string('complementGeographique', 100);
+			$table->timestamp('date_delete')->nullable()->default(null);
 			$table->timestamps();
 
 			#foreigne keys

@@ -5,9 +5,9 @@
 @section('content')
 
 @if($vehicule->id)
-<h1 class="page-header"><i class="fa fa-pencil-square-o"></i> Véhicules <small>Edition du véhicule <b>"{{ $vehicule->immat}}"</b></small></h1>
+<h1 class="page-header"><i class="fa fa-pencil-square-o"></i> {{$page}} <small>Edition du véhicule <b>"{{ $vehicule->immat}}"</b></small></h1>
 @else
-<h1 class="page-header"><i class="fa fa-pencil-square-o"></i> Véhicules <small>Création nouveau véhicule</small></h1>
+<h1 class="page-header"><i class="fa fa-pencil-square-o"></i> {{$page}} <small>Création nouveau véhicule</small></h1>
 @endif
 
 {{ Form::open(array('url' => $vehicule->id ? URL::route('listeVehicules.update', [$page, $pageSmall, $vehicule->id]) : URL::route('listeVehicules.store', [$page, $pageSmall]), 'method' => $vehicule->id ? 'put' : 'post')) }}

@@ -10,9 +10,8 @@ use App\Models\Local;
 use App\Models\Bail;
 use App\Models\Structure;
 use App\Models\Contrat;
-
-use App\Models\Sinistre;
-
+//use App\Models\Sinistre;
+use Jenssegers\Date\Date;
 use App\Models\ChambreFroide;
 use Illuminate\Http\Request;
 use App\Http\Requests\LocauxRequest;
@@ -26,7 +25,7 @@ class LocauxInf25Controller extends Controller
 
         $structures = Structure::all();
         //$structures = Structure::where('RI', '<=25')->get();
-        $entities = Local::all();
+        $entities = Local::where('date_delete', null)->get();
 
         $page = 'Locaux';
         $pageSmall = '&lt;25RI';
@@ -60,7 +59,7 @@ class LocauxInf25Controller extends Controller
         $colonnes = ['ad_id', 'cp_local', 'ville_local', 'adresse_local', 'superficie', 'id', 'bail_id'];
 
         $entities = $data['entities'];
-        
+
         DB::table('champsUpdate')
             ->whereIn('old_name', $colonnes)
             ->update(['status' => 1]);
@@ -103,93 +102,7 @@ class LocauxInf25Controller extends Controller
      */
     public function store(LocauxRequest $request)
     {
-        /*dump($request->all()); die;
-
-        $updateLocal = [
-            'ville_local' => $request->ville_local,
-            'cp_local' => $request->cp_local,
-            'adresse_local' => $request->adresse_local,
-            'superficie' => $request->superficie,
-            'ERP' => $request->ERP,
-            'precaire' => $request->precaire,
-            'nom_bailleur' => $request->nom_bailleur,
-            'info_bailleur' => $request->info_bailleur,
-            'loyer' => $request->loyer,
-            'detail_loyer' => $request->detail_loyer,
-            'pret' => $request->pret,
-            'local_partage' => $request->local_partage,
-            'precision_partage' => $request->precision_partage,
-            'contenu' => $request->contenu,
-            'accessibilite' => $request->accessibilite,
-            'observation_generale' => $request->observation_generale,
-            'charge_bailleur' => $request->charge_bailleur,
-            'charge_rdc' => $request->charge_rdc,
-            'detail_charge' => $request->detail_charge,
-            'apptEscalier' => $request->apptEscalier,
-            'complementGeographique' => $request->complementGeographique,
-        ];
-
-        $local = Local::create( $updateLocal );
-
-        $request->etat_ini == 0 ? $local->etat_ini = 'parfait état' : $local->etat_ini = 'remise en état fin de bail';
-
-        switch ($local->info_bailleur) {
-            case '0':
-                $local->info_bailleur = 'AN';
-                break;
-            
-            case '1' :
-                $local->info_bailleur = 'privé';
-                break;
-
-            case '2' :
-                $local->info_bailleur = 'publique';
-                break;
-        }
-
-        $request->detail_loyer == 0 ? $local->detail_loyer = 'TVA' : $local->detail_loyer = 'NET';
-
-        $local->save();
-        //-------------------------------------//
-
-        $structures = $request->type_structure? $request->type_structure : [];
-        $local->structures()->attach($structures);
-
-        //-------------------------------------//
-
-        if ((strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox') !== FALSE) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== FALSE)) {
-            
-            $date_debut = date('Y-d-m', strtotime($request->date_debut));
-            $date_signature = date('Y-d-m', strtotime($request->date_signature));
-            $date_fin = date('Y-d-m', strtotime($request->date_fin));
-
-        }else{
-            $date_debut = $request->date_debut;
-            $date_signature = $request->date_signature;
-            $date_fin = $request->date_fin;
-        }
-
-        $createBail = [
-            'type_document' => $request->type_document,
-            'duree_ini' => $request->duree_ini,
-            'tacite_reconduction' => $request->tacite_reconduction,
-            'reconduction_description' => $request->reconduction_description,
-            'description_clause' => $request->description_clause,
-            'quantite_site' => $request->quantite_site,
-            'date_debut' => $date_debut,
-            'date_signature' => $date_signature,
-            'date_fin' => $date_fin,
-        ];
-
-        $bail = Bail::create( $createBail );
-
-        $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
-
-        $bail->save();
-
-        return redirect()
-                ->route('locauxInf25RI.index')
-                ->withSuccess('Le local a bien été modifié.');*/
+        //
     }
 
     /**
@@ -224,30 +137,6 @@ class LocauxInf25Controller extends Controller
         $structures = $data['structures'];
 
         $bail = Bail::findOrFail($local->bail_id);
-
-        /*switch ($bail->type_document) {
-            case 'Bail Civil':
-                $bail->type_document = '0';
-                break;
-            
-            case 'Bail Commercial' :
-                $bail->type_document = '1';
-                break;
-
-            case 'Bail amphytheotique' :
-                $bail->type_document = '2';
-                break;
-
-            case 'Conventions' :
-                $bail->type_document = '3';
-                break;
-
-            case 'Autres' :
-                $bail->type_document = '4';
-                break;
-        }*/
-
-        //$bail->save();
 
         return view('admin.blocs.locaux-edit-create', compact('page', 'pageSmall', 'local', 'structures', 'bail', 'routeName'));
     }
@@ -337,29 +226,6 @@ class LocauxInf25Controller extends Controller
 
         $request->clause == 0 ? $bail->clause = 'résiliation' : $bail->clause = 'résolutoire';
 
-        /*switch ($bail->type_document) {
-            case '0':
-                $bail->type_document = 'Bail Civil';
-                
-                break;
-            
-            case '1' :
-                $bail->type_document = 'Bail Commercial';
-                break;
-
-            case '2' :
-                $bail->type_document = 'Bail amphytheotique';
-                break;
-
-            case '3' :
-                $bail->type_document = 'Conventions';
-                break;
-
-            case '4' :
-                $bail->type_document = 'Autres';
-                break;
-        }*/
-
         $bail->save();
 
         return redirect()
@@ -377,6 +243,7 @@ class LocauxInf25Controller extends Controller
     {     
         $page = $p;
         $pageSmall = $ps;
+        $dateSupr = Date::now();
 
         if ($request->date_resiliation == null) {
             
@@ -418,14 +285,25 @@ class LocauxInf25Controller extends Controller
 
                             ]); 
     
-        //suppression des contrats liés au local avec les sinistres associés (onDelete('cascade'))
-        $contrats = Contrat::where('local_id', $id)->delete();
+        /*$contrats = Contrat::where('local_id', $id)->get();
+
+        //On supprime les contrats qui n'ont pas de sinistres (alléger la base)
+        foreach ($contrats as $contrat) {
+
+            $sinistres = $contrat->sinistres->count();
+
+            if ($sinistres == 0) {
+                
+                $contrat->delete();
+            }
+        }*/
 
         //Suppréssion des CF du local si elles existent
-        $chambresF = ChambreFroide::where('local_id', $id)->delete();
+            //$chambresF = ChambreFroide::where('local_id', $id)->delete();
 
-        //On supprime le local 
-        $local = Local::destroy($id);
+        //On ajoute la date de supression pour signaler que le local est suprimé
+        $local->date_delete = $dateSupr;
+        $local->save();
 
         return redirect()
                 ->route('listeLocaux.index', [$page, $pageSmall])

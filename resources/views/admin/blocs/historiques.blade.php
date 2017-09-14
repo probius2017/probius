@@ -10,14 +10,15 @@
 
 <div class="row">
     <div class="col-md-2 form-group">
-    	<form action="{{ URL::to('admin/downloadExcel/xls') }}" method="POST">
+    	<form action="{{ route('downloadExcel', [$page, $pageSmall, 'xls']) }}" method="POST">
     	{{csrf_field()}}
+            <input type="hidden" name="columns[]" value="">
         	<button id="exportExcel" type="submit" class="btn btn-extia">Exporter (.xls) <span class="glyphicon glyphicon-export" aria-hidden="true"></span></button>
         </form>
     </div>
 </div>
 
-<div class="">
+<div>
 	<table class="table">
 	    <thead >
 	    	@if($page == 'Historique' && $pageSmall == 'Locaux')
@@ -78,8 +79,8 @@
 	        @else
 	        <tr>
 	        	<td>{{ $historique->ad }}</td> 
-	        	<td>{{ $historique->marque }}</td>
-                <td>{{ $historique->model }}</td>
+	        	<td>{{ $historique->name_marque }}</td>
+                <td>{{ $historique->name_modele }}</td>
                 <td>{{ $historique->immat }}</td>
                 <td><b>{{ $historique->date_resiliation->format('d/m/Y') }}</b></td>
                 <td>{{ $historique->motif }}</td>

@@ -9,9 +9,10 @@ class Evenement extends Model
 
     protected $table = 'evenements';
     public $timestamps = true;
-    protected $fillable = array('statut_event', 'nom_salle', 'nom_event', 'date_demande', 'date_reponse', 'remarque');
+    protected $fillable = array('nom_salle', 'adresse_event', 'cp_event','ville_event', 'nom_event', 'duree_event', 'type_event', 'statut_event' ,'date_demande', 'date_reponse', 'remarque');
+    protected $dates = ['date_demande', 'date_reponse', 'created_at', 'updated_at'];
 
-    public function contrat()
+/*    public function contrat()
     {
         return $this->belongsTo(Contrat::class);
     }
@@ -19,11 +20,5 @@ class Evenement extends Model
     public function sinistres()
     {
         return $this->hasManyThrough('App\Models\Sinistre', 'App\Models\Contrat');
-    }
-
-    public function typeEvenements()
-    {
-        return $this->belongsToMany(TypeEvenement::class);
-    }
-
+    }*/
 }

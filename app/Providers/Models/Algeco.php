@@ -10,6 +10,7 @@ class Algeco extends Model
     protected $table = 'algecos';
     public $timestamps = true;
     protected $fillable = array('type_algeco', 'adresse_algeco', 'apptEscalier', 'complementGeographique', 'ville_algeco', 'cp_algeco');
+    protected $dates = ['created_at', 'updated_at', 'date_delete'];
 
     public function ad()
     {

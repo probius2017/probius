@@ -30,6 +30,7 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '9322933',
                         'name_contrat'       => 'Dommages mobilier sup à 50RI',
                         'intercalaire'       => 'S00'.rand(1,100),
+                        'type_contrat'       =>  2,
                         'local_id'           =>  $local->id,
                         'algeco_id'          =>  null,
                         'logement_id'        =>  null
@@ -40,6 +41,7 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '971 0000 94067 F 50',
                         'name_contrat'       => 'RC PRO (ACI)',
                         'intercalaire'       => 'S00'.rand(1,100),
+                        'type_contrat'       =>  1,
                         'local_id'           =>  $local->id,
                         'algeco_id'          =>  null,
                         'logement_id'        =>  null
@@ -54,6 +56,7 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '971 0000 94067 F 50',
                         'name_contrat'       => 'RC PRO (ACI)',
                         'intercalaire'       => 'S00'.rand(1,100),
+                        'type_contrat'       =>  1,
                         'local_id'           =>  $local->id,
                         'algeco_id'          =>  null,
                         'logement_id'        =>  null
@@ -68,7 +71,8 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '9453148',
                         'name_contrat'       => 'Entrepot >25RI',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id'           => $local->id,
+                        'type_contrat'       =>  3,
+                        'local_id'           =>  $local->id,
                         'algeco_id'          =>  null,
                         'logement_id'        =>  null
                     ]);
@@ -83,7 +87,8 @@ class LocauxTableSeeder extends Seeder
                         'num_contrat'        => '6665737',
                         'name_contrat'       => 'Bien AN legs',
                         'intercalaire'       => 'S00'.rand(1,100),
-                        'local_id'           => $local->id,
+                        'type_contrat'       =>  4,
+                        'local_id'           =>  $local->id,
                         'algeco_id'          =>  null,
                         'logement_id'        =>  null
                     ]);

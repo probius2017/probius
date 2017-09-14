@@ -11,7 +11,7 @@ class CreateLocauxTable extends Migration {
 			$table->increments('id');
 			$table->integer('ad_id')->unsigned();
 			$table->integer('bail_id')->unsigned();
-			$table->integer('historiqueLocal_id')->unsigned()->nullable();
+			//$table->integer('historiqueLocal_id')->unsigned()->nullable();
 			$table->string('cp_local', 5);
 			$table->string('ville_local', 50);
 			$table->string('adresse_local', 200);
@@ -35,12 +35,13 @@ class CreateLocauxTable extends Migration {
 			$table->string('charge_rdc');
 			$table->text('detail_charge');
 			$table->string('contenu');
+			$table->timestamp('date_delete')->nullable()->default(null);
 			$table->timestamps();
 
 			#foreigne keys
 			$table->foreign('ad_id')->references('id')->on('assodep');
 			$table->foreign('bail_id')->references('id')->on('baux');
-			$table->foreign('historiqueLocal_id')->references('id')->on('historiqueLocaux')->onDelete('SET NULL');
+			//$table->foreign('historiqueLocal_id')->references('id')->on('historiqueLocaux')->onDelete('SET NULL');
 		});
 	}
 

@@ -70,6 +70,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::resource('{page}/{info}/listeSinistresMasse', 'Admin\SinistresMasseController');
 
+  //route pour le blocs évènements
+  Route::resource('{page}/{info}/listeEvenements', 'Admin\EvenementsController');
+
   //routes pour les historiques
   Route::get('{page}/{info}/listeHistoriqueLocaux', 'Admin\HistoriquesController@historiqueLocaux')->name('historiqueLocaux');
 
@@ -82,22 +85,34 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('{page}/{info}/recherche-immat', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheImmat');
 
-  //Route pour les filtres
+  Route::get('{page}/{info}/recherche-ref', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheRef');
+
+  Route::get('{page}/{info}/recherche-villeSinistre', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheVilleSinistre');
+
+  Route::get('{page}/{info}/recherche-villeEvent', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheVilleEvent');
+
+  Route::get('{page}/{info}/recherche-nomEvent', 'Admin\FonctionsLocauxController@autocomplete')->name('rechercheNomEvent');
+
+  //Route pour les filtres et update colonnes
   Route::get('{page}/{info}/filters', 'Admin\FonctionsLocauxController@filters')->name('filters');
+
+  Route::post('filtersByRef', 'Admin\FonctionsLocauxController@filterSinistresByref')->name('filterSinistresByref');
 
   Route::post('{page}/{info}/updateColonnes', 'Admin\FonctionsLocauxController@updateColumns')->name('updateColumns');
 
+  //route cloture sinistre
   Route::any('{page}/{info}/cloture/{id}', 'Admin\FonctionsLocauxController@clotureSinistre')->name('clotureSinistre');
 
-
+  //route liste des ref sinistre par entity
+  Route::get('{page}/{info}/liste-ref-sinistres/{id}', 'Admin\FonctionsLocauxController@listeRefSinistresByEntity')->name('listeRefSinistresByEntity');
 
   Route::resource('locaux/bail', 'Admin\BauxController');
 
   //Export import Excel 
-  Route::any('downloadExcel/{type}', 'Admin\importExportController@downloadExcel');
+  Route::any('{page}/{info}/downloadExcel/{type}', 'Admin\importExportController@downloadExcel')->name('downloadExcel');
 
   //Création nouveau local
-  Route::get('createLocal', 'Admin\CreateLocalController@create')->name('createLocal');
+  Route::get('{page}/{info}/new', 'Admin\CreateLocalController@create')->name('createLocal');
   Route::post('storeLocal', 'Admin\CreateLocalController@store')->name('storeLocal');
   
 

@@ -9,18 +9,18 @@ class CreateEvenementsTable extends Migration {
 	{
 		Schema::create('evenements', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('contrat_id')->unsigned()->nullable();
+			$table->string('nom_salle', 50)->nullable();
+			$table->string('adresse_event', 200)->nullable();
+			$table->string('cp_event', 15);
+			$table->string('ville_event', 100);
+			$table->string('nom_event', 100)->nullable();
+			$table->string('duree_event', 100)->nullable();
+			$table->enum('type_event', ['Manif', 'Reunion']);
 			$table->boolean('statut_event')->default(0);
-			$table->string('nom_salle', 50);
-			$table->string('nom_event', 50);
 			$table->date('date_demande');
 			$table->date('date_reponse');
-			$table->text('remarque');
+			$table->text('remarque')->nullable();
 			$table->timestamps();
-
-			#foreigne keys
-			$table->foreign('contrat_id')->references('id')->on('contrats')->onDelete('SET NULL');
-
 		});
 	}
 

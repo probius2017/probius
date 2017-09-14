@@ -12,24 +12,75 @@
 
                     <li{!! isset($page) && $page == 'Historique' ? ' class="active"' : '' !!}>
                         <a  href="#" id="dropHisto" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-history" aria-hidden="true"></i> Historiques <span class="caret"></span></a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="{{ route('historiqueLocaux', ['Historique', 'Locaux']) }}"><i class="fa fa-eye" aria-hidden="true"></i> Historique locaux</a></li>
-                                <li><a href="{{ route('historiqueVehicules', ['Historique', 'véhicules']) }}"><i class="fa fa-eye" aria-hidden="true"></i> historique véhicules</a></li>
-                            </ul>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="{{ route('historiqueLocaux', ['Historique', 'Locaux']) }}"><i class="fa fa-eye" aria-hidden="true"></i> Historique locaux</a></li>
+                            <li><a href="{{ route('historiqueVehicules', ['Historique', 'véhicules']) }}"><i class="fa fa-eye" aria-hidden="true"></i> Historique véhicules</a></li>
+                        </ul>
                     </li>
+                    <li{!! isset($page) && $page == 'createEntity' ? ' class="active"' : '' !!}>
+                        <a  href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-plus" aria-hidden="true"></i> Créer une entité <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
-                    <li{!! isset($page) && $page == 'createLocal' ? ' class="active"' : '' !!}>
-                        <a href="{{ route('createLocal') }}"><i class="fa fa-plus"></i> Ajouter un Local</a>
+                            <!-- <table class="table dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <tbody class="create-entity">
+                                    <tr><a href="#">
+                                        <td><i class="fa fa-building" aria-hidden="true"></i></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>Local</td>
+                                        </a>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-snowflake-o" aria-hidden="true"></i></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>Chambre froide</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-building-o" aria-hidden="true"></i></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>Algéco</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-bed" aria-hidden="true"></i></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>Logement</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-car" aria-hidden="true"></i></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>Véhicule</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>Sinistre</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td><i class="fa fa-cogs" aria-hidden="true"></i>&nbsp;</td>
+                                        <td>Mas</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td><i class="fa fa-cogs" aria-hidden="true"></i>&nbsp;</td>
+                                        <td>Véhicule</td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+
+                            <li><a href="{{ route('createLocal', ['createEntity', 'Local']) }}" class="test-flex"><i class="fa fa-building" aria-hidden="true"></i> Local</a></li>
+                            <li><a href="#"><i class="fa fa-snowflake-o" aria-hidden="true"></i> Chambre froide</a></li>
+                            <li><a href="#"><i class="fa fa-building-o" aria-hidden="true"></i> Algéco</a></li>
+                            <li><a href="#"><i class="fa fa-bed" aria-hidden="true"></i> Logement</a></li>
+                            <li><a href="#"><i class="fa fa-car" aria-hidden="true"></i> Véhicule</a></li>
+                            <li>
+                                <a href="#"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Sinistre</a>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Mas</a></li>
+                                    <li><a href="#"><i class="fa fa-eye" aria-hidden="true"></i> Véhicule</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
-                    <!-- <li{!! isset($page) && $page == 'createChambreF' ? ' class="active"' : '' !!}>
-                        <a href=""><i class="fa fa-plus"></i> Ajouter une Chambre froide</a>
-                    </li>
-                    <li{!! isset($page) && $page == 'createAlgeco' ? ' class="active"' : '' !!}>
-                        <a href=""><i class="fa fa-plus"></i> Ajouter un Algéco</a>
-                    </li>
-                    <li{!! isset($page) && $page == 'createLogement' ? ' class="active"' : '' !!}>
-                        <a href=""><i class="fa fa-plus"></i> Ajouter un Logement</a>
-                    </li> -->
                 </ul>
 
                 <div class="collapse navbar-collapse navbar-right">

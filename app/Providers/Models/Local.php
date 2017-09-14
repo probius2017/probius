@@ -11,7 +11,7 @@ class Local extends Model
     protected $table = 'locaux';
     public $timestamps = true;
     protected $fillable = array('cp_local', 'ville_local', 'adresse_local', 'apptEscalier', 'complementGeographique', 'superficie', 'ERP', 'precaire', 'etat_ini', 'nom_bailleur', 'info_bailleur', 'loyer', 'detail_loyer', 'prix_m2', 'pret', 'local_partage', 'precision_partage', 'accessibilite', 'observation_generale', 'charge_bailleur', 'charge_rdc', 'detail_charge', 'RI');
-
+    protected $dates = ['created_at', 'updated_at', 'date_delete', 'date_debut', 'date_signature', 'date_fin'];
     //protected $hidden = array('ad_id', 'historique_id');
 
     public function ad()
@@ -34,10 +34,10 @@ class Local extends Model
         return $this->belongsToMany(Structure::class);
     }
 
-    public function historiqueL()
+    /*public function historiqueL()
     {
         return $this->belongsTo(HistoriqueLocal::class);
-    }
+    }*/
 
     public function bail()
     {

@@ -75,8 +75,8 @@ $factory->define(App\Models\Local::class, function (Faker\Generator $faker) {
                 'detail_charge'     => $faker->text(200),
                 'contenu'           => $faker->randomNumber(5, false),
                 'ad_id'             => rand(1, 119),
-                'bail_id'           => rand(1, 10),
-                'historiqueLocal_id'     => null
+                'bail_id'           => rand(1, 10)
+                //'historiqueLocal_id'     => null
 
             ];
 });
@@ -109,13 +109,19 @@ $factory->define(App\Models\Bail::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Evenement::class, function (Faker\Generator $faker) {
 
+    $typeEvent = array('Manif', 'Reunion');
+
     return [
-                'statut_event'     => rand(0, 1),
-                'nom_salle'        => $faker->state,
+                'nom_salle'        => $faker->lastName,
+                'adresse_event'    => $faker->streetAddress,
+                'cp_event'         => $faker->randomNumber(5,false),
+                'ville_event'      => $faker->state,
                 'nom_event'        => $faker->jobTitle,
+                'duree_event'      => $faker->randomNumber(3, false),
+                'type_event'       => $typeEvent[array_rand($typeEvent)],
+                //'statut_event'     => ,
                 'date_demande'     => $faker->date,
                 'date_reponse'     => $faker->date,
                 'remarque'         => $faker->text(100)
-                //'contrat_id'       => 1
             ];
 });

@@ -12,7 +12,7 @@ class ContratsTableSeeder extends Seeder
     public function run()
     {
 
-        $contratSocle = \App\Models\Contrat::create(
+        /*$contratSocle = \App\Models\Contrat::create(
             [
                 'num_contrat'        => '3411862',
                 'name_contrat'       => 'Contrat socle',
@@ -21,9 +21,9 @@ class ContratsTableSeeder extends Seeder
                 'algeco_id'          =>  null,
                 'logement_id'        =>  null
             ]
-        );
+        );*/
 
-        $contratCulture = \App\Models\Contrat::create(
+        /*$contratCulture = \App\Models\Contrat::create(
             [
                 'num_contrat'        => '9454153',
                 'name_contrat'       => 'Culture loisirs',
@@ -43,6 +43,6 @@ class ContratsTableSeeder extends Seeder
                 'algeco_id'          => null,
                 'logement_id'        => null
             ]
-        );
+        );*/
     }
 }

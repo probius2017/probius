@@ -243,7 +243,7 @@ class VehiculesController extends Controller
             return back()->withInput($request->only('motif'))->withErrors('Veuillez indiquer une date de résiliation');
         }
 
-        $vehicule = Vehicule::find($id);
+        $vehicule = Vehicule::findOrFail($id);
         $modele = $vehicule->modele;
 
         //Insertion des données dans la table historiqueVehicules
@@ -251,8 +251,8 @@ class VehiculesController extends Controller
                     [   
                         'ad' => $vehicule->ad->numero_ad,
                         'immat' => $vehicule->immat, 
-                        'marque' => $vehicule->marque->name_marque, 
-                        'model' =>  $modele->name_modele, 
+                        'name_marque' => $vehicule->marque->name_marque, 
+                        'name_modele' =>  $modele->name_modele, 
                         'date_resiliation'=> $request->date_resiliation, 
                         'motif'=> $request->motif,
                         'created_at' => $dateSupr

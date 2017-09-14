@@ -20,28 +20,29 @@
     <li{!! isset($page) && $page == 'Entrepots' ? ' class="active"' : '' !!}>
         <a href="{{ route('listeEntrepots.index', ['Entrepots', '>25RI']) }}"><i class="fa fa-building"></i> Entrepots <span class="small">(&gt;25RI)</span></a>
     </li>
-    <li{!! isset($page) && $page == 'Algecos' ? ' class="active"' : '' !!}>
-        <a href="{{ route('listeAlgecos.index', ['Algecos', ' ']) }}"><i class="fa fa-building"></i> Algécos</a>
+    <li{!! isset($page) && $page == 'AN' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeBiensAN.index', ['AN', 'Biens']) }}"><i class="fa fa-building-o"></i> Biens AN</a>
     </li>
     <li{!! isset($page) && $page == 'Chambres-froides' ? ' class="active"' : '' !!}>
         <a href="{{ route('listeChambresFroides.index', ['Chambres-froides', ' ']) }}"><i class="fa fa-snowflake-o" aria-hidden="true"></i> Chambres froides</a>
     </li>
+    <li{!! isset($page) && $page == 'Algecos' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeAlgecos.index', ['Algecos', ' ']) }}"><i class="fa fa-building"></i> Algécos</a>
+    </li>
+    <li{!! isset($page) && $page == 'Evenements' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeEvenements.index', ['Evenements', ' ']) }}"><i class="fa fa-calendar"></i> Evènements</a>
+    </li>
     <li{!! isset($page) && $page == '' ? ' class="active"' : '' !!}>
         <a href="#"><i class="fa fa-bed"></i> Logements</a>
-    </li>
-    <li{!! isset($page) && $page == 'AN' ? ' class="active"' : '' !!}>
-        <a href="{{ route('listeBiensAN.index', ['AN', 'Biens']) }}"><i class="fa fa-building-o"></i> Biens AN</a>
     </li>
     <li{!! isset($page) && $page == 'Vehicules' ? ' class="active"' : '' !!}>
         <a href="{{ route('listeVehicules.index', ['Vehicules', ' ']) }}"><i class="fa fa-car"></i> Véhicules</a>
     </li>
-    <li{!! isset($page) && $page == 'Evenements' ? ' class="active"' : '' !!}>
-        <a href=""><i class="fa fa-calendar"></i> Evènements</a>
-    </li>
-    <li{!! isset($page) && $page == 'Sinistres' && $pageSmall == 'Masse' ? ' class="active"' : '' !!}>
-        <a href="{{ route('listeSinistresMasse.index', ['Sinistres', 'Masse']) }}"><i class="fa fa-exclamation-triangle"></i> Sinistres masse</a>
+
+    <li{!! isset($page) && $page == 'Sinistres' && $pageSmall == 'Mas' ? ' class="active"' : '' !!}>
+        <a href="{{ route('listeSinistresMasse.index', ['Sinistres', 'Mas']) }}"><i class="fa fa-exclamation-triangle"></i> Sinistres Mas</a>
     </li>
     <li{!! isset($page) && $page == 'Sinistres' && $pageSmall == 'Véhicules' ? ' class="active"' : '' !!}>
-        <a href="{{ route('listeSinistresVehicules.index', ['Sinistres', 'Véhicules']) }}"><i class="fa fa-exclamation-triangle"></i> Sinistres véhicules</a>
+        <a href="{{ route('listeSinistresVehicules.index', ['Sinistres', 'Véhicules']) }}"><i class="fa fa-exclamation-triangle"></i> Sinistres Véhicules</a>
     </li>
 </ul>

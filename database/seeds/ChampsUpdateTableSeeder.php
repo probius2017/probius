@@ -182,7 +182,7 @@ class ChampsUpdateTableSeeder extends Seeder
         	],
             [
                 'old_name' => 'type_structure',
-                'new_name' => 'Structures',
+                'new_name' => 'Structure(s)',
                 'table_name' => 'structures',
                 'status' => 0
             ],
@@ -397,9 +397,76 @@ class ChampsUpdateTableSeeder extends Seeder
                 'new_name' => 'Date cloture',
                 'table_name' => 'sinistres',
                 'status' => 0
+            ],
+            
+            //Pour la table Evenements
+            [
+                'old_name' => 'nom_salle',
+                'new_name' => 'Nom salle',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'adresse_event',
+                'new_name' => 'Adresse',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'cp_event',
+                'new_name' => 'Code postal',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'ville_event',
+                'new_name' => 'Ville',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'nom_event',
+                'new_name' => 'Nom Evènement',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'type_event',
+                'new_name' => 'Type Evènement',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'duree_event',
+                'new_name' => 'Durée Evènement',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'statut_event',
+                'new_name' => 'Statut (cloturé?)',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'date_demande',
+                'new_name' => 'Date demande',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'date_reponse',
+                'new_name' => 'Date réponse',
+                'table_name' => 'evenements',
+                'status' => 1
+            ],
+            [
+                'old_name' => 'remarque',
+                'new_name' => 'Remarque',
+                'table_name' => 'evenements',
+                'status' => 1
             ]
-            
-            
+
         ]);
     }
 }

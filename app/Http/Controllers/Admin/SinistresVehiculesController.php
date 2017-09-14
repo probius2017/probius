@@ -21,6 +21,8 @@ class SinistresVehiculesController extends Controller
 
         $entities = Sinistre::whereNull('contrat_id')
                     ->whereNotNull('contrat_v_id')
+                    ->orderBy('ref_rdc', 'asc')
+                    ->orderBy('contrat_v_id', 'asc')
                     ->get();
 
         $typeSinistres =  TypeSinistre::all();
@@ -118,7 +120,15 @@ class SinistresVehiculesController extends Controller
      */
     public function edit($p, $ps, $id)
     {
-        //
+        $data = (new SinistresVehiculesController)->dataSinistreVehicule();
+
+        $page = $data['page'];
+        $pageSmall = $data['pageSmall'];
+
+        $sinistre = Sinistre::findOrFail($id);
+        $typesSinistre = $data['typeSinistres'];
+
+        return view('admin.blocs.sinistres-edit-create', compact('page', 'pageSmall', 'sinistre', 'typesSinistre'));
     }
 
     /**
@@ -128,9 +138,56 @@ class SinistresVehiculesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $p, $ps, $id)
+    public function update(SinistresRequest $request, $p, $ps, $id)
     {
-        //
+        $page = $p;
+        $pageSmall = $ps;
+
+        $sinistre = Sinistre::findOrFail($id);
+
+        //update du sinistre
+        if ((strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox') !== FALSE) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== FALSE)) {
+            
+            $dateOuverture = date('Y-d-m', strtotime($request->date_ouverture));
+            $dateReception = date('Y-d-m', strtotime($request->date_reception));
+            $dateReception = date('Y-d-m', strtotime($request->date_sinistre));
+
+            if ($request->has('date_cloture')) {
+                $dateCloture = date('Y-d-m', strtotime($request->date_cloture));
+            }else{
+                $dateCloture = $request->date_cloture;
+            }
+            
+        }else{
+            $dateOuverture = $request->date_ouverture;
+            $dateReception = $request->date_reception;
+            $dateSinistre = $request->date_sinistre;
+            $dateCloture = $request->date_cloture;
+        }
+
+        $updateSinistre = [
+            'ref_macif' => $request->ref_macif,
+            'ref_rdc' => $request->ref_rdc,
+            'ville_sinistre' => $request->ville_sinistre,
+            'date_ouverture' => $dateOuverture,
+            'date_reception' => $dateReception,
+            'date_sinistre' => $dateSinistre,
+            'responsabilite' => $request->responsabilite,
+            //'type_sinistre_id' => $request->type_sinistre_id,
+            'observation' => $request->observation,
+            'reglement_macif' => $request->reglement_macif, 
+            'franchise' => $request->franchise, 
+            'solde_ad' => $request->franchise, 
+            'date_cloture' => $dateCloture  
+        ];
+        $sinistre->update( $updateSinistre ); 
+
+        $sinistre->type_sinistre_id = $request->type_sinistre_id;
+        $sinistre->save();
+
+        return redirect()
+                ->route('listeSinistresVehicules.index', [$page, $pageSmall])
+                ->withSuccess('Le sinistre a bien été modifié.');
     }
 
     /**

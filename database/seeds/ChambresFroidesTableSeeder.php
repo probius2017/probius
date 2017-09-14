@@ -45,6 +45,7 @@ class ChambresFroidesTableSeeder extends Seeder
             [
                 'num_contrat'        => '9453062',
                 'name_contrat'       => 'Contrat flotte Chambre froide',
+                'type_contrat'       =>  5,
                 'local_id'           =>  2,
                 'algeco_id'          =>  null
             ]);
@@ -53,6 +54,7 @@ class ChambresFroidesTableSeeder extends Seeder
             [
                 'num_contrat'        => '9453062',
                 'name_contrat'       => 'Contrat flotte Chambre froide',
+                'type_contrat'       =>  5,
                 'local_id'           =>  6,
                 'algeco_id'          =>  null
             ]);
@@ -60,6 +62,7 @@ class ChambresFroidesTableSeeder extends Seeder
             [
                 'num_contrat'        => '9453062',
                 'name_contrat'       => 'Contrat flotte Chambre froide',
+                'type_contrat'       =>  5,
                 'local_id'           =>  8,
                 'algeco_id'          =>  null
             ]);
@@ -67,6 +70,7 @@ class ChambresFroidesTableSeeder extends Seeder
             [
                 'num_contrat'        => '9453062',
                 'name_contrat'       => 'Contrat flotte Chambre froide',
+                'type_contrat'       =>  5,
                 'local_id'           =>  19,
                 'algeco_id'          =>  null
             ]);

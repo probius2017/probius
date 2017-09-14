@@ -12,6 +12,7 @@ class CreateContratsTable extends Migration {
 			$table->string('num_contrat', 50);
 			$table->string('name_contrat', 50);
 			$table->string('intercalaire', 30)->nullable();
+			$table->integer('type_contrat')->length(3)->unsigned();
 			$table->integer('local_id')->unsigned()->nullable();
 			$table->integer('algeco_id')->unsigned()->nullable();
 			$table->integer('logement_id')->unsigned()->nullable();
